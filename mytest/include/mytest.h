@@ -42,7 +42,7 @@ bool nowtest();
   namespace {               /*и тут не выползет*/                \
   struct Magic##class_name {                                                   \
     Magic##class_name() {                                                      \
-     // SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | 15));         \
+     /* SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | 15)); */        \
       std::cerr << "Running " << #name << "...\n";                             \
       mytest::start_time();                                                    \
       mytest::add();                                                           \
@@ -50,9 +50,9 @@ bool nowtest();
       int s = 6;                                                               \
       if (mytest::nowtest())                                                   \
         s = 2;                                                                 \
-      //SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | s));          \
+      /*SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | s));*/          \
       std::cerr << #name << " end at ";                                        \
-      //SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | 14));         \
+      /*SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | 14));*/         \
       std::cerr << mytest::all_time_work() << " ms\n\n";                       \
     }                                                                          \
   } magia##class_name;                                                         \
