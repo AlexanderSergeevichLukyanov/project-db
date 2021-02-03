@@ -53,7 +53,7 @@ bool nowtest();
       /*SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | s));*/          \
       std::cerr << s << #name << " end at ";                                        \
       /*SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | 14));*/         \
-      std::cerr << "\x1b[33m" << mytest::all_time_work() << " ms\x1b[0m\n\n";                       \
+      std::cerr << "\x1b[33m" << (float(mytest::all_time_work())) / CLOCKS_PER_SEC << " s\x1b[0m\n\n";                       \
     }                                                                          \
   } magia##class_name;                                                         \
   } /*anonymus namespace end*/                                                 \
