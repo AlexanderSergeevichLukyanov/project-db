@@ -51,7 +51,7 @@ void CHECK_T(const std::string &mark) {
  // SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | 14));
   std::cerr << "\x1b[33m    TIME: \x1b[0m";
   //SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | 15));
-  std::cerr << clock() - time_start << " ms from the start of this test;";
+  std::cerr << (float(clock() - time_start))/ CLOCKS_PER_SEC << " s from the start of this test;";
   //SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | 14));
   std::cerr << "\x1b[33m MARK: \x1b[0m";
   //SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | 15));
