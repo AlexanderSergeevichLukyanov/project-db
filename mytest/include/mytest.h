@@ -1,4 +1,3 @@
-#include <WINDOWS.H>
 #include <iostream>
 #include <stdio.h>
 #include <string>
@@ -17,7 +16,7 @@ void add();
 void erase();
 void start_time();
 int all_time_work();
-HANDLE get_h(); // = GetStdHandle(STD_OUTPUT_HANDLE);
+//HANDLE get_h(); // = GetStdHandle(STD_OUTPUT_HANDLE);
 void CHECK_F(bool ex, int line, const std::string &file,
              const std::string &my_expression);
 void CHECK_MESSAGE_F(bool ex, int line, const std::string &sfile,
@@ -43,7 +42,7 @@ bool nowtest();
   namespace {               /*и тут не выползет*/                \
   struct Magic##class_name {                                                   \
     Magic##class_name() {                                                      \
-      SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | 15));         \
+     // SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | 15));         \
       std::cerr << "Running " << #name << "...\n";                             \
       mytest::start_time();                                                    \
       mytest::add();                                                           \
@@ -51,9 +50,9 @@ bool nowtest();
       int s = 6;                                                               \
       if (mytest::nowtest())                                                   \
         s = 2;                                                                 \
-      SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | s));          \
+      //SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | s));          \
       std::cerr << #name << " end at ";                                        \
-      SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | 14));         \
+      //SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | 14));         \
       std::cerr << mytest::all_time_work() << " ms\n\n";                       \
     }                                                                          \
   } magia##class_name;                                                         \
