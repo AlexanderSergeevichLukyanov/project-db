@@ -28,7 +28,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Add permissions for сlang_format_go.sh
-        run: chmod u+x make/сlang_format_go.sh
+        run: chmod u+x make/clang_format_go.sh
       - name: clang-format
         run: make/clang_format_go.sh
   compile-and-run:
@@ -47,6 +47,3 @@ jobs:
         run: make/compile.sh
       - name: Run tests!
         run: ./dbms
-      - name: Run tests with valgrind!
-        run: valgrind —tool=memcheck dbms
-
