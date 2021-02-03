@@ -47,7 +47,7 @@ bool nowtest();
       mytest::start_time();                                                    \
       mytest::add();                                                           \
       class_name();                                                            \
-      std::String s = "\x1b[31m";                                                               \
+      std::string s = "\x1b[31m";                                                               \
       if (mytest::nowtest())                                                   \
         s = "\x1b[32m";                                                                 \
       /*SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | s));*/          \
