@@ -19,7 +19,7 @@ TEST_CASE("Testing pop()") {
     CHECK(x.top() == 1);
 }
 
-TEST_CASE("CHECK size()") {
+TEST_CASE("Testing size()") {
     list_heap<int> x;
     for (int i = 0; i < 10000; ++i) {
         x.push(i);
@@ -33,7 +33,7 @@ TEST_CASE("CHECK size()") {
     CHECK(!x.empty());  // WRONG TEST!!!!!!!!!!!!!!!!!!!!!!!
 }
 
-TEST_CASE("CHECK merge(other)") {
+TEST_CASE("Testing merge(other)") {
     list_heap<int> x;
     for (int i = 0; i < 100000; ++i) {
         x.push(i);
