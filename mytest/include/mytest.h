@@ -43,17 +43,17 @@ bool nowtest();
   struct Magic##class_name {                                                   \
     Magic##class_name() {                                                      \
      /* SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | 15)); */        \
-      std::cerr << "\x1b[31mRunning " << #name << "...\n\x1b[0m";                             \
+      std::cerr << "\x1b[0Running " << #name << "...\n\x1b[0m";                             \
       mytest::start_time();                                                    \
       mytest::add();                                                           \
       class_name();                                                            \
-      int s = 6;                                                               \
+      std::String s = "\x1b[31m";                                                               \
       if (mytest::nowtest())                                                   \
-        s = 2;                                                                 \
+        s = "\x1b[32m";                                                                 \
       /*SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | s));*/          \
-      std::cerr << #name << " end at ";                                        \
+      std::cerr << s << #name << " end at ";                                        \
       /*SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | 14));*/         \
-      std::cerr << mytest::all_time_work() << " ms\n\n";                       \
+      std::cerr << "\x1b[33m" << mytest::all_time_work() << " ms\x1b[0m\n\n";                       \
     }                                                                          \
   } magia##class_name;                                                         \
   } /*anonymus namespace end*/                                                 \
