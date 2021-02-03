@@ -25,13 +25,11 @@ jobs:
       - uses: actions/checkout@v2
 
       # Runs a single command using the runners shell
-      - name: Add permissions for permission script
-        run: chmod u+x make/add_permis.sh
-      - name: Add permissions for *.sh
-        run: make/add_permis.sh
+      - name: Add permissions for сlang_format_go.sh
+        run: chmod u+x make/сlang_format_go.sh
       - name: clang-format
         run: make/clang_format_go.sh
-  compile_and_run:
+  compile and run:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -41,11 +39,12 @@ jobs:
       - uses: actions/checkout@v2
 
       # Runs a single command using the runners shell
-      - name: Add permissions for permission script
-        run: chmod u+x make/add_permis.sh
-      - name: Add permissions for *.sh
-        run: make/add_permis.sh
+      - name: Add permissions for compile.sh
+        run: chmod u+x make/compile.sh
       - name: compile!
         run: make/compile.sh
       - name: Run tests!
         run: ./dbms
+      - name: Run tests with valgrind!
+        run: valgrind —tool=memcheck dbms
+
