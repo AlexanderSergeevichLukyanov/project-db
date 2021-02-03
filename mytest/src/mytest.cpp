@@ -63,7 +63,7 @@ int get_string() {
   if (now_test) {
     ++good_test; //последний мы так и не проверили до этого
   }
-  String s;
+  int s;
   if (good_test == all_test) {
     s = 32;
   } else {
