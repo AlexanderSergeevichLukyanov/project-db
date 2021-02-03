@@ -29,7 +29,7 @@ jobs:
         run: chmod u+x make/сlang_format_go.sh
       - name: clang-format
         run: make/clang_format_go.sh
-  compile and run:
+  compile-and-run:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
