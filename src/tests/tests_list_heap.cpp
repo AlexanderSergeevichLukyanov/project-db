@@ -30,7 +30,7 @@ TEST_CASE("Testing size()") {
         x.pop();
     }
     CHECK(x.size() == 0);
-    CHECK(!x.empty());  // WRONG TEST!!!!!!!!!!!!!!!!!!!!!!!
+    //CHECK(!x.empty());  // WRONG TEST!!!!!!!!!!!!!!!!!!!!!!!
 }
 
 TEST_CASE("Testing merge(other)") {
@@ -41,10 +41,11 @@ TEST_CASE("Testing merge(other)") {
     CHECK_TIME("AFTER 100000 PUSH");
     list_heap<int> y;
     y.push(2);
-    CHECK_MESSAGE(
+  /*  CHECK_MESSAGE(
         y.size() == 3,
         "Size of this list_heap is not 3");  // WRONG
                                              // TEST!!!!!!!!!!!!!!!!!!!!!!!
+                                             */
     y.merge(x);
     CHECK_TIME("AFTER merge");
     CHECK(y.size() == 100001);
