@@ -28,8 +28,8 @@ void CHECK_F(bool ex, int line, const std::string &file,
              const std::string &my_expression) {
   if (!ex) {
 //    SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | 4));
-    std::cerr << "    CHECK(" << my_expression << ") at "
-              << file /*std::string(__FILE__)*/ << ":" << line << " failed!\n";
+    std::cerr << "\x1b[31m    CHECK(" << my_expression << ") at "
+              << file /*std::string(__FILE__)*/ << ":" << line << " failed!\n\x1b[0m";
     erase();
   }
 }
@@ -39,21 +39,21 @@ void CHECK_MESSAGE_F(bool ex, int line, const std::string &file,
                      const std::string &my_message) {
   if (!ex) {
   //  SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | 4));
-    std::cerr << "    CHECK(" << my_expression << ") at "
+    std::cerr << "\x1b[31m    CHECK(" << my_expression << ") at "
               << file /*std::string(__FILE__)*/ << ":" << line << " failed!\n";
    // SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | 14));
-    std::cerr << "        message: " << my_message << "\n";
+    std::cerr << "\x1b[33m        message: " << my_message << "\n\x1b[0m";
     erase();
   }
 }
 
 void CHECK_T(const std::string &mark) {
  // SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | 14));
-  std::cerr << "    TIME: ";
+  std::cerr << "\x1b[33m    TIME: \x1b[0m";
   //SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | 15));
   std::cerr << clock() - time_start << " ms from the start of this test;";
   //SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | 14));
-  std::cerr << " MARK: ";
+  std::cerr << "\x1b[33m MARK: \x1b[0m";
   //SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | 15));
   std::cerr << mark << "\n";
 }
@@ -63,15 +63,15 @@ int get_string() {
   if (now_test) {
     ++good_test; //последний мы так и не проверили до этого
   }
-  int s = 0;
+  String s;
   if (good_test == all_test) {
-    s = 2;
+    s = 32;
   } else {
-    s = 6;
+    s = 31;
   }
 //  SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | s));
-  std::cerr << "===== Tests passed: " << good_test << "/" << all_test
-            << " =====\n";
+  std::cerr << "\x1b["<<s<<"m===== Tests passed: " << good_test << "/" << all_test
+            << " =====\n\x1b[0m";
  // SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | 15));
   if (good_test == all_test) {
     return 0;
