@@ -43,7 +43,7 @@ bool nowtest();
   struct Magic##class_name {                                                   \
     Magic##class_name() {                                                      \
      /* SetConsoleTextAttribute(mytest::get_h(), (WORD)((0 << 4) | 15)); */        \
-      std::cerr << "\x1b[0 Running " << #name << "...\n\x1b[0m";                             \
+      std::cerr << "\x1b[0m Running " << #name << "...\n\x1b[0m";                             \
       mytest::start_time();                                                    \
       mytest::add();                                                           \
       class_name();                                                            \
