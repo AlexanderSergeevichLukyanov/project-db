@@ -187,7 +187,9 @@ TEST_CASE("list-heap: random test#3(voids must be voids...)"){
 	h1.insert(1);
 	int[10] p{};
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.extractMin())>, "method extractMin() must be void! not "+decltype(h1.extractMin())+"!");
-	#ifdef list_make CHECK_MESSAGE(std::is_void_v<decltype(h1.make(p))>, "method make( must be void! not "+decltype(h1.make())+"!"); #endif
+	#ifdef list_make
+	CHECK_MESSAGE(std::is_void_v<decltype(h1.make(p))>, "method make( must be void! not "+decltype(h1.make())+"!");
+	#endif
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.insert(10))>, "method insert() must be void! not "+decltype(h1.insert(10))+"!");
 }
 #endif
