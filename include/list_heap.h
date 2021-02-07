@@ -32,7 +32,7 @@ public:
         return list_for_heap.empty();
     }
 
-    void push(const T &value) {
+    void insert(const T &value) {
         list_for_heap.push_back(value);
 
         if (list_for_heap.size() == 1 || comp(value, *iter_min)) {
@@ -40,7 +40,7 @@ public:
         }
     }
 
-    [[nodiscard]] const T &top() const {
+    [[nodiscard]] const T &getMin() const {
         assert(!empty());
         return *iter_min;
     }
@@ -55,7 +55,7 @@ public:
         list_for_heap.splice(list_for_heap.end(), other.list_for_heap);
     }
 
-    void pop() {
+    void extractMin() {
         list_for_heap.erase(iter_min);
         if (empty()) {
             return;
