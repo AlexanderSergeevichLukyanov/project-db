@@ -207,12 +207,12 @@ TEST_CASE("list-heap: voids must be voids..."){
 	h1.insert(1);
 	int p[10]{};
 	std::string str1(typeid(h1.extractMin()).name());
-	CHECK_MESSAGE(std::is_void_v<decltype(h1.extractMin())>, "method extractMin() must be void! not "+str1+"!");
+	CHECK_MESSAGE(std::is_void_v<decltype(h1.extractMin())>, "method extractMin() must be void! not "+str1+" !");
 	#ifdef list_make
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.make(p))>, "method make( must be void! not "+decltype(h1.make())+"!");
 	#endif
 	std::string str3(typeid(h1.extractMin()).name());
-	CHECK_MESSAGE(std::is_void_v<decltype(h1.insert(10))>, "method insert() must be void! not "+str3+"!");
+	CHECK_MESSAGE(std::is_void_v<decltype(h1.insert(10))>, "method insert() must be void! not "+str3+" !");
 }
 
 TEST_CASE("list-heap: list_heap(other &&)"){
@@ -221,11 +221,12 @@ TEST_CASE("list-heap: list_heap(other &&)"){
 	h2.insert(2);
 	list_heap<int> h1(std::move(h2));
 	CHECK(h1.size()==2);
-	CHECK(h2.size()==2);
+	CHECK(h2.size()==0);
 	CHECK(h1.getMin()==1);
 	h1.extractMin();
 	CHECK(h1.size()==1);
-	CHECK(h2.size()==1);
+	CHECK(h2.size()==0);
+	CHECK(h2.empty());
 	CHECK(h1.getMin()==2);
 }	
 /*
