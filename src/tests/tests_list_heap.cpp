@@ -179,10 +179,17 @@ TEST_CASE("list-heap: random test#2(check const, reference)"){
 	h1.insert(1);
 	CHECK_MESSAGE(std::is_reference<decltype(h1.getMin())>::value, "method getMin() must be &getMin()");
 	CHECK_MESSAGE(std::is_const_v<std::remove_reference_t<decltype(h1.getMin())>>, "method getMin() must be const");
-	CHECK_MESSAGE(std::is_const_v<decltype(h1.size())>, "method size() must be const");
-	CHECK_MESSAGE(std::is_const_v<std::remove_reference_t<decltype(h1.empty())>>, "method empty() must be const");
 }
 
+TEST_CASE("list-heap: random test#3(voids must be voids...)"){
+	list_heap<int> h1;
+	h1.insert(6);
+	h1.insert(1);
+	int[10] p{};
+	CHECK_MESSAGE(std::is_void_v<decltype(h1.extractMin())>, "method extractMin() must be void! not "+decltype(h1.extractMin())+"!");
+	#ifdef list_make CHECK_MESSAGE(std::is_void_v<decltype(h1.make(p))>, "method make( must be void! not "+decltype(h1.make())+"!"); #endif
+	CHECK_MESSAGE(std::is_void_v<decltype(h1.insert(10))>, "method insert() must be void! not "+decltype(h1.insert(10))+"!");
+}
 #endif
 
 #ifdef list_construct_comp
