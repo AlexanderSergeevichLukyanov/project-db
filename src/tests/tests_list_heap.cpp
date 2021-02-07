@@ -8,14 +8,12 @@
 #define list_get_min
 //#define list_make
 #define list_extract_min
-//#define list_merge
-//#define list_solyanka
+#define list_solyanka
 #define list_construct_comp
 #define list_insert_comp
 #define list_get_min_comp
 //#define list_make_comp
 #define list_extract_min_comp
-//#define list_merge_comp
 //#define list_solyanka_comp
 namespace{
 struct CloserTo {
@@ -154,6 +152,38 @@ TEST_CASE("list-heap: make (300000 elements)"){
 }
 #endif
 
+#ifdef solyanka
+TEST_CASE("list-heap: random test#1"){
+	list_heap<int> h1;
+	CHECK(h1.empty());
+	CHECK(h1.size()==0);
+	h1.insert(1);
+	CHECK(h1.size()==1);
+	CHECK(!h1.empty());
+	h1.extractMin();
+	CHECK(h1.empty());
+	CHECK(h1.size()==0);
+	for(int i=0; i<5000; ++i){
+		h1.insert(i);
+	}
+	CHECK(h1.getMin()==0);
+	h1.extractMin();
+	CHECK(h1.size()==4999);
+	CHECK(h1.getMin()==1);
+}
+
+TEST_CASE("list-heap: random test#2(check const, reference)"){
+	list_heap<int> h1;
+	h1.insert(6);
+	h1.insert(1);
+	CHECK_MESSAGE(std::is_referense<h1.getMin()>, "method getMin() must be &getMin()");
+	CHECK_MESSAGE(std::is_const<h1.getMin()>, "method getMin() must be const");
+	CHECK_MESSAGE(std::is_const<h1.size()>, "method size() must be const");
+	CHECK_MESSAGE(std::is_const<h1.empty()>, "method empty() must be const");
+}
+
+#endif
+
 #ifdef list_construct_comp
 TEST_CASE("list-heap: constructors with Compare"){
     list_heap<int, CloserTo> heap(CloserTo(10));
@@ -176,6 +206,42 @@ TEST_CASE("list-heap: 300000 insert"){
 		h1.insert(rand());
 	}
 	CHECK(h1.size()==300000);
+}
+#endif
+
+#ifdef list_extract_min_comp
+TEST_CASE("list-heap: 3000 insert and 3000 extract_min"){
+	list_heap<int, CloserTo> h1(CloserTo(10));
+	std::vector<int> res;
+	for(int i=0; i<3000; ++i){
+		int x = rand()%3000;
+		h1.insert(x);
+		res.push_back(std::abs(x-10));
+	}
+	std::sort(res.begin(), res.end());
+	CHECK_TIME("After 3000 insert random  and sort random x, then start checking extract_min");
+	for(int i=0; i<3000; ++i){
+		int x = rand()%3000;
+		CHECK(std::abs(h1.getMin()-10)==res[i]);
+		h1.extractMin();
+	}
+}
+
+TEST_CASE("list-heap: 10000 insert and 10000 extract_min"){
+	list_heap<int, CloserTo> h1(CloserTo(10));
+	std::vector<int> res;
+	for(int i=0; i<10000; ++i){
+		int x = rand()%10000;
+		h1.insert(x);
+		res.push_back(std::abs(x-10));
+	}
+	std::sort(res.begin(), res.end());
+	CHECK_TIME("After 10000 insert random  and sort random x, then start checking extract_min");
+	for(int i=0; i<10000; ++i){
+		int x = rand()%10000;
+		CHECK(std::abs(h1.getMin()-10)==res[i]);
+		h1.extractMin();
+	}
 }
 #endif
 
