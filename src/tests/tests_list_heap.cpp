@@ -95,7 +95,7 @@ TEST_CASE("list-heap: 300000 GetMin()"){
 #ifdef list_extract_min
 TEST_CASE("list-heap: 30000 insert and 30000 extract_min"){
 	list_heap<int> h1;
-	vector<int> res;
+	std::vector<int> res;
 	for(int i=0; i<30000; ++i){
 		int x = rand()%30000;
 		h1.insert(x);
