@@ -379,11 +379,11 @@ TEST_CASE("list-heap-with-compare: voids must be voids..."){
 	h1.insert(7);
 	h1.insert(1);
 	int p[10]{};
-	CHECK_MESSAGE(std::is_void_v<decltype(h1.extractMin())>, "method extractMin() must be void! not "+decltype(h1.extractMin()).name()+"!");
+	CHECK_MESSAGE(std::is_void_v<decltype(h1.extractMin())>, "method extractMin() must be void! not "+typeid(h1.extractMin()).name()+"!");
 	#ifdef list_make_comp
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.make(p))>, "method make( must be void! not "+decltype(h1.make())+"!");
 	#endif
-	CHECK_MESSAGE(std::is_void_v<decltype(h1.insert(10))>, "method insert() must be void! not "+decltype(h1.insert(10)).name()+"!");
+	CHECK_MESSAGE(std::is_void_v<decltype(h1.insert(10))>, "method insert() must be void! not "+typeid(h1.insert(10)).name()+"!");
 }
 
 TEST_CASE("list-heap-with-compare: list_heap(other &&)"){
