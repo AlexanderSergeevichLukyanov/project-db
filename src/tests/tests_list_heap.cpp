@@ -171,7 +171,7 @@ TEST_CASE("list-heap-with-compare: 30000 insert"){
 }
 
 TEST_CASE("list-heap: 300000 insert"){
-	list_heap<int CloserTo> h1(CloserTo(10));
+	list_heap<int, CloserTo> h1(CloserTo(10));
 	for(int i=0; i<300000; ++i){
 		h1.insert(rand());
 	}
