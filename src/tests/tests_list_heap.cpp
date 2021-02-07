@@ -152,7 +152,7 @@ TEST_CASE("list-heap: make (300000 elements)"){
 }
 #endif
 
-#ifdef solyanka
+#ifdef list_solyanka
 TEST_CASE("list-heap: random test#1"){
 	list_heap<int> h1;
 	CHECK(h1.empty());
