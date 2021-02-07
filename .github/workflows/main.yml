@@ -56,7 +56,7 @@ jobs:
       - name: permissision!
         run: chmod u+x make/compile.sh 
       - name: compile!
-        run: make/compile.sh tests_pairng_heap
+        run: make/compile.sh tests_pairing_heap
       - name: Run tests!
         run: ./dbmstests_pairing_heap
   buffer-heap:
