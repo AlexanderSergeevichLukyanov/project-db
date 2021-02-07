@@ -154,14 +154,14 @@ TEST_CASE("list-heap: make (300000 elements)"){
 }
 #endif
 
-#ifdef list_constructwithcomp 
+#ifdef list_construct_comp
 TEST_CASE("list-heap: constructors with Compare"){
     list_heap<int, CloserTo> heap(CloserTo(10));
 	//only compile
 }
 #endif
 
-#ifdef list_insertwithcomp
+#ifdef list_insert_comp
 TEST_CASE("list-heap-with-compare: 30000 insert"){
 	list_heap<int, CloserTo> h1(CloserTo(10));
 	for(int i=0; i<30000; ++i){
