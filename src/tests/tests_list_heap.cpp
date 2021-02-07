@@ -100,9 +100,9 @@ TEST_CASE("list-heap: 30000 insert and 30000 extract_min"){
 	for(int i=0; i<30000; ++i){
 		int x = rand()%30000;
 		h1.insert(x);
-		h1.push_back(x);
+		res.push_back(x);
 	}
-	std::sort(res, res.begin(), res.end());
+	std::sort(res.begin(), res.end());
 	CHECK_TIME("After 30000 insert random  and sort random x, then start checking extract_min");
 	for(int i=0; i<30000; ++i){
 		int x = rand()%30000;
@@ -117,9 +117,9 @@ TEST_CASE("list-heap: 300000 insert and 300000 extract_min"){
 	for(int i=0; i<300000; ++i){
 		int x = rand()%300000;
 		h1.insert(x);
-		h1.push_back(x);
+		res.push_back(x);
 	}
-	std::sort(res, res.begin(), res.end());
+	std::sort(res.begin(), res.end());
 	CHECK_TIME("After 300000 insert random  and sort random x, then start checking extract_min");
 	for(int i=0; i<300000; ++i){
 		int x = rand()%300000;
