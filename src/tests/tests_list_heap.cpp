@@ -15,7 +15,7 @@
 #define list_get_min_comp
 //#define list_make_comp
 #define list_extract_min_comp
-//#define list_solyanka_comp
+#define list_solyanka_comp
 namespace{
 struct CloserTo {
     private:
@@ -173,7 +173,27 @@ TEST_CASE("list-heap: random test#1"){
 	CHECK(h1.getMin()==1);
 }
 
-TEST_CASE("list-heap: random test#2(check const, reference)"){
+TEST_CASE("list-heap: random test#2"){
+	list_heap<double> h1;
+	CHECK(h1.empty());
+	CHECK(h1.size()==0);
+	h1.insert(1.0);
+	CHECK(h1.size()==1);
+	CHECK(!h1.empty());
+	h1.extractMin();
+	CHECK(h1.empty());
+	CHECK(h1.size()==0);
+	for(double i=0; i<5000; ++i){
+		h1.insert(i);
+	}
+	CHECK(h1.getMin()==0);
+	h1.extractMin();
+	CHECK(h1.size()==4999);
+	CHECK(h1.getMin()==1.0);
+}
+
+
+TEST_CASE("list-heap: check const, reference methods"){
 	list_heap<int> h1;
 	h1.insert(6);
 	h1.insert(1);
@@ -181,17 +201,51 @@ TEST_CASE("list-heap: random test#2(check const, reference)"){
 	CHECK_MESSAGE(std::is_const_v<std::remove_reference_t<decltype(h1.getMin())>>, "method getMin() must be const");
 }
 
-TEST_CASE("list-heap: random test#3(voids must be voids...)"){
+TEST_CASE("list-heap: voids must be voids..."){
 	list_heap<int> h1;
 	h1.insert(6);
 	h1.insert(1);
-	int[10] p{};
+	int p[10]{};
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.extractMin())>, "method extractMin() must be void! not "+decltype(h1.extractMin())+"!");
 	#ifdef list_make
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.make(p))>, "method make( must be void! not "+decltype(h1.make())+"!");
 	#endif
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.insert(10))>, "method insert() must be void! not "+decltype(h1.insert(10))+"!");
 }
+
+TEST_CASE("list-heap: list_heap(other &&)"){
+	list_heap<int> h2;
+	h2.insert(1);
+	h2.insert(2);
+	list_heap<int> h1(h2);
+	CHECK(h1.size()==2);
+	CHECK(h2.size()==2);
+	CHECK(h1.getMin()==1);
+	h1.extractMin();
+	CHECK(h1.size()==1);
+	CHECK(h2.size()==2);
+	CHECK(h1.getMin()==2);
+}	
+
+TEST_CASE("list-heap: operator=(other &&)"){
+	list_heap<int> h2;
+	h2.insert(1);
+	h2.insert(2);
+	list_heap<int> h1=h2;
+	CHECK(h1.size()==2);
+	CHECK(h2.size()==2);
+	CHECK(h1.getMin()==1);
+	h1.extractMin();
+	CHECK(h1.size()==1);
+	CHECK(h2.size()==2);
+	CHECK(h1.getMin()==2);
+}
+
+TEST_CASE("list-heap: default contructor must be implicit"){
+	[[maybe_unused]] list_heap<int> h1 = {};
+	//only compile
+}
+
 #endif
 
 #ifdef list_construct_comp
@@ -210,7 +264,7 @@ TEST_CASE("list-heap-with-compare: 30000 insert"){
 	CHECK(h1.size()==30000);
 }
 
-TEST_CASE("list-heap: 300000 insert"){
+TEST_CASE("list-heap-with-compare: 300000 insert"){
 	list_heap<int, CloserTo> h1(CloserTo(10));
 	for(int i=0; i<300000; ++i){
 		h1.insert(rand());
@@ -220,7 +274,7 @@ TEST_CASE("list-heap: 300000 insert"){
 #endif
 
 #ifdef list_extract_min_comp
-TEST_CASE("list-heap: 3000 insert and 3000 extract_min"){
+TEST_CASE("list-heap-with-compare: 3000 insert and 3000 extract_min"){
 	list_heap<int, CloserTo> h1(CloserTo(10));
 	std::vector<int> res;
 	for(int i=0; i<3000; ++i){
@@ -237,7 +291,7 @@ TEST_CASE("list-heap: 3000 insert and 3000 extract_min"){
 	}
 }
 
-TEST_CASE("list-heap: 10000 insert and 10000 extract_min"){
+TEST_CASE("list-heap-with-compare: 10000 insert and 10000 extract_min"){
 	list_heap<int, CloserTo> h1(CloserTo(10));
 	std::vector<int> res;
 	for(int i=0; i<10000; ++i){
@@ -256,7 +310,7 @@ TEST_CASE("list-heap: 10000 insert and 10000 extract_min"){
 #endif
 
 #ifdef list_extract_min_comp
-TEST_CASE("list-heap: 3000 insert and 3000 extract_min"){
+TEST_CASE("list-heap-with-compare: 3000 insert and 3000 extract_min"){
 	list_heap<int, CloserTo> h1(CloserTo(10));
 	std::vector<int> res;
 	for(int i=0; i<3000; ++i){
@@ -273,7 +327,7 @@ TEST_CASE("list-heap: 3000 insert and 3000 extract_min"){
 	}
 }
 
-TEST_CASE("list-heap: 10000 insert and 10000 extract_min"){
+TEST_CASE("list-heap-with-compare: 10000 insert and 10000 extract_min"){
 	list_heap<int, CloserTo> h1(CloserTo(10));
 	std::vector<int> res;
 	for(int i=0; i<10000; ++i){
@@ -289,5 +343,111 @@ TEST_CASE("list-heap: 10000 insert and 10000 extract_min"){
 		h1.extractMin();
 	}
 }
+#endif
+
+#ifdef list_solyanka_comp
+
+TEST_CASE("list-heap-with-compare: random test"){
+	list_heap<int, CloserTo> h1(CloserTo(10));
+	CHECK(h1.empty());
+	CHECK(h1.size()==0);
+	h1.insert(1);
+	CHECK(h1.size()==1);
+	CHECK(!h1.empty());
+	h1.extractMin();
+	CHECK(h1.empty());
+	CHECK(h1.size()==0);
+	for(int i=0; i<5000; ++i){
+		h1.insert(i);
+	}
+	CHECK(h1.getMin()==0);
+	h1.extractMin();
+	CHECK(h1.size()==4999);
+	CHECK(h1.getMin()==9 or h1.getMin()==11);
+}
+
+TEST_CASE("list-heap-with-compare: check const, reference methods"){
+	list_heap<int, CloserTo> h1(CloserTo(10));
+	h1.insert(7);
+	h1.insert(1);
+	CHECK_MESSAGE(std::is_reference<decltype(h1.getMin())>::value, "method getMin() must be &getMin()");
+	CHECK_MESSAGE(std::is_const_v<std::remove_reference_t<decltype(h1.getMin())>>, "method getMin() must be const");
+}
+
+TEST_CASE("list-heap-with-compare: voids must be voids..."){
+	list_heap<int, CloserTo> h1(CloserTo(10));
+	h1.insert(7);
+	h1.insert(1);
+	int p[10]{};
+	CHECK_MESSAGE(std::is_void_v<decltype(h1.extractMin())>, "method extractMin() must be void! not "+decltype(h1.extractMin())+"!");
+	#ifdef list_make_comp
+	CHECK_MESSAGE(std::is_void_v<decltype(h1.make(p))>, "method make( must be void! not "+decltype(h1.make())+"!");
+	#endif
+	CHECK_MESSAGE(std::is_void_v<decltype(h1.insert(10))>, "method insert() must be void! not "+decltype(h1.insert(10))+"!");
+}
+
+TEST_CASE("list-heap-with-compare: list_heap(other &&)"){
+	list_heap<int, CloserTo> h2(CloserTo(10));
+	h2.insert(1);
+	h2.insert(2);
+	list_heap<int, CloserTo> h1(h2);
+	CHECK(h1.size()==2);
+	CHECK(h2.size()==2);
+	CHECK(h1.getMin()==2);
+	h1.extractMin();
+	CHECK(h1.size()==1);
+	CHECK(h2.size()==2);
+	CHECK(h1.getMin()==1);
+}	
+
+TEST_CASE("list-heap-with-compare: operator=(other &&)"){
+	list_heap<int, CloserTo> h2(CloserTo(10));
+	h2.insert(1);
+	h2.insert(2);
+	list_heap<int> h1=h2;
+	CHECK(h1.size()==2);
+	CHECK(h2.size()==2);
+	CHECK(h1.getMin()==2);
+	h1.extractMin();
+	CHECK(h1.size()==1);
+	CHECK(h2.size()==2);
+	CHECK(h1.getMin()==1);
+}
+
+TEST_CASE("list-heap-with-compare: constructor from comparator is explicit") {
+    CHECK(std::is_constructible_v<list_heap<int>,
+                                  std::less<int>>);  .
+    CHECK(!std::is_convertible_v<std::less<int>,
+                                 list_heap<int>>);  
+}
+
+TEST_CASE("list-heap-with-compare: with std::greater(on max)") {
+    list_heap<int, std::greater<>> heap;
+    const auto &ch = heap;
+
+    heap.insert(5);
+    CHECK(!ch.empty());
+    CHECK(ch.GetMin() == 5);
+
+    heap.insert(15);
+    CHECK(!ch.empty());
+    CHECK(ch.GetMin() == 15);
+
+    heap.insert(10);
+    CHECK(!ch.empty());
+    CHECK(ch.GetMin() == 15);
+
+    heap.extractMin();
+    CHECK(!ch.empty());
+    CHECK(ch.GetMin) == 10);
+
+    heap.extractMin();
+    CHECK(!ch.empty());
+    CHECK(ch.GetMin() == 5);
+
+    heap.extractMin();
+    CHECK(ch.empty());
+}
+
 #endif
 }
