@@ -1,6 +1,7 @@
 #include "list_heap.h"
 #include "mytest.h"
 #include <algorithm>
+#include <type_traits>
 #include <vector>
 //#define list_wrong_test
 #define list_construct
