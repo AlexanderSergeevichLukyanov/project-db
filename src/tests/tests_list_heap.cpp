@@ -178,9 +178,9 @@ TEST_CASE("list-heap: random test#2(check const, reference)"){
 	h1.insert(6);
 	h1.insert(1);
 	CHECK_MESSAGE(std::is_reference<decltype(h1.getMin())>, "method getMin() must be &getMin()");
-	CHECK_MESSAGE(std::is_const_v<decltype(h1.getMin())>, "method getMin() must be const");
-	CHECK_MESSAGE(std::is_const_v<decltype(h1.size())>, "method size() must be const");
-	CHECK_MESSAGE(std::is_const_c<decltype(h1.empty())>, "method empty() must be const");
+	CHECK_MESSAGE(std::is_const<decltype(h1.getMin())::value>, "method getMin() must be const");
+	CHECK_MESSAGE(std::is_const<decltype(h1.size())::value>, "method size() must be const");
+	CHECK_MESSAGE(std::is_const<decltype(h1.empty())::value>, "method empty() must be const");
 }
 
 #endif
