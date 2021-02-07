@@ -181,35 +181,35 @@ TEST_CASE("list-heap: 300000 insert"){
 
 #ifdef list_extract_min_comp
 TEST_CASE("list-heap: 3000 insert and 3000 extract_min"){
-	list_heap<int> h1;
+	list_heap<int, CloserTo> h1(CloserTo(10));
 	std::vector<int> res;
 	for(int i=0; i<3000; ++i){
 		int x = rand()%3000;
 		h1.insert(x);
-		res.push_back(x);
+		res.push_back(std::abs(x-10));
 	}
 	std::sort(res.begin(), res.end());
 	CHECK_TIME("After 3000 insert random  and sort random x, then start checking extract_min");
 	for(int i=0; i<3000; ++i){
 		int x = rand()%3000;
-		CHECK(h1.getMin()==res[i]);
+		CHECK(std::abs(h1.getMin()-10)==res[i]);
 		h1.extractMin();
 	}
 }
 
 TEST_CASE("list-heap: 10000 insert and 10000 extract_min"){
-	list_heap<int> h1;
+	list_heap<int, CloserTo> h1(CloserTo(10));
 	std::vector<int> res;
 	for(int i=0; i<10000; ++i){
 		int x = rand()%10000;
 		h1.insert(x);
-		res.push_back(x);
+		res.push_back(std::abs(x-10));
 	}
 	std::sort(res.begin(), res.end());
 	CHECK_TIME("After 10000 insert random  and sort random x, then start checking extract_min");
 	for(int i=0; i<10000; ++i){
 		int x = rand()%10000;
-		CHECK(h1.getMin()==res[i]);
+		CHECK(std::abs(h1.getMin()-10)==res[i]);
 		h1.extractMin();
 	}
 }
