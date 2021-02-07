@@ -1,6 +1,7 @@
 #include "list_heap.h"
 #include "mytest.h"
 #include <algorithm>
+#include <vector>
 //#define list_wrong_test
 #define list_construct
 #define list_insert
@@ -101,7 +102,7 @@ TEST_CASE("list-heap: 30000 insert and 30000 extract_min"){
 		h1.insert(x);
 		h1.push_back(x);
 	}
-	sort(res, res.begin(), res.end());
+	std::sort(res, res.begin(), res.end());
 	CHECK_TIME("After 30000 insert random  and sort random x, then start checking extract_min");
 	for(int i=0; i<30000; ++i){
 		int x = rand()%30000;
@@ -112,13 +113,13 @@ TEST_CASE("list-heap: 30000 insert and 30000 extract_min"){
 
 TEST_CASE("list-heap: 300000 insert and 300000 extract_min"){
 	list_heap<int> h1;
-	vector<int> res;
+	std::vector<int> res;
 	for(int i=0; i<300000; ++i){
 		int x = rand()%300000;
 		h1.insert(x);
 		h1.push_back(x);
 	}
-	sort(res, res.begin(), res.end());
+	std::sort(res, res.begin(), res.end());
 	CHECK_TIME("After 300000 insert random  and sort random x, then start checking extract_min");
 	for(int i=0; i<300000; ++i){
 		int x = rand()%300000;
