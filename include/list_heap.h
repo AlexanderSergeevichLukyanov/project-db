@@ -54,6 +54,13 @@ public:
         }
         list_for_heap.splice(list_for_heap.end(), other.list_for_heap);
     }
+	
+	void make(const T *p){
+		int size_=sizeof(*p)/sizeof(T);
+		for(int i=0; i<size_; ++i){
+			insert(p[i]);
+		}
+	}
 
     void extractMin() {
         list_for_heap.erase(iter_min);
