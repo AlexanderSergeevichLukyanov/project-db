@@ -213,8 +213,8 @@ TEST_CASE("list-heap: voids must be voids..."){
 	int p[10]{};
 	std::string str1(typeid(h1.extractMin()).name());
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.extractMin())>, "method extractMin() must be void! not "+str1+" !");
-	#ifdef list_make_comp
-	std::string str2(typeid(h1.make()).name());
+	#ifdef list_make
+	std::string str2(typeid(h1.make(p)).name());
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.make(p))>, "method make( must be void! not "+str2+"!");
 	#endif
 	std::string str3(typeid(h1.extractMin()).name());
@@ -420,8 +420,8 @@ TEST_CASE("list-heap-with-compare: voids must be voids..."){
 	int p[10]{};
 	std::string str1(typeid(h1.extractMin()).name());
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.extractMin())>, "method extractMin() must be void! not "+str1+" !");
-	#ifdef list_make
-	std::string str2(typeid(h1.make()).name());
+	#ifdef list_make_comp
+	std::string str2(typeid(h1.make(p)).name());
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.make(p))>, "method make( must be void! not "+str2+"!");
 	#endif
 	std::string str3(typeid(h1.extractMin()).name());
