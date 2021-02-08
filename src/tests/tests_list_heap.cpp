@@ -429,7 +429,40 @@ TEST_CASE("list-heap-with-compare: voids must be voids..."){
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.insert(10))>, "method insert() must be void! not "+str3+" !");
 }
 
+TEST_CASE("list-heap-with-compare: list_heap(other &&)"){
+	list_heap<int, CloserTo> h2(CloserTo(10));
+	h2.insert(1);
+	h2.insert(2);
+	list_heap<int, CloserTo> h1(std::move(h2));
+	CHECK(h1.size()==2);
+	CHECK(h2.size()==0);
+	CHECK(h1.getMin()==2);
+	h1.extractMin();
+	CHECK(h1.size()==1);
+	CHECK(h2.size()==0);
+	CHECK(h2.empty());
+	CHECK(h1.getMin()==1);
+}	
 
+TEST_CASE("list-heap-with-compare: operator=(other &&)"){
+	list_heap<int, CloserTo> h2(CloserTo(10));
+	h2.insert(1);
+	h2.insert(2);
+	list_heap<int> h1=std::move(h2);
+	CHECK(h1.size()==2);
+	CHECK(h2.size()==0);
+	CHECK(h1.getMin()==2);
+	h1.extractMin();
+	CHECK(h1.size()==1);
+	CHECK(h2.size()==0);
+	CHECK(h2.empty());
+	CHECK(h1.getMin()==1);
+}
+
+TEST_CASE("list-heap-with-compare: constructor from comparator is explicit") {
+    CHECK((std::is_constructible_v<list_heap<int>, std::less<int>>)); 
+    CHECK((!std::is_convertible_v<std::less<int>,list_heap<int>>));  
+}
 
 TEST_CASE("list-heap-with-compare: with std::greater(on max)") {
     list_heap<int, std::greater<>> heap;
