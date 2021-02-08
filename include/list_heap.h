@@ -56,7 +56,7 @@ public:
     }
 	
 	void make(const T *p){
-		int size_=sizeof(*p)/sizeof(T);
+		int size_=sizeof(p)/sizeof(T);
 		for(int i=0; i<size_; ++i){
 			insert(p[i]);
 		}
