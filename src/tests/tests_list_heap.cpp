@@ -130,21 +130,26 @@ TEST_CASE("list-heap: 10000 insert and 10000 extract_min"){
 
 #ifdef list_make
 TEST_CASE("list-heap: make (30000 elements)"){
+	list_heap<int> h1;
 	int arr[30000];
 	int min=30000;
 	for(int i=0; i<30000; ++i){
 		int x = rand()%30000;
+		arr[i]=x;
 		if(min>x) min=x;
 	}
 	h1.make(arr);
 	CHECK_MESSAGE(h1.size()==30000, "size heap must be equal to the array size");
 	CHECK_MESSAGE(h1.getMin()==min, "min heap must be equal to the array min");
 }
+
 TEST_CASE("list-heap: make (300000 elements)"){
+	list_heap<int> h1;
 	int arr[300000];
 	int min=300000;
 	for(int i=0; i<300000; ++i){
 		int x = rand()%300000;
+		arr[i]=x;
 		if(min>x) min=x;
 	}
 	h1.make(arr);
@@ -208,7 +213,7 @@ TEST_CASE("list-heap: voids must be voids..."){
 	int p[10]{};
 	std::string str1(typeid(h1.extractMin()).name());
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.extractMin())>, "method extractMin() must be void! not "+str1+" !");
-	#ifdef list_make
+	#ifdef list_make_comp
 	std::string str2(typeid(h1.make()).name());
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.make(p))>, "method make( must be void! not "+str2+"!");
 	#endif
@@ -346,6 +351,36 @@ TEST_CASE("list-heap-with-compare: 10000 insert and 10000 extract_min"){
 		CHECK(std::abs(h1.getMin()-10)==res[i]);
 		h1.extractMin();
 	}
+}
+#endif
+
+#ifdef list_make_comp
+TEST_CASE("list-heap: make (30000 elements)"){
+	list_heap<int, CloserTo> h1(CloserTo(10));
+	int arr[30000];
+	int min=30000;
+	for(int i=0; i<30000; ++i){
+		int x = rand()%30000;
+		arr[i]=x;
+		if(min>std::abs(x-10)) min=std::abs(x-10);
+	}
+	h1.make(arr);
+	CHECK_MESSAGE(h1.size()==30000, "size heap must be equal to the array size");
+	CHECK_MESSAGE(std::abs(h1.getMin()-10)==min, "min heap must be equal to the array min");
+}
+
+TEST_CASE("list-heap: make (300000 elements)"){
+	list_heap<int> h1;
+	int arr[300000];
+	int min=300000;
+	for(int i=0; i<300000; ++i){
+		int x = rand()%300000;
+		arr[i]=x;
+		if(min>std::abs(x-10)) min=std::abs(x-10);
+	}
+	h1.make(arr);
+	CHECK_MESSAGE(h1.size()==300000, "size heap must be equal to the array size");
+	CHECK_MESSAGE(std::abs(h1.getMin()-10)==min, "min heap must be equal to the array min");
 }
 #endif
 
