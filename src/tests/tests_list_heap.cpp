@@ -364,7 +364,7 @@ TEST_CASE("list-heap-with-compare: random test"){
 	for(int i=0; i<5000; ++i){
 		h1.insert(i);
 	}
-	CHECK(h1.getMin()==0);
+	CHECK(h1.getMin()==10);
 	h1.extractMin();
 	CHECK(h1.size()==4999);
 	CHECK(h1.getMin()==9 or h1.getMin()==11);
