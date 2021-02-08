@@ -448,7 +448,7 @@ TEST_CASE("list-heap-with-compare: operator=(other &&)"){
 	list_heap<int, CloserTo> h2(CloserTo(10));
 	h2.insert(1);
 	h2.insert(2);
-	list_heap<int> h1=std::move(h2);
+	list_heap<int, CloserTo> h1=std::move(h2);
 	CHECK(h1.size()==2);
 	CHECK(h2.size()==0);
 	CHECK(h1.getMin()==2);
