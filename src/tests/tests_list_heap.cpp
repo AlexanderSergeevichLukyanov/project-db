@@ -423,9 +423,8 @@ TEST_CASE("list-heap-with-compare: operator=(other &&)"){
 }
 */
 TEST_CASE("list-heap-with-compare: constructor from comparator is explicit") {
-    CHECK(std::is_constructible_v<list_heap<int>, std::less<int>>); 
-    CHECK(!std::is_convertible_v<std::less<int>,list_heap<int>>);  
-	//only compile
+    CHECK((std::is_constructible_v<list_heap<int>, std::less<int>>)); 
+    CHECK((!std::is_convertible_v<std::less<int>,list_heap<int>>));  
 }
 
 TEST_CASE("list-heap-with-compare: with std::greater(on max)") {
@@ -434,23 +433,23 @@ TEST_CASE("list-heap-with-compare: with std::greater(on max)") {
 
     heap.insert(5);
     CHECK(!ch.empty());
-    CHECK(ch.GetMin() == 5);
+    CHECK(ch.getMin() == 5);
 
     heap.insert(15);
     CHECK(!ch.empty());
-    CHECK(ch.GetMin() == 15);
+    CHECK(ch.getMin() == 15);
 
     heap.insert(10);
     CHECK(!ch.empty());
-    CHECK(ch.GetMin() == 15);
+    CHECK(ch.getMin() == 15);
 
     heap.extractMin();
     CHECK(!ch.empty());
-    CHECK(ch.GetMin) == 10);
+    CHECK(ch.getMin) == 10);
 
     heap.extractMin();
     CHECK(!ch.empty());
-    CHECK(ch.GetMin() == 5);
+    CHECK(ch.getMin() == 5);
 
     heap.extractMin();
     CHECK(ch.empty());
