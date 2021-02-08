@@ -21,4 +21,4 @@
 template <typename T, typename Compare = std::less<T>>
 struct buffer_heap{
 	
-}
+};
