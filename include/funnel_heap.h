@@ -4,7 +4,7 @@
 #include <type_traits>
 #include <utility>
 
-#define funnel_wrong_test //не стоит расскоментировать:)
+//#define funnel_wrong_test //не стоит расскоментировать:)
 //#define funnel_construct //default constructor
 //#define funnel_insert  // insert(T x)
 //#define funnel_get_min // getMin()
