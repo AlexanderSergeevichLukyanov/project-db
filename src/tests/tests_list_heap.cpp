@@ -370,7 +370,7 @@ TEST_CASE("list-heap: make (30000 elements)"){
 }
 
 TEST_CASE("list-heap: make (300000 elements)"){
-	list_heap<int> h1;
+	list_heap<int, CloserTo> h1(CloserTo(10));
 	int arr[300000];
 	int min=300000;
 	for(int i=0; i<300000; ++i){
