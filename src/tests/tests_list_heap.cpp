@@ -3,19 +3,6 @@
 #include <algorithm>
 #include <type_traits>
 #include <vector>
-//#define list_wrong_test
-#define list_construct
-#define list_insert
-#define list_get_min
-#define list_make
-#define list_extract_min
-#define list_solyanka
-#define list_construct_comp
-#define list_insert_comp
-#define list_get_min_comp
-#define list_make_comp
-#define list_extract_min_comp
-#define list_solyanka_comp
 namespace{
 struct CloserTo {
     private:

@@ -71,4 +71,32 @@ jobs:
         run: make/compile.sh tests_buffer_heap
       - name: Run tests!
         run: ./dbmstests_buffer_heap
+  funnel-heap:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: permissision!
+        run: chmod u+x make/compile.sh 
+      - name: compile!
+        run: make/compile.sh tests_funnel_heap
+      - name: Run tests!
+        run: ./dbmstests_funnel_heap
+  soft-heap:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: permissision!
+        run: chmod u+x make/compile.sh 
+      - name: compile!
+        run: make/compile.sh tests_soft_heap
+      - name: Run tests!
+        run: ./dbmstests_soft_heap
 

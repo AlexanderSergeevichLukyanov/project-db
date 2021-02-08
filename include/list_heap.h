@@ -4,6 +4,21 @@
 #include <list>
 #include <type_traits>
 #include <utility>
+
+//#define list_wrong_test //не стоит расскоментировать:)
+#define list_construct //default constructor
+#define list_insert  // insert(T x)
+#define list_get_min // getMin()
+#define list_make // make(T* array, size_t n) 
+#define list_extract_min // extractMin()
+#define list_solyanka // ... , check const, reference, voids methods and constructors =&& &&
+#define list_construct_comp //default constructor(comp)
+#define list_insert_comp // insert(T x) with Compare
+#define list_get_min_comp // getMin() with Compare
+#define list_make_comp // make(T* array, size_t n) with Compare
+#define list_extract_min_comp // extractMin() with Compare
+#define list_solyanka_comp // ... , check const, reference, voids methods and constructors =&& && with Compare
+
 template <typename T, typename Compare = std::less<T>>
 struct list_heap {
 private:

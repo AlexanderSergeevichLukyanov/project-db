@@ -1,4 +1,4 @@
-#include "pairing_heap.h"
+#include "soft_heap.h"
 #include "mytest.h"
 #include <algorithm>
 #include <type_traits>
@@ -21,32 +21,32 @@ struct CloserTo {
         }
 };
 
-#ifdef pairing_wrong_test	
-TEST_CASE("pairing-heap: demo-test"){
+#ifdef soft_wrong_test	
+TEST_CASE("soft-heap: demo-test"){
 	CHECK(2*2==5);
 }
 #endif
 
-#ifdef pairing_construct
-TEST_CASE("pairing-heap: constructors without Compare"){
-	pairing_heap<int> h1;
-	pairing_heap<double> h2;
-	pairing_heap<std::string> h3;
+#ifdef soft_construct
+TEST_CASE("soft-heap: constructors without Compare"){
+	soft_heap<int> h1;
+	soft_heap<double> h2;
+	soft_heap<std::string> h3;
 	//only compile
 }
 #endif
 
-#ifdef pairing_insert
-TEST_CASE("pairing-heap: 30000 insert"){
-	pairing_heap<int> h1;
+#ifdef soft_insert
+TEST_CASE("soft-heap: 30000 insert"){
+	soft_heap<int> h1;
 	for(int i=0; i<30000; ++i){
 		h1.insert(rand());
 	}
 	CHECK(h1.size()==30000);
 }
 
-TEST_CASE("pairing-heap: 300000 insert"){
-	pairing_heap<int> h1;
+TEST_CASE("soft-heap: 300000 insert"){
+	soft_heap<int> h1;
 	for(int i=0; i<300000; ++i){
 		h1.insert(rand());
 	}
@@ -54,9 +54,9 @@ TEST_CASE("pairing-heap: 300000 insert"){
 }
 #endif
 
-#ifdef pairing_get_min
-TEST_CASE("pairing-heap: GetMin()"){
-	pairing_heap<int> h1;
+#ifdef soft_get_min
+TEST_CASE("soft-heap: GetMin()"){
+	soft_heap<int> h1;
 	int min=300000;
 	for(int i=0; i<300000; ++i){
 		int x = rand()%300000;
@@ -66,8 +66,8 @@ TEST_CASE("pairing-heap: GetMin()"){
 	CHECK_MESSAGE(h1.getMin()==min, "generate min is other");
 }
 
-TEST_CASE("pairing-heap: 300000 GetMin()"){
-	pairing_heap<int> h1;
+TEST_CASE("soft-heap: 300000 GetMin()"){
+	soft_heap<int> h1;
 	int min=300000;
 	for(int i=0; i<300000; ++i){
 		int x = rand()%300000;
@@ -79,9 +79,9 @@ TEST_CASE("pairing-heap: 300000 GetMin()"){
 }
 #endif
 
-#ifdef pairing_extract_min
-TEST_CASE("pairing-heap: 3000 insert and 3000 extract_min"){
-	pairing_heap<int> h1;
+#ifdef soft_extract_min
+TEST_CASE("soft-heap: 3000 insert and 3000 extract_min"){
+	soft_heap<int> h1;
 	std::vector<int> res;
 	for(int i=0; i<3000; ++i){
 		int x = rand()%3000;
@@ -97,8 +97,8 @@ TEST_CASE("pairing-heap: 3000 insert and 3000 extract_min"){
 	}
 }
 
-TEST_CASE("pairing-heap: 10000 insert and 10000 extract_min"){
-	pairing_heap<int> h1;
+TEST_CASE("soft-heap: 10000 insert and 10000 extract_min"){
+	soft_heap<int> h1;
 	std::vector<int> res;
 	for(int i=0; i<10000; ++i){
 		int x = rand()%10000;
@@ -115,9 +115,9 @@ TEST_CASE("pairing-heap: 10000 insert and 10000 extract_min"){
 }
 #endif
 
-#ifdef pairing_make
-TEST_CASE("pairing-heap: make (30000 elements)"){
-	pairing_heap<int> h1;
+#ifdef soft_make
+TEST_CASE("soft-heap: make (30000 elements)"){
+	soft_heap<int> h1;
 	int arr[30000];
 	int min=30000;
 	for(int i=0; i<30000; ++i){
@@ -130,8 +130,8 @@ TEST_CASE("pairing-heap: make (30000 elements)"){
 	CHECK_MESSAGE(h1.getMin()==min, "min heap must be equal to the array min");
 }
 
-TEST_CASE("pairing-heap: make (300000 elements)"){
-	pairing_heap<int> h1;
+TEST_CASE("soft-heap: make (300000 elements)"){
+	soft_heap<int> h1;
 	int arr[300000];
 	int min=300000;
 	for(int i=0; i<300000; ++i){
@@ -145,9 +145,9 @@ TEST_CASE("pairing-heap: make (300000 elements)"){
 }
 #endif
 
-#ifdef pairing_solyanka
-TEST_CASE("pairing-heap: random test#1"){
-	pairing_heap<int> h1;
+#ifdef soft_solyanka
+TEST_CASE("soft-heap: random test#1"){
+	soft_heap<int> h1;
 	CHECK(h1.empty());
 	CHECK(h1.size()==0);
 	h1.insert(1);
@@ -165,8 +165,8 @@ TEST_CASE("pairing-heap: random test#1"){
 	CHECK(h1.getMin()==1);
 }
 
-TEST_CASE("pairing-heap: random test#2"){
-	pairing_heap<double> h1;
+TEST_CASE("soft-heap: random test#2"){
+	soft_heap<double> h1;
 	CHECK(h1.empty());
 	CHECK(h1.size()==0);
 	h1.insert(1.0);
@@ -185,22 +185,22 @@ TEST_CASE("pairing-heap: random test#2"){
 }
 
 
-TEST_CASE("pairing-heap: check const, reference methods"){
-	pairing_heap<int> h1;
+TEST_CASE("soft-heap: check const, reference methods"){
+	soft_heap<int> h1;
 	h1.insert(6);
 	h1.insert(1);
 	CHECK_MESSAGE(std::is_reference<decltype(h1.getMin())>::value, "method getMin() must be &getMin()");
 	CHECK_MESSAGE(std::is_const_v<std::remove_reference_t<decltype(h1.getMin())>>, "method getMin() must be const");
 }
 
-TEST_CASE("pairing-heap: voids must be voids..."){
-	pairing_heap<int> h1;
+TEST_CASE("soft-heap: voids must be voids..."){
+	soft_heap<int> h1;
 	h1.insert(6);
 	h1.insert(1);
 	int p[10]{};
 	std::string str1(typeid(h1.extractMin()).name());
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.extractMin())>, "method extractMin() must be void! not "+str1+" !");
-	#ifdef pairing_make
+	#ifdef soft_make
 	std::string str2(typeid(h1.make(p, 10)).name());
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.make(p, 10))>, "method make( must be void! not "+str2+"!");
 	#endif
@@ -208,11 +208,11 @@ TEST_CASE("pairing-heap: voids must be voids..."){
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.insert(10))>, "method insert() must be void! not "+str3+" !");
 }
 
-TEST_CASE("pairing-heap: pairing_heap(other &&)"){
-	pairing_heap<int> h2;
+TEST_CASE("soft-heap: soft_heap(other &&)"){
+	soft_heap<int> h2;
 	h2.insert(1);
 	h2.insert(2);
-	pairing_heap<int> h1(std::move(h2));
+	soft_heap<int> h1(std::move(h2));
 	CHECK(h1.size()==2);
 	CHECK(h2.size()==0);
 	CHECK(h1.getMin()==1);
@@ -223,11 +223,11 @@ TEST_CASE("pairing-heap: pairing_heap(other &&)"){
 	CHECK(h1.getMin()==2);
 }	
 
-TEST_CASE("pairing-heap: operator=(other &&)"){
-	pairing_heap<int> h2;
+TEST_CASE("soft-heap: operator=(other &&)"){
+	soft_heap<int> h2;
 	h2.insert(1);
 	h2.insert(2);
-	pairing_heap<int> h1=std::move(h2);
+	soft_heap<int> h1=std::move(h2);
 	CHECK(h1.size()==2);
 	CHECK(h2.size()==0);
 	CHECK(h1.getMin()==1);
@@ -238,31 +238,31 @@ TEST_CASE("pairing-heap: operator=(other &&)"){
 	CHECK(h1.getMin()==2);
 }
 
-TEST_CASE("pairing-heap: default contructor must be implicit"){
-	[[maybe_unused]] pairing_heap<int> h1 = {};
+TEST_CASE("soft-heap: default contructor must be implicit"){
+	[[maybe_unused]] soft_heap<int> h1 = {};
 	//only compile
 }
 
 #endif
 
-#ifdef pairing_construct_comp
-TEST_CASE("pairing-heap: constructors with Compare"){
-    pairing_heap<int, CloserTo> heap(CloserTo(10));
+#ifdef soft_construct_comp
+TEST_CASE("soft-heap: constructors with Compare"){
+    soft_heap<int, CloserTo> heap(CloserTo(10));
 	//only compile
 }
 #endif
 
-#ifdef pairing_insert_comp
-TEST_CASE("pairing-heap-with-compare: 30000 insert"){
-	pairing_heap<int, CloserTo> h1(CloserTo(10));
+#ifdef soft_insert_comp
+TEST_CASE("soft-heap-with-compare: 30000 insert"){
+	soft_heap<int, CloserTo> h1(CloserTo(10));
 	for(int i=0; i<30000; ++i){
 		h1.insert(rand());
 	}
 	CHECK(h1.size()==30000);
 }
 
-TEST_CASE("pairing-heap-with-compare: 300000 insert"){
-	pairing_heap<int, CloserTo> h1(CloserTo(10));
+TEST_CASE("soft-heap-with-compare: 300000 insert"){
+	soft_heap<int, CloserTo> h1(CloserTo(10));
 	for(int i=0; i<300000; ++i){
 		h1.insert(rand());
 	}
@@ -270,9 +270,9 @@ TEST_CASE("pairing-heap-with-compare: 300000 insert"){
 }
 #endif
 
-#ifdef pairing_extract_min_comp
-TEST_CASE("pairing-heap-with-compare: 3000 insert and 3000 extract_min"){
-	pairing_heap<int, CloserTo> h1(CloserTo(10));
+#ifdef soft_extract_min_comp
+TEST_CASE("soft-heap-with-compare: 3000 insert and 3000 extract_min"){
+	soft_heap<int, CloserTo> h1(CloserTo(10));
 	std::vector<int> res;
 	for(int i=0; i<3000; ++i){
 		int x = rand()%3000;
@@ -288,8 +288,8 @@ TEST_CASE("pairing-heap-with-compare: 3000 insert and 3000 extract_min"){
 	}
 }
 
-TEST_CASE("pairing-heap-with-compare: 10000 insert and 10000 extract_min"){
-	pairing_heap<int, CloserTo> h1(CloserTo(10));
+TEST_CASE("soft-heap-with-compare: 10000 insert and 10000 extract_min"){
+	soft_heap<int, CloserTo> h1(CloserTo(10));
 	std::vector<int> res;
 	for(int i=0; i<10000; ++i){
 		int x = rand()%10000;
@@ -306,9 +306,9 @@ TEST_CASE("pairing-heap-with-compare: 10000 insert and 10000 extract_min"){
 }
 #endif
 
-#ifdef pairing_extract_min_comp
-TEST_CASE("pairing-heap-with-compare: 3000 insert and 3000 extract_min"){
-	pairing_heap<int, CloserTo> h1(CloserTo(10));
+#ifdef soft_extract_min_comp
+TEST_CASE("soft-heap-with-compare: 3000 insert and 3000 extract_min"){
+	soft_heap<int, CloserTo> h1(CloserTo(10));
 	std::vector<int> res;
 	for(int i=0; i<3000; ++i){
 		int x = rand()%3000;
@@ -324,8 +324,8 @@ TEST_CASE("pairing-heap-with-compare: 3000 insert and 3000 extract_min"){
 	}
 }
 
-TEST_CASE("pairing-heap-with-compare: 10000 insert and 10000 extract_min"){
-	pairing_heap<int, CloserTo> h1(CloserTo(10));
+TEST_CASE("soft-heap-with-compare: 10000 insert and 10000 extract_min"){
+	soft_heap<int, CloserTo> h1(CloserTo(10));
 	std::vector<int> res;
 	for(int i=0; i<10000; ++i){
 		int x = rand()%10000;
@@ -342,9 +342,9 @@ TEST_CASE("pairing-heap-with-compare: 10000 insert and 10000 extract_min"){
 }
 #endif
 
-#ifdef pairing_make_comp
-TEST_CASE("pairing-heap: make (30000 elements)"){
-	pairing_heap<int, CloserTo> h1(CloserTo(10));
+#ifdef soft_make_comp
+TEST_CASE("soft-heap: make (30000 elements)"){
+	soft_heap<int, CloserTo> h1(CloserTo(10));
 	int arr[30000];
 	int min=30000;
 	for(int i=0; i<30000; ++i){
@@ -357,8 +357,8 @@ TEST_CASE("pairing-heap: make (30000 elements)"){
 	CHECK_MESSAGE(std::abs(h1.getMin()-10)==min, "min heap must be equal to the array min");
 }
 
-TEST_CASE("pairing-heap: make (300000 elements)"){
-	pairing_heap<int, CloserTo> h1(CloserTo(10));
+TEST_CASE("soft-heap: make (300000 elements)"){
+	soft_heap<int, CloserTo> h1(CloserTo(10));
 	int arr[300000];
 	int min=300000;
 	for(int i=0; i<300000; ++i){
@@ -372,10 +372,10 @@ TEST_CASE("pairing-heap: make (300000 elements)"){
 }
 #endif
 
-#ifdef pairing_solyanka_comp
+#ifdef soft_solyanka_comp
 
-TEST_CASE("pairing-heap-with-compare: random test"){
-	pairing_heap<int, CloserTo> h1(CloserTo(10));
+TEST_CASE("soft-heap-with-compare: random test"){
+	soft_heap<int, CloserTo> h1(CloserTo(10));
 	CHECK(h1.empty());
 	CHECK(h1.size()==0);
 	h1.insert(1);
@@ -393,22 +393,22 @@ TEST_CASE("pairing-heap-with-compare: random test"){
 	CHECK(h1.getMin()==9 or h1.getMin()==11);
 }
 
-TEST_CASE("pairing-heap-with-compare: check const, reference methods"){
-	pairing_heap<int, CloserTo> h1(CloserTo(10));
+TEST_CASE("soft-heap-with-compare: check const, reference methods"){
+	soft_heap<int, CloserTo> h1(CloserTo(10));
 	h1.insert(7);
 	h1.insert(1);
 	CHECK_MESSAGE(std::is_reference<decltype(h1.getMin())>::value, "method getMin() must be &getMin()");
 	CHECK_MESSAGE(std::is_const_v<std::remove_reference_t<decltype(h1.getMin())>>, "method getMin() must be const");
 }
 
-TEST_CASE("pairing-heap-with-compare: voids must be voids..."){
-	pairing_heap<int, CloserTo> h1(CloserTo(10));
+TEST_CASE("soft-heap-with-compare: voids must be voids..."){
+	soft_heap<int, CloserTo> h1(CloserTo(10));
 	h1.insert(7);
 	h1.insert(1);
 	int p[10]{};
 	std::string str1(typeid(h1.extractMin()).name());
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.extractMin())>, "method extractMin() must be void! not "+str1+" !");
-	#ifdef pairing_make_comp
+	#ifdef soft_make_comp
 	std::string str2(typeid(h1.make(p, 10)).name());
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.make(p, 10))>, "method make( must be void! not "+str2+"!");
 	#endif
@@ -416,11 +416,11 @@ TEST_CASE("pairing-heap-with-compare: voids must be voids..."){
 	CHECK_MESSAGE(std::is_void_v<decltype(h1.insert(10))>, "method insert() must be void! not "+str3+" !");
 }
 
-TEST_CASE("pairing-heap-with-compare: pairing_heap(other &&)"){
-	pairing_heap<int, CloserTo> h2(CloserTo(10));
+TEST_CASE("soft-heap-with-compare: soft_heap(other &&)"){
+	soft_heap<int, CloserTo> h2(CloserTo(10));
 	h2.insert(1);
 	h2.insert(2);
-	pairing_heap<int, CloserTo> h1(std::move(h2));
+	soft_heap<int, CloserTo> h1(std::move(h2));
 	CHECK(h1.size()==2);
 	CHECK(h2.size()==0);
 	CHECK(h1.getMin()==2);
@@ -431,11 +431,11 @@ TEST_CASE("pairing-heap-with-compare: pairing_heap(other &&)"){
 	CHECK(h1.getMin()==1);
 }	
 
-TEST_CASE("pairing-heap-with-compare: operator=(other &&)"){
-	pairing_heap<int, CloserTo> h2(CloserTo(10));
+TEST_CASE("soft-heap-with-compare: operator=(other &&)"){
+	soft_heap<int, CloserTo> h2(CloserTo(10));
 	h2.insert(1);
 	h2.insert(2);
-	pairing_heap<int, CloserTo> h1=std::move(h2);
+	soft_heap<int, CloserTo> h1=std::move(h2);
 	CHECK(h1.size()==2);
 	CHECK(h2.size()==0);
 	CHECK(h1.getMin()==2);
@@ -446,13 +446,13 @@ TEST_CASE("pairing-heap-with-compare: operator=(other &&)"){
 	CHECK(h1.getMin()==1);
 }
 
-TEST_CASE("pairing-heap-with-compare: constructor from comparator is explicit") {
-    CHECK((std::is_constructible_v<pairing_heap<int>, std::less<int>>)); 
-    CHECK((!std::is_convertible_v<std::less<int>,pairing_heap<int>>));  
+TEST_CASE("soft-heap-with-compare: constructor from comparator is explicit") {
+    CHECK((std::is_constructible_v<soft_heap<int>, std::less<int>>)); 
+    CHECK((!std::is_convertible_v<std::less<int>,soft_heap<int>>));  
 }
 
-TEST_CASE("pairing-heap-with-compare: with std::greater(on max)") {
-    pairing_heap<int, std::greater<>> heap;
+TEST_CASE("soft-heap-with-compare: with std::greater(on max)") {
+    softs_heap<int, std::greater<>> heap;
     const auto &ch = heap;
 
     heap.insert(5);
