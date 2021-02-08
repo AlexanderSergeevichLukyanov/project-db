@@ -30,7 +30,7 @@ jobs:
         run: chmod u+x make/clang_format_go.sh
       - name: clang-format
         run: make/clang_format_go.sh
-  list-heap:
+  testing-heaps:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -39,36 +39,8 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: permissision!
-        run: chmod u+x make/compile.sh 
+        run: chmod u+x make/compile_main.sh 
       - name: compile!
-        run: make/compile.sh tests_list_heap
+        run: make/compile_main.sh
       - name: Run tests!
-        run: ./dbmstests_list_heap
-  pairing-heap:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - name: permissision!
-        run: chmod u+x make/compile.sh 
-      - name: compile!
-        run: make/compile.sh tests_pairing_heap
-      - name: Run tests!
-        run: ./dbmstests_pairing_heap
-  buffer-heap:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - name: permissision!
-        run: chmod u+x make/compile.sh 
-      - name: compile!
-        run: make/compile.sh tests_buffer_heap
-      - name: Run tests!
-        run: ./dbmstests_buffer_heap
+        run: ./dbms
