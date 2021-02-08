@@ -55,9 +55,8 @@ public:
         list_for_heap.splice(list_for_heap.end(), other.list_for_heap);
     }
 	
-	void make(const T *p){
-		int size_=sizeof(p)/sizeof(T);
-		for(int i=0; i<size_; ++i){
+	void make(const T *p, size_t n){
+		for(int i=0; i<n; ++i){
 			insert(p[i]);
 		}
 	}

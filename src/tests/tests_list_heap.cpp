@@ -138,7 +138,7 @@ TEST_CASE("list-heap: make (30000 elements)"){
 		arr[i]=x;
 		if(min>x) min=x;
 	}
-	h1.make(arr);
+	h1.make(arr, 30000);
 	CHECK_MESSAGE(h1.size()==30000, "size heap must be equal to the array size(30000), but no "+std::to_string(h1.size()));
 	CHECK_MESSAGE(h1.getMin()==min, "min heap must be equal to the array min");
 }
@@ -152,7 +152,7 @@ TEST_CASE("list-heap: make (300000 elements)"){
 		arr[i]=x;
 		if(min>x) min=x;
 	}
-	h1.make(arr);
+	h1.make(arr, 300000);
 	CHECK_MESSAGE(h1.size()==300000, "size heap must be equal to the array size(300000), but no "+std::to_string(h1.size()));
 	CHECK_MESSAGE(h1.getMin()==min, "min heap must be equal to the array min");
 }
@@ -364,7 +364,7 @@ TEST_CASE("list-heap: make (30000 elements)"){
 		arr[i]=x;
 		if(min>std::abs(x-10)) min=std::abs(x-10);
 	}
-	h1.make(arr);
+	h1.make(arr, 30000);
 	CHECK_MESSAGE(h1.size()==30000, "size heap must be equal to the array size(30000), but no "+std::to_string(h1.size()));
 	CHECK_MESSAGE(std::abs(h1.getMin()-10)==min, "min heap must be equal to the array min");
 }
@@ -378,7 +378,7 @@ TEST_CASE("list-heap: make (300000 elements)"){
 		arr[i]=x;
 		if(min>std::abs(x-10)) min=std::abs(x-10);
 	}
-	h1.make(arr);
+	h1.make(arr, 300000);
 	CHECK_MESSAGE(h1.size()==300000, "size heap must be equal to the array size(300000), but no "+std::to_string(h1.size()));
 	CHECK_MESSAGE(std::abs(h1.getMin()-10)==min, "min heap must be equal to the array min");
 }
