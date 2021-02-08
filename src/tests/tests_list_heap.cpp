@@ -445,7 +445,7 @@ TEST_CASE("list-heap-with-compare: with std::greater(on max)") {
 
     heap.extractMin();
     CHECK(!ch.empty());
-    CHECK(ch.getMin) == 10);
+    CHECK(ch.getMin() == 10);
 
     heap.extractMin();
     CHECK(!ch.empty());
