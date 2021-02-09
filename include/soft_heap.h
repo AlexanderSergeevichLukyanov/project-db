@@ -17,6 +17,7 @@
 //#define soft_make_comp // make(T* array, size_t n) with Compare
 //#define soft_extract_min_comp // extractMin() with Compare
 //#define soft_solyanka_comp // ... , check const, reference, voids methods and constructors =&& && with Compare
+//#define soft_heap_ //расскоментировать, когда куча будет готова
 
 template <typename T, typename Compare = std::less<T>>
 struct soft_heap{

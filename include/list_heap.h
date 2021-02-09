@@ -18,6 +18,7 @@
 #define list_make_comp // make(T* array, size_t n) with Compare
 #define list_extract_min_comp // extractMin() with Compare
 #define list_solyanka_comp // ... , check const, reference, voids methods and constructors =&& && with Compare
+#define list_heap_ //расскоментировать, когда куча будет готова
 
 template <typename T, typename Compare = std::less<T>>
 struct list_heap {
