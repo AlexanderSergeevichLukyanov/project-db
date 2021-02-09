@@ -40,11 +40,11 @@ public:
     list_heap &operator=(list_heap &&) noexcept = default;
     ~list_heap() = default;
 
-    [[nodiscard]] const int size() const {
+    [[nodiscard]] int size() const {
         return list_for_heap.size();
     }
 
-    [[nodiscard]] const bool empty() const {
+    [[nodiscard]] bool empty() const {
         return list_for_heap.empty();
     }
 
