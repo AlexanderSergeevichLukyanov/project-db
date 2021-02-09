@@ -91,7 +91,6 @@ TEST_CASE("pairing-heap: 3000 insert and 3000 extract_min"){
 	std::sort(res.begin(), res.end());
 	CHECK_TIME("After 3000 insert random  and sort random x, then start checking extract_min");
 	for(int i=0; i<3000; ++i){
-		int x = rand()%3000;
 		CHECK(h1.getMin()==res[i]);
 		h1.extractMin();
 	}
@@ -108,7 +107,6 @@ TEST_CASE("pairing-heap: 10000 insert and 10000 extract_min"){
 	std::sort(res.begin(), res.end());
 	CHECK_TIME("After 10000 insert random  and sort random x, then start checking extract_min");
 	for(int i=0; i<10000; ++i){
-		int x = rand()%10000;
 		CHECK(h1.getMin()==res[i]);
 		h1.extractMin();
 	}
@@ -282,7 +280,6 @@ TEST_CASE("pairing-heap-with-compare: 3000 insert and 3000 extract_min"){
 	std::sort(res.begin(), res.end());
 	CHECK_TIME("After 3000 insert random  and sort random x, then start checking extract_min");
 	for(int i=0; i<3000; ++i){
-		int x = rand()%3000;
 		CHECK(std::abs(h1.getMin()-10)==res[i]);
 		h1.extractMin();
 	}
@@ -299,7 +296,6 @@ TEST_CASE("pairing-heap-with-compare: 10000 insert and 10000 extract_min"){
 	std::sort(res.begin(), res.end());
 	CHECK_TIME("After 10000 insert random  and sort random x, then start checking extract_min");
 	for(int i=0; i<10000; ++i){
-		int x = rand()%10000;
 		CHECK(std::abs(h1.getMin()-10)==res[i]);
 		h1.extractMin();
 	}
@@ -318,7 +314,6 @@ TEST_CASE("pairing-heap-with-compare: 3000 insert and 3000 extract_min"){
 	std::sort(res.begin(), res.end());
 	CHECK_TIME("After 3000 insert random  and sort random x, then start checking extract_min");
 	for(int i=0; i<3000; ++i){
-		int x = rand()%3000;
 		CHECK(std::abs(h1.getMin()-10)==res[i]);
 		h1.extractMin();
 	}
@@ -335,7 +330,6 @@ TEST_CASE("pairing-heap-with-compare: 10000 insert and 10000 extract_min"){
 	std::sort(res.begin(), res.end());
 	CHECK_TIME("After 10000 insert random  and sort random x, then start checking extract_min");
 	for(int i=0; i<10000; ++i){
-		int x = rand()%10000;
 		CHECK(std::abs(h1.getMin()-10)==res[i]);
 		h1.extractMin();
 	}
