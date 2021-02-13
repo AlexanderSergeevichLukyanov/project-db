@@ -115,12 +115,12 @@ public:
         return (size_==0); 
     } 
   
-    T& getMin() const{ 
+    T getMin() const{ 
         return ::top(root); 
     } 
   
     void insert(T key) { 
-        root = ::Insert(root, key); 
+        root = ::Insert(root, key, comp); 
 		size_++;
     } 
 	
