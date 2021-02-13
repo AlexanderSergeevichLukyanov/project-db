@@ -115,8 +115,12 @@ public:
     }
 	pairing_heap(const pairing_heap &) = delete;
     pairing_heap &operator=(const pairing_heap &) = delete;
-    pairing_heap(pairing_heap &&) noexcept = default;
-    pairing_heap &operator=(pairing_heap &&) noexcept = default;
+    pairing_heap(pairing_heap &&other) noexcept {
+		other.size_=0;
+	}
+    pairing_heap &operator=(pairing_heap &&other) noexcept {
+		other.size_=0;
+	}
 	explicit pairing_heap(const Compare &comp_): comp(comp_){
 		
 	}
