@@ -117,12 +117,8 @@ public:
 	pairing_heap(const pairing_heap &) = delete;
     pairing_heap &operator=(const pairing_heap &) = delete;
     pairing_heap(pairing_heap &&other) = default;
-    pairing_heap &operator=(pairing_heap &&other){
-		other.root=nullptr;
-		other.size_=0;
-		other.comp=NULL;
-	}
-
+    pairing_heap &operator=(pairing_heap &&other);
+	
     [[nodiscard]] int size() const {
         return size_;
     }
