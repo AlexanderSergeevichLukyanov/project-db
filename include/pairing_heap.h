@@ -116,8 +116,14 @@ public:
 	explicit pairing_heap(const Compare &comp_): comp(comp_), root(NULL){}
 	pairing_heap(const pairing_heap &) = delete;
     pairing_heap &operator=(const pairing_heap &) = delete;
-    pairing_heap(pairing_heap &&other) noexcept = default;
-    pairing_heap &operator=(pairing_heap &&other) noexcept =default;
+    pairing_heap(pairing_heap &&other){
+		other.size_=0;
+		other.root=nullptr;
+	}
+    pairing_heap &operator=(pairing_heap &&other){
+		other.size_=0;
+		other.root=nullptr;
+	}
 
     [[nodiscard]] int size() const {
         return size_;
