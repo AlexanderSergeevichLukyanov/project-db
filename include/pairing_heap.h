@@ -47,11 +47,6 @@ struct HeapNode {
     }
 };
 
-template <typename T>
-bool Empty(HeapNode<T> *node) {
-    return (node == NULL);
-}
-
 template <typename T, typename Compare = std::less<T>>
 HeapNode<T> *Merge(HeapNode<T> *A, HeapNode<T> *B, Compare &comp) {
     if (A == NULL)
@@ -68,11 +63,6 @@ HeapNode<T> *Merge(HeapNode<T> *A, HeapNode<T> *B, Compare &comp) {
     }
 
     return NULL;  // Unreachable
-}
-
-template <typename T>
-T top(HeapNode<T> *node) {
-    return node->key;
 }
 
 template <typename T, typename Compare = std::less<T>>
@@ -96,13 +86,14 @@ HeapNode<T> *TwoPassMerge(HeapNode<T> *node, Compare &comp) {
         return Merge(Merge(A, B, comp), TwoPassMerge(newNode, comp), comp);
     }
 
-    return NULL;  // Unreachable
+    return NULL;  
 }
 
 template <typename T, typename Compare = std::less<T>>
 HeapNode<T> *Delete(HeapNode<T> *node, Compare &comp) {
     return TwoPassMerge(node->leftChild, comp);
 }
+
 }  // namespace
 template <typename T, typename Compare = std::less<T>>
 struct pairing_heap {
@@ -120,7 +111,7 @@ public:
     pairing_heap &operator=(const pairing_heap &) = delete;
     pairing_heap(pairing_heap &&other) = default;
     pairing_heap &operator=(pairing_heap &&other);
-
+	~pairing_heap() = default;
     [[nodiscard]] int size() const {
         return size_;
     }
@@ -150,6 +141,6 @@ public:
     }
 
     void merge(pairing_heap &other) {  // not tested!
-        root = ::Merge(root, other.root);
+        root = ::Merge(root, other.root, comp);
     }
 };
