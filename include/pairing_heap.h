@@ -121,6 +121,7 @@ public:
     pairing_heap &operator=(pairing_heap &&other) noexcept {
 		other.size_=0;
 	}
+	
 	explicit pairing_heap(const Compare &comp_): comp(comp_){
 		
 	}
