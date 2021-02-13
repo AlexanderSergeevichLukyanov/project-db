@@ -11,8 +11,8 @@
 #define pairing_get_min  // getMin()
 //#define pairing_make // make(T* array, size_t n)
 #define pairing_extract_min // extractMin()
-//#define pairing_solyanka // ... , check const, reference, voids methods and
-//constructors =&& && #define pairing_construct_comp //default constructor(comp)
+#define pairing_solyanka // ... , check const, reference, voids methods and constructors =&& && 
+//#define pairing_construct_comp //default constructor(comp)
 //#define pairing_insert_comp // insert(T x) with Compare
 //#define pairing_get_min_comp // getMin() with Compare
 //#define pairing_make_comp // make(T* array, size_t n) with Compare
@@ -133,6 +133,7 @@ public:
 	
 	void extractMin(){
         root = ::Delete(root, comp); 
+		size_--;
 	}
 
     void merge(pairing_heap &other) {  // not tested!
