@@ -13,11 +13,11 @@
 #define pairing_extract_min // extractMin()
 #define pairing_solyanka // ... , check const, reference, voids methods and constructors =&& && 
 #define pairing_construct_comp //default constructor(comp)
-//#define pairing_insert_comp // insert(T x) with Compare
+#define pairing_insert_comp // insert(T x) with Compare
 #define pairing_get_min_comp // getMin() with Compare
 //#define pairing_make_comp // make(T* array, size_t n) with Compare
 //#define pairing_extract_min_comp // extractMin() with Compare
-#define pairing_solyanka_comp // ... , check const, reference, voids methods
+//#define pairing_solyanka_comp // ... , check const, reference, voids methods
 //and constructors =&& && with Compare #define pairing_heap_
 ////расскоментировать, когда куча будет готова
 
@@ -115,12 +115,8 @@ public:
     }
 	pairing_heap(const pairing_heap &) = delete;
     pairing_heap &operator=(const pairing_heap &) = delete;
-    pairing_heap(pairing_heap &&other) noexcept {
-		other.size_=0;
-	}
-    pairing_heap &operator=(pairing_heap &&other) noexcept {
-		other.size_=0;
-	}
+    pairing_heap(pairing_heap &&other) noexcept = default;
+    pairing_heap &operator=(pairing_heap &&other) noexcept =default;
 	
 	explicit pairing_heap(const Compare &comp_): comp(comp_){
 		
