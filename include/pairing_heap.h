@@ -98,7 +98,7 @@ template<typename T, typename Compare=std::less<T>> HeapNode<T> *Delete(HeapNode
 } 
 
 template<typename T, typename Compare = std::less<T>>  
-struct PairingHeap {
+struct pairing_heap {
 private:	
     HeapNode<T> *root; 
 	int size_=0;
