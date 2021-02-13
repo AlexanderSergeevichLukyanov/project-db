@@ -107,7 +107,7 @@ template <typename T, typename Compare = std::less<T>>
 struct pairing_heap {
 private:
     HeapNode<T> *root;
-    int size_{};
+    int *size_ = new int(0);
     Compare comp;
 
 public:
@@ -120,14 +120,11 @@ public:
     pairing_heap &operator=(pairing_heap &&other) = default;
 
     [[nodiscard]] int size() const {
-		if(!root){
-			return 0;
-		}
-        return size_;
+        return *size_;
     }
 
     [[nodiscard]] bool empty() const {
-        return !root;
+        return (*size_==0);
     }
 
     const T& getMin() const {
