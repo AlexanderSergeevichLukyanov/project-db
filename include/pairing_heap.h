@@ -87,7 +87,7 @@ template<typename T, typename Compare=std::less<T>> HeapNode<T> *TwoPassMerge(He
         A->nextSibling = NULL; 
         B->nextSibling = NULL; 
   
-        return Merge(Merge(A, B, comp), TwoPassMerge(newNode, comp)); 
+        return Merge(Merge(A, B, comp), TwoPassMerge(newNode, comp), comp); 
     } 
   
     return NULL; // Unreachable 
