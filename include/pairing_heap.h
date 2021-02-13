@@ -111,7 +111,7 @@ private:
     Compare comp;
 
 public:
-    PairingHeap() : root(NULL) {
+    pairing_heap() : root(NULL) {
     }
 
     [[nodiscard]] int size() const {
