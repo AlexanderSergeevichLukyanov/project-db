@@ -125,7 +125,7 @@ public:
         return (*root).key;
     }
 
-    void insert(T &key) {
+    void insert(T key) {
         root = ::Insert(root, key, comp);
         size_++;
     }
