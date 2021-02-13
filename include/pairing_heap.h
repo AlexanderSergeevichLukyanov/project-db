@@ -19,7 +19,7 @@
 #define pairing_extract_min_comp // extractMin() with Compare
 #define pairing_solyanka_comp // ... , check const, reference, voids methods
 //and constructors =&& && with Compare 
-//#define pairing_heap_ ////расскоментировать, когда куча будет готова
+#define pairing_heap_ ////расскоментировать, когда куча будет готова
 
 template <typename T>
 struct HeapNode {
