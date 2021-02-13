@@ -16,8 +16,8 @@
 //#define pairing_insert_comp // insert(T x) with Compare
 #define pairing_get_min_comp // getMin() with Compare
 //#define pairing_make_comp // make(T* array, size_t n) with Compare
-#define pairing_extract_min_comp // extractMin() with Compare
-//#define pairing_solyanka_comp // ... , check const, reference, voids methods
+//#define pairing_extract_min_comp // extractMin() with Compare
+#define pairing_solyanka_comp // ... , check const, reference, voids methods
 //and constructors =&& && with Compare #define pairing_heap_
 ////расскоментировать, когда куча будет готова
 
