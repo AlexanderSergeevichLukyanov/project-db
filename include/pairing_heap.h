@@ -9,17 +9,17 @@
 #define pairing_construct //default constructor
 #define pairing_insert   // insert(T x)
 #define pairing_get_min  // getMin()
-//#define pairing_make // make(T* array, size_t n)
+#define pairing_make // make(T* array, size_t n)
 #define pairing_extract_min // extractMin()
 #define pairing_solyanka // ... , check const, reference, voids methods and constructors =&& && 
 #define pairing_construct_comp //default constructor(comp)
 #define pairing_insert_comp // insert(T x) with Compare
 #define pairing_get_min_comp // getMin() with Compare
-//#define pairing_make_comp // make(T* array, size_t n) with Compare
+#define pairing_make_comp // make(T* array, size_t n) with Compare
 #define pairing_extract_min_comp // extractMin() with Compare
-//#define pairing_solyanka_comp // ... , check const, reference, voids methods
-//and constructors =&& && with Compare #define pairing_heap_
-////расскоментировать, когда куча будет готова
+#define pairing_solyanka_comp // ... , check const, reference, voids methods
+//and constructors =&& && with Compare 
+//#define pairing_heap_ ////расскоментировать, когда куча будет готова
 
 template <typename T>
 struct HeapNode {
@@ -140,6 +140,12 @@ public:
         root = ::Delete(root, comp); 
 		size_--;
 	}
+
+	void make(const T *p, size_t n) {
+        for (size_t i = 0; i < n; ++i) {
+            insert(p[i]);
+        }
+    }
 
     void merge(pairing_heap &other) {  // not tested!
         root = ::Merge(root, other.root);
