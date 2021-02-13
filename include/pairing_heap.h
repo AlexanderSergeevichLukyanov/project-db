@@ -133,12 +133,12 @@ public:
 
     void insert(T key) {
         root = ::Insert(root, key, comp);
-        size_++;
+        *size_++;
     }
 	
 	void extractMin(){
         root = ::Delete(root, comp); 
-		size_--;
+		*size_--;
 	}
 
 	void make(const T *p, size_t n) {
