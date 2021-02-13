@@ -6,11 +6,11 @@
 #include <utility>
 
 //#define pairing_wrong_test //не стоит расскоментировать:)
-//#define pairing_construct //default constructor
+#define pairing_construct //default constructor
 #define pairing_insert   // insert(T x)
 #define pairing_get_min  // getMin()
 //#define pairing_make // make(T* array, size_t n)
-//#define pairing_extract_min // extractMin()
+#define pairing_extract_min // extractMin()
 //#define pairing_solyanka // ... , check const, reference, voids methods and
 //constructors =&& && #define pairing_construct_comp //default constructor(comp)
 //#define pairing_insert_comp // insert(T x) with Compare
@@ -122,14 +122,18 @@ public:
         return (size_ == 0);
     }
 
-    T getMin() const {
-        return ::top(root);
+    T& getMin() const {
+        return (*root).key;
     }
 
     void insert(T key) {
         root = ::Insert(root, key, comp);
         size_++;
     }
+	
+	void extractMin(){
+        root = ::Delete(root, comp); 
+	}
 
     void merge(pairing_heap &other) {  // not tested!
         root = ::Merge(root, other.root);
