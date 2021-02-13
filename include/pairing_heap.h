@@ -115,16 +115,16 @@ public:
         return (size_==0); 
     } 
   
-    T& GetMin() const{ 
+    T& getMin() const{ 
         return ::top(root); 
     } 
   
     void insert(T key) { 
         root = ::Insert(root, key); 
-		size++;
+		size_++;
     } 
 	
-    void merge(PairingHeap& other) {  //not tested!
+    void merge(pairing_heap& other) {  //not tested!
         root = ::Merge(root, other.root); 
     } 
       
