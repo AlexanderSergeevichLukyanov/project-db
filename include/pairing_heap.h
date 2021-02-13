@@ -110,8 +110,9 @@ public:
     pairing_heap(const pairing_heap &) = delete;
     pairing_heap &operator=(const pairing_heap &) = delete;
     pairing_heap(pairing_heap &&other) = default;
-    pairing_heap &operator=(pairing_heap &&other);
+    pairing_heap &operator=(pairing_heap &&other) = default;
 	~pairing_heap() = default;
+	
     [[nodiscard]] int size() const {
         return size_;
     }
@@ -124,7 +125,7 @@ public:
         return (*root).key;
     }
 
-    void insert(T key) {
+    void insert(T &key) {
         root = ::Insert(root, key, comp);
         size_++;
     }
