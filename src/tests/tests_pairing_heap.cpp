@@ -273,10 +273,10 @@ TEST_CASE("pairing-heap: constructors with Compare") {
 #ifdef pairing_insert_comp
 TEST_CASE("pairing-heap-with-compare: 30000 insert") {
     pairing_heap<int, CloserTo> h1(CloserTo(10));
-    for (int i = 0; i < 1; ++i) {
+    for (int i = 0; i < 30000; ++i) {
         h1.insert(rand());
     }
-  //  CHECK(h1.size() == 30000);
+    CHECK(h1.size() == 30000);
 }
 
 TEST_CASE("pairing-heap-with-compare: 300000 insert") {
