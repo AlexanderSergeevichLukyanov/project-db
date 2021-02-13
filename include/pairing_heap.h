@@ -113,24 +113,21 @@ private:
 public:
     pairing_heap() : root(NULL) {
     }
+	explicit pairing_heap(const Compare &comp_): comp(comp_), root(NULL){}
 	pairing_heap(const pairing_heap &) = delete;
     pairing_heap &operator=(const pairing_heap &) = delete;
-    pairing_heap(pairing_heap &&other){
-		other.size_=0;
-		other.root=nullptr;
-	}
-    pairing_heap &operator=(pairing_heap &&other){
-		other.size_=0;
-		other.root=nullptr;
-	}
-	explicit pairing_heap(const Compare &comp_): comp(comp_), root(NULL){}
+    pairing_heap(pairing_heap &&other);
+    pairing_heap &operator=(pairing_heap &&other);
 
     [[nodiscard]] int size() const {
+		if(!root){
+			return 0;
+		}
         return size_;
     }
 
     [[nodiscard]] bool empty() const {
-        return (size_ == 0);
+        return !root;
     }
 
     const T& getMin() const {
