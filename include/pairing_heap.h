@@ -6,21 +6,22 @@
 #include <utility>
 
 //#define pairing_wrong_test //не стоит расскоментировать:)
-#define pairing_construct //default constructor
-#define pairing_insert   // insert(T x)
-#define pairing_get_min  // getMin()
-#define pairing_make // make(T* array, size_t n)
-#define pairing_extract_min // extractMin()
-#define pairing_solyanka // ... , check const, reference, voids methods and constructors =&& && 
-#define pairing_construct_comp //default constructor(comp)
-#define pairing_insert_comp // insert(T x) with Compare
-#define pairing_get_min_comp // getMin() with Compare
-#define pairing_make_comp // make(T* array, size_t n) with Compare
-#define pairing_extract_min_comp // extractMin() with Compare
-#define pairing_solyanka_comp // ... , check const, reference, voids methods
-//and constructors =&& && with Compare 
-#define pairing_heap_ ////расскоментировать, когда куча будет готова
-
+#define pairing_construct    // default constructor
+#define pairing_insert       // insert(T x)
+#define pairing_get_min      // getMin()
+#define pairing_make         // make(T* array, size_t n)
+#define pairing_extract_min  // extractMin()
+#define pairing_solyanka     // ... , check const, reference, voids methods and
+                             // constructors =&& &&
+#define pairing_construct_comp    // default constructor(comp)
+#define pairing_insert_comp       // insert(T x) with Compare
+#define pairing_get_min_comp      // getMin() with Compare
+#define pairing_make_comp         // make(T* array, size_t n) with Compare
+#define pairing_extract_min_comp  // extractMin() with Compare
+#define pairing_solyanka_comp     // ... , check const, reference, voids methods
+                                  // and constructors =&& && with Compare
+#define pairing_heap_  ////расскоментировать, когда куча будет готова
+namespace {
 template <typename T>
 struct HeapNode {
     T key;
@@ -102,7 +103,7 @@ template <typename T, typename Compare = std::less<T>>
 HeapNode<T> *Delete(HeapNode<T> *node, Compare &comp) {
     return TwoPassMerge(node->leftChild, comp);
 }
-
+}  // namespace
 template <typename T, typename Compare = std::less<T>>
 struct pairing_heap {
 private:
@@ -113,21 +114,22 @@ private:
 public:
     pairing_heap() : root(NULL) {
     }
-	explicit pairing_heap(const Compare &comp_): comp(comp_), root(NULL){}
-	pairing_heap(const pairing_heap &) = delete;
+    explicit pairing_heap(const Compare &comp_) : comp(comp_), root(NULL) {
+    }
+    pairing_heap(const pairing_heap &) = delete;
     pairing_heap &operator=(const pairing_heap &) = delete;
     pairing_heap(pairing_heap &&other) = default;
     pairing_heap &operator=(pairing_heap &&other);
-	
+
     [[nodiscard]] int size() const {
         return size_;
     }
 
     [[nodiscard]] bool empty() const {
-        return (size_==0);
+        return (size_ == 0);
     }
 
-    const T& getMin() const {
+    const T &getMin() const {
         return (*root).key;
     }
 
@@ -135,13 +137,13 @@ public:
         root = ::Insert(root, key, comp);
         size_++;
     }
-	
-	void extractMin(){
-        root = ::Delete(root, comp); 
-		size_--;
-	}
 
-	void make(const T *p, size_t n) {
+    void extractMin() {
+        root = ::Delete(root, comp);
+        size_--;
+    }
+
+    void make(const T *p, size_t n) {
         for (size_t i = 0; i < n; ++i) {
             insert(p[i]);
         }
