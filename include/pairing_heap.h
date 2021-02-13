@@ -13,7 +13,7 @@
 #define pairing_extract_min // extractMin()
 #define pairing_solyanka // ... , check const, reference, voids methods and constructors =&& && 
 #define pairing_construct_comp //default constructor(comp)
-#define pairing_insert_comp // insert(T x) with Compare
+//#define pairing_insert_comp // insert(T x) with Compare
 #define pairing_get_min_comp // getMin() with Compare
 //#define pairing_make_comp // make(T* array, size_t n) with Compare
 #define pairing_extract_min_comp // extractMin() with Compare
