@@ -24,11 +24,10 @@
 namespace {
 template <typename T>
 struct HeapNode {
-private:
     T key;
     HeapNode *leftChild = nullptr;
     HeapNode *nextSibling = nullptr;
-public:
+	
     HeapNode() = default;
 	HeapNode(T &key_) : key(key_){}
     HeapNode(T &key_, HeapNode *leftChild_, HeapNode *nextSibling_)
@@ -118,7 +117,7 @@ public:
     }
 
     const T &getMin() const {
-        return (*root).key;
+        return (*root).get_key();
     }
 
     void insert(T key) {
