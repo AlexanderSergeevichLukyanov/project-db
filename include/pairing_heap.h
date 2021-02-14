@@ -117,7 +117,7 @@ public:
     }
 
     const T &getMin() const {
-        return (*root).get_key();
+        return (*root).key;
     }
 
     void insert(T key) {
