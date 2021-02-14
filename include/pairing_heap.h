@@ -24,21 +24,19 @@
 namespace {
 template <typename T>
 struct HeapNode {
+private:
     T key;
-    HeapNode *leftChild;
-    HeapNode *nextSibling;
-
-    HeapNode() : leftChild(NULL), nextSibling(NULL) {
-    }
-
-    // creates a new node
-    HeapNode(T key_, HeapNode *leftChild_, HeapNode *nextSibling_)
+    HeapNode *leftChild = nullptr;
+    HeapNode *nextSibling = nullptr;
+public:
+    HeapNode() = default;
+	HeapNode(T &key_) : key(key_){}
+    HeapNode(T &key_, HeapNode *leftChild_, HeapNode *nextSibling_)
         : key(key_), leftChild(leftChild_), nextSibling(nextSibling_) {
     }
 
-    // Adds a child and sibling to the node
     void addChild(HeapNode *node) {
-        if (leftChild == NULL)
+        if (!leftChild)
             leftChild = node;
         else {
             node->nextSibling = leftChild;
@@ -49,12 +47,14 @@ struct HeapNode {
 
 template <typename T, typename Compare = std::less<T>>
 HeapNode<T> *Merge(HeapNode<T> *A, HeapNode<T> *B, Compare &comp) {
-    if (A == NULL)
+    if (!A){
         return B;
-    if (B == NULL)
+	}
+    if (!B){
         return A;
+	}
 
-    if (comp(A->key, B->key)) {
+    if ( comp(A->key, B->key) ) {
         A->addChild(B);
         return A;
     } else {
@@ -62,17 +62,16 @@ HeapNode<T> *Merge(HeapNode<T> *A, HeapNode<T> *B, Compare &comp) {
         return B;
     }
 
-    return NULL;  // Unreachable
 }
 
 template <typename T, typename Compare = std::less<T>>
 HeapNode<T> *Insert(HeapNode<T> *node, T &key, Compare &comp) {
-    return Merge(node, new HeapNode<T>(key, NULL, NULL), comp);
+    return Merge(node, new HeapNode<T>(key), comp);
 }
 
 template <typename T, typename Compare = std::less<T>>
 HeapNode<T> *TwoPassMerge(HeapNode<T> *node, Compare &comp) {
-    if (node == NULL || node->nextSibling == NULL)
+    if ( !node ||  !(node->nextSibling) )
         return node;
     else {
         HeapNode<T> *A, *B, *newNode;
@@ -80,13 +79,11 @@ HeapNode<T> *TwoPassMerge(HeapNode<T> *node, Compare &comp) {
         B = node->nextSibling;
         newNode = node->nextSibling->nextSibling;
 
-        A->nextSibling = NULL;
-        B->nextSibling = NULL;
+        A->nextSibling = nullptr;
+        B->nextSibling = nullptr;
 
         return Merge(Merge(A, B, comp), TwoPassMerge(newNode, comp), comp);
     }
-
-    return NULL;  
 }
 
 template <typename T, typename Compare = std::less<T>>
@@ -98,14 +95,13 @@ HeapNode<T> *Delete(HeapNode<T> *node, Compare &comp) {
 template <typename T, typename Compare = std::less<T>>
 struct pairing_heap {
 private:
-    HeapNode<T> *root;
+    HeapNode<T> *root = nullptr;
     int size_ = 0;
     Compare comp;
 
 public:
-    pairing_heap() : root(NULL) {
-    }
-    explicit pairing_heap(const Compare &comp_) : comp(comp_), root(NULL) {
+    pairing_heap() = default;
+    explicit pairing_heap(const Compare &comp_) : comp(comp_){
     }
     pairing_heap(const pairing_heap &) = delete;
     pairing_heap &operator=(const pairing_heap &) = delete;
