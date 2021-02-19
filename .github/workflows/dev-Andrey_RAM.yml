@@ -40,7 +40,7 @@ jobs:
       - name: permissision!
         run: chmod u+x make/compile_RAM.sh 
       - name: compile!
-        run: make/compile_RAM.sh tests_list_heap_RAM
+        run: make/compile_RAM.sh tests_list_heap
       - name: Run tests!
         run: ./dbmstests_list_heap_RAM
   pairing-heap:
