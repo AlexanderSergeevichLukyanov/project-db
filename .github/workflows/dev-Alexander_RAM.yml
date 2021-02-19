@@ -40,7 +40,7 @@ jobs:
       - name: permissision!
         run: chmod u+x make/compile_RAM.sh 
       - name: compile!
-        run: make/compile_RAM.sh tests_list_heap_RAM
+        run: make/compile_RAM.sh tests_list_heap
       - name: Run tests!
         run: ./dbmstests_list_heap_RAM
   pairing-heap:
@@ -54,7 +54,7 @@ jobs:
       - name: permissision!
         run: chmod u+x make/compile_RAM.sh 
       - name: compile!
-        run: make/compile_RAM.sh tests_pairing_heap_RAM
+        run: make/compile_RAM.sh tests_pairing_heap
       - name: Run tests!
         run: ./dbmstests_pairing_heap_RAM
   buffer-heap:
@@ -68,7 +68,7 @@ jobs:
       - name: permissision!
         run: chmod u+x make/compile_RAM.sh 
       - name: compile!
-        run: make/compile_RAM.sh tests_buffer_heap_RAM
+        run: make/compile_RAM.sh tests_buffer_heap
       - name: Run tests!
         run: ./dbmstests_buffer_heap_RAM
   funnel-heap:
@@ -82,7 +82,7 @@ jobs:
       - name: permissision!
         run: chmod u+x make/compile_RAM.sh 
       - name: compile!
-        run: make/compile_RAM.sh tests_funnel_heap_RAM
+        run: make/compile_RAM.sh tests_funnel_heap
       - name: Run tests!
         run: ./dbmstests_funnel_heap_RAM
   soft-heap:
@@ -96,7 +96,7 @@ jobs:
       - name: permissision!
         run: chmod u+x make/compile_RAM.sh 
       - name: compile!
-        run: make/compile_RAM.sh tests_soft_heap_RAM
+        run: make/compile_RAM.sh tests_soft_heap
       - name: Run tests!
         run: ./dbmstests_soft_heap_RAM
   stress-test:
