@@ -1,13 +1,13 @@
 # This is a basic workflow to help you get started with Actions
 
-name: master-test
+name: master-RAM-test
 
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: 
-      - master
+      - master-RAM
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -39,11 +39,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: permissision!
-        run: chmod u+x make/compile_main.sh 
+        run: chmod u+x make/compile_main_RAM.sh 
       - name: compile!
-        run: make/compile_main.sh
+        run: make/compile_main_RAM.sh
       - name: Run tests!
-        run: ./dbms
+        run: ./dbms_RAM
   stress-test:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -53,6 +53,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: compile!
-        run: g++ src/time-test/stress_test.cpp -I include -o dbms_stress -std=c++17
+        run: g++ src/time-test-RAM/stress_test.cpp -I include -o dbms_stress_RAM -std=c++17
       - name: Run stress-test!
-        run: ./dbms_stress
+        run: ./dbms_stress_RAM
