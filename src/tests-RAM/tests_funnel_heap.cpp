@@ -57,9 +57,9 @@ TEST_CASE("funnel-heap: 300000 insert") {
 #ifdef funnel_get_min
 TEST_CASE("funnel-heap: GetMin()") {
     funnel_heap<10000> h1;
-    int min = 300000;
-    for (int i = 0; i < 300000; ++i) {
-        int x = rand() % 300000 + 1;
+    int min = 300;
+    for (int i = 0; i < 300; ++i) {
+        int x = rand() % 300 + 1;
         if (x < min)
             min = x;
         h1.insert(x);
@@ -348,6 +348,7 @@ TEST_CASE("funnel-heap-with-compare: 3000 insert and 3000 extract_min") {
     for (int i = 0; i < 3000; ++i) {
 		int s= h1.getMin() - 10;
         CHECK(std::abs(s) == res[i]);
+		if(std::abs(s) != res[i]) break;
         h1.extractMin();
     }
 }
@@ -367,6 +368,7 @@ TEST_CASE("funnel-heap-with-compare: 10000 insert and 10000 extract_min") {
     for (int i = 0; i < 10000; ++i) {
 		int s = h1.getMin() - 10;
         CHECK(std::abs(s) == res[i]);
+		if(std::abs(s) != res[i]) break;
         h1.extractMin();
     }
 }
