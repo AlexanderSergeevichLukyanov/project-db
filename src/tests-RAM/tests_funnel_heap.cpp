@@ -29,16 +29,16 @@ TEST_CASE("funnel-heap: demo-test") {
 
 #ifdef funnel_construct
 TEST_CASE("funnel-heap: constructors without Compare") {
-    funnel_heap<int> h1;
-    funnel_heap<double> h2;
-    funnel_heap<std::string> h3;
+    funnel_heap<10000> h1;
+//    funnel_heap<10000> h2;
+//   funnel_heap<std::string> h3;
     // only compile
 }
 #endif
 
 #ifdef funnel_insert
 TEST_CASE("funnel-heap: 30000 insert") {
-    funnel_heap<int> h1;
+    funnel_heap<10000> h1;
     for (int i = 0; i < 30000; ++i) {
         h1.insert(rand());
     }
@@ -46,7 +46,7 @@ TEST_CASE("funnel-heap: 30000 insert") {
 }
 
 TEST_CASE("funnel-heap: 300000 insert") {
-    funnel_heap<int> h1;
+    funnel_heap<10000> h1;
     for (int i = 0; i < 300000; ++i) {
         h1.insert(rand());
     }
@@ -56,7 +56,7 @@ TEST_CASE("funnel-heap: 300000 insert") {
 
 #ifdef funnel_get_min
 TEST_CASE("funnel-heap: GetMin()") {
-    funnel_heap<int> h1;
+    funnel_heap<10000> h1;
     int min = 300000;
     for (int i = 0; i < 300000; ++i) {
         int x = rand() % 300000;
@@ -68,7 +68,7 @@ TEST_CASE("funnel-heap: GetMin()") {
 }
 
 TEST_CASE("funnel-heap: 300000 GetMin()") {
-    funnel_heap<int> h1;
+    funnel_heap<10000> h1;
     int min = 300000;
     for (int i = 0; i < 300000; ++i) {
         int x = rand() % 300000;
@@ -84,7 +84,7 @@ TEST_CASE("funnel-heap: 300000 GetMin()") {
 
 #ifdef funnel_extract_min
 TEST_CASE("funnel-heap: 3000 insert and 3000 extract_min") {
-    funnel_heap<int> h1;
+    funnel_heap<10000> h1;
     std::vector<int> res;
     for (int i = 0; i < 3000; ++i) {
         int x = rand() % 3000;
@@ -102,7 +102,7 @@ TEST_CASE("funnel-heap: 3000 insert and 3000 extract_min") {
 }
 
 TEST_CASE("funnel-heap: 10000 insert and 10000 extract_min") {
-    funnel_heap<int> h1;
+    funnel_heap<10000> h1;
     std::vector<int> res;
     for (int i = 0; i < 10000; ++i) {
         int x = rand() % 10000;
@@ -122,7 +122,7 @@ TEST_CASE("funnel-heap: 10000 insert and 10000 extract_min") {
 
 #ifdef funnel_make
 TEST_CASE("funnel-heap: make (30000 elements)") {
-    funnel_heap<int> h1;
+    funnel_heap<10000> h1;
     int arr[30000];
     int min = 30000;
     for (int i = 0; i < 30000; ++i) {
@@ -140,7 +140,7 @@ TEST_CASE("funnel-heap: make (30000 elements)") {
 }
 
 TEST_CASE("funnel-heap: make (300000 elements)") {
-    funnel_heap<int> h1;
+    funnel_heap<10000> h1;
     int arr[300000];
     int min = 300000;
     for (int i = 0; i < 300000; ++i) {
@@ -160,7 +160,7 @@ TEST_CASE("funnel-heap: make (300000 elements)") {
 
 #ifdef funnel_solyanka
 TEST_CASE("funnel-heap: random test#1") {
-    funnel_heap<int> h1;
+    funnel_heap<10000> h1;
    // CHECK(h1.empty());
   //  CHECK(h1.size() == 0);
     h1.insert(1);
@@ -179,7 +179,7 @@ TEST_CASE("funnel-heap: random test#1") {
 }
 
 TEST_CASE("funnel-heap: random test#2") {
-    funnel_heap<double> h1;
+    funnel_heap<10000> h1;
 //    CHECK(h1.empty());
 //    CHECK(h1.size() == 0);
     h1.insert(1.0);
@@ -188,17 +188,17 @@ TEST_CASE("funnel-heap: random test#2") {
     h1.extractMin();
 //    CHECK(h1.empty());
 //    CHECK(h1.size() == 0);
-    for (double i = 0; i < 5000; ++i) {
+    for (int i = 0; i < 50000; ++i) {
         h1.insert(i);
     }
     CHECK(h1.getMin() == 0);
     h1.extractMin();
 //    CHECK(h1.size() == 4999);
-    CHECK(h1.getMin() == 1.0);
+    CHECK(h1.getMin() == 1);
 }
 
 TEST_CASE("funnel-heap: check const, reference methods") {
-    funnel_heap<int> h1;
+    funnel_heap<10000> h1;
     h1.insert(6);
     h1.insert(1);
     CHECK_MESSAGE(std::is_reference<decltype(h1.getMin())>::value,
@@ -209,7 +209,7 @@ TEST_CASE("funnel-heap: check const, reference methods") {
 }
 
 TEST_CASE("funnel-heap: voids must be voids...") {
-    funnel_heap<int> h1;
+    funnel_heap<10000> h1;
     h1.insert(6);
     h1.insert(1);
     int p[10]{};
@@ -227,10 +227,10 @@ TEST_CASE("funnel-heap: voids must be voids...") {
 }
 /*
 TEST_CASE("funnel-heap: funnel_heap(other &&)") {
-    funnel_heap<int> h2;
+    funnel_heap<10000> h2;
     h2.insert(1);
     h2.insert(2);
-    funnel_heap<int> h1(std::move(h2));
+    funnel_heap<10000> h1(std::move(h2));
  //   CHECK(h1.size() == 2);
     // CHECK(h2.size() == 0);
     CHECK(h1.getMin() == 1);
@@ -242,10 +242,10 @@ TEST_CASE("funnel-heap: funnel_heap(other &&)") {
 }
 
 TEST_CASE("funnel-heap: operator=(other &&)") {
-    funnel_heap<int> h2;
+    funnel_heap<10000> h2;
     h2.insert(1);
     h2.insert(2);
-    funnel_heap<int> h1 = std::move(h2);
+    funnel_heap<10000> h1 = std::move(h2);
     CHECK(h1.size() == 2);
     // CHECK(h2.size() == 0);
     CHECK(h1.getMin() == 1);
@@ -257,7 +257,7 @@ TEST_CASE("funnel-heap: operator=(other &&)") {
 }
 */
 TEST_CASE("funnel-heap: default contructor must be implicit") {
-    [[maybe_unused]] funnel_heap<int> h1 = {};
+    [[maybe_unused]] funnel_heap<10000> h1 = {};
     // only compile
 }
 
@@ -265,14 +265,14 @@ TEST_CASE("funnel-heap: default contructor must be implicit") {
 
 #ifdef funnel_construct_comp
 TEST_CASE("funnel-heap: constructors with Compare") {
-    funnel_heap<int, CloserTo> heap(CloserTo(10));
+    funnel_heap<10000, CloserTo> heap(CloserTo(10));
     // only compile
 }
 #endif
 
 #ifdef funnel_insert_comp
 TEST_CASE("funnel-heap-with-compare: 30000 insert") {
-    funnel_heap<int, CloserTo> h1(CloserTo(10));
+    funnel_heap<10000, CloserTo> h1(CloserTo(10));
     for (int i = 0; i < 30000; ++i) {
         h1.insert(rand());
     }
@@ -280,7 +280,7 @@ TEST_CASE("funnel-heap-with-compare: 30000 insert") {
 }
 
 TEST_CASE("funnel-heap-with-compare: 300000 insert") {
-    funnel_heap<int, CloserTo> h1(CloserTo(10));
+    funnel_heap<10000, CloserTo> h1(CloserTo(10));
     for (int i = 0; i < 300000; ++i) {
         h1.insert(rand());
     }
@@ -290,7 +290,7 @@ TEST_CASE("funnel-heap-with-compare: 300000 insert") {
 
 #ifdef funnel_extract_min_comp
 TEST_CASE("funnel-heap-with-compare: 3000 insert and 3000 extract_min") {
-    funnel_heap<int, CloserTo> h1(CloserTo(10));
+    funnel_heap<10000, CloserTo> h1(CloserTo(10));
     std::vector<int> res;
     for (int i = 0; i < 3000; ++i) {
         int x = rand() % 3000;
@@ -308,7 +308,7 @@ TEST_CASE("funnel-heap-with-compare: 3000 insert and 3000 extract_min") {
 }
 
 TEST_CASE("funnel-heap-with-compare: 10000 insert and 10000 extract_min") {
-    funnel_heap<int, CloserTo> h1(CloserTo(10));
+    funnel_heap<10000, CloserTo> h1(CloserTo(10));
     std::vector<int> res;
     for (int i = 0; i < 10000; ++i) {
         int x = rand() % 10000;
@@ -328,7 +328,7 @@ TEST_CASE("funnel-heap-with-compare: 10000 insert and 10000 extract_min") {
 
 #ifdef funnel_extract_min_comp
 TEST_CASE("funnel-heap-with-compare: 3000 insert and 3000 extract_min") {
-    funnel_heap<int, CloserTo> h1(CloserTo(10));
+    funnel_heap<10000, CloserTo> h1(CloserTo(10));
     std::vector<int> res;
     for (int i = 0; i < 3000; ++i) {
         int x = rand() % 3000;
@@ -346,7 +346,7 @@ TEST_CASE("funnel-heap-with-compare: 3000 insert and 3000 extract_min") {
 }
 
 TEST_CASE("funnel-heap-with-compare: 10000 insert and 10000 extract_min") {
-    funnel_heap<int, CloserTo> h1(CloserTo(10));
+    funnel_heap<10000, CloserTo> h1(CloserTo(10));
     std::vector<int> res;
     for (int i = 0; i < 10000; ++i) {
         int x = rand() % 10000;
@@ -366,7 +366,7 @@ TEST_CASE("funnel-heap-with-compare: 10000 insert and 10000 extract_min") {
 
 #ifdef funnel_make_comp
 TEST_CASE("funnel-heap: make (30000 elements)") {
-    funnel_heap<int, CloserTo> h1(CloserTo(10));
+    funnel_heap<10000, CloserTo> h1(CloserTo(10));
     int arr[30000];
     int min = 30000;
     for (int i = 0; i < 30000; ++i) {
@@ -384,7 +384,7 @@ TEST_CASE("funnel-heap: make (30000 elements)") {
 }
 
 TEST_CASE("funnel-heap: make (300000 elements)") {
-    funnel_heap<int, CloserTo> h1(CloserTo(10));
+    funnel_heap<10000, CloserTo> h1(CloserTo(10));
     int arr[300000];
     int min = 300000;
     for (int i = 0; i < 300000; ++i) {
@@ -405,7 +405,7 @@ TEST_CASE("funnel-heap: make (300000 elements)") {
 #ifdef funnel_solyanka_comp
 
 TEST_CASE("funnel-heap-with-compare: random test") {
-    funnel_heap<int, CloserTo> h1(CloserTo(10));
+    funnel_heap<10000, CloserTo> h1(CloserTo(10));
 //    CHECK(h1.empty());
 //    CHECK(h1.size() == 0);
     h1.insert(1);
@@ -424,7 +424,7 @@ TEST_CASE("funnel-heap-with-compare: random test") {
 }
 
 TEST_CASE("funnel-heap-with-compare: check const, reference methods") {
-    funnel_heap<int, CloserTo> h1(CloserTo(10));
+    funnel_heap<10000, CloserTo> h1(CloserTo(10));
     h1.insert(7);
     h1.insert(1);
     CHECK_MESSAGE(std::is_reference<decltype(h1.getMin())>::value,
@@ -435,7 +435,7 @@ TEST_CASE("funnel-heap-with-compare: check const, reference methods") {
 }
 
 TEST_CASE("funnel-heap-with-compare: voids must be voids...") {
-    funnel_heap<int, CloserTo> h1(CloserTo(10));
+    funnel_heap<10000, CloserTo> h1(CloserTo(10));
     h1.insert(7);
     h1.insert(1);
     int p[10]{};
@@ -453,10 +453,10 @@ TEST_CASE("funnel-heap-with-compare: voids must be voids...") {
 }
 /*
 TEST_CASE("funnel-heap-with-compare: funnel_heap(other &&)") {
-    funnel_heap<int, CloserTo> h2(CloserTo(10));
+    funnel_heap<10000, CloserTo> h2(CloserTo(10));
     h2.insert(1);
     h2.insert(2);
-    funnel_heap<int, CloserTo> h1(std::move(h2));
+    funnel_heap<10000, CloserTo> h1(std::move(h2));
     CHECK(h1.size() == 2);
     CHECK(h2.size() == 0);
     CHECK(h1.getMin() == 2);
@@ -468,10 +468,10 @@ TEST_CASE("funnel-heap-with-compare: funnel_heap(other &&)") {
 }
 
 TEST_CASE("funnel-heap-with-compare: operator=(other &&)") {
-    funnel_heap<int, CloserTo> h2(CloserTo(10));
+    funnel_heap<10000, CloserTo> h2(CloserTo(10));
     h2.insert(1);
     h2.insert(2);
-    funnel_heap<int, CloserTo> h1 = std::move(h2);
+    funnel_heap<10000, CloserTo> h1 = std::move(h2);
     CHECK(h1.size() == 2);
     CHECK(h2.size() == 0);
     CHECK(h1.getMin() == 2);
@@ -483,12 +483,12 @@ TEST_CASE("funnel-heap-with-compare: operator=(other &&)") {
 }
 */
 TEST_CASE("funnel-heap-with-compare: constructor from comparator is explicit") {
-    CHECK((std::is_constructible_v<funnel_heap<int>, std::less<int>>));
-    CHECK((!std::is_convertible_v<std::less<int>, funnel_heap<int>>));
+    CHECK((std::is_constructible_v<funnel_heap<10000>, std::less<int>>));
+    CHECK((!std::is_convertible_v<std::less<int>, funnel_heap<10000>>));
 }
 
 TEST_CASE("funnel-heap-with-compare: with std::greater(on max)") {
-    funnel_heap<int, std::greater<>> heap;
+    funnel_heap<10000, std::greater<>> heap;
     const auto &ch = heap;
 
     heap.insert(5);
