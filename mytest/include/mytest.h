@@ -32,9 +32,15 @@ bool nowtest();
 #define CHECK(x) mytest::CHECK_F(x, __LINE__, std::string(__FILE__), #x)
 
 // NOLINTNEXTLINE: cppcoreguidelines-macro-usage
+#define REQUIRE(x) mytest::REQUIRE_F(x, __LINE__, std::string(__FILE__), #x)
+
+// NOLINTNEXTLINE: cppcoreguidelines-macro-usage
 #define CHECK_MESSAGE(x, mes)                                                  \
   ;                                                                            \
   mytest::CHECK_MESSAGE_F(x, __LINE__, std::string(__FILE__), #x, mes);
+
+// NOLINTNEXTLINE: cppcoreguidelines-macro-usage
+#define REQUIRE_MESSAGE(x, mes)  mytest::REQUIRE_MESSAGE_F(x, __LINE__, std::string(__FILE__), #x, mes);
 
 // NOLINTNEXTLINE: cppcoreguidelines-macro-usage
 #define MYTEST_INTERNAL_TEST_CASE(class_name, name)                            \
