@@ -64,7 +64,7 @@ TEST_CASE("funnel-heap: GetMin()") {
             min = x;
         h1.insert(x);
     }
-    CHECK_MESSAGE(h1.getMin() == min, "generate min is other, "+std::to_string(h1.getMin())+"!="+std::to_string(min));
+    REQUIRE_MESSAGE(h1.getMin() == min, "generate min is other, "+std::to_string(h1.getMin())+"!="+std::to_string(min));
 }
 
 TEST_CASE("funnel-heap: 300000 GetMin()") {
