@@ -26,7 +26,7 @@ void REQUIRE_MESSAGE_F(bool ex, int line, const std::string &file,
                      const std::string &my_expression,
                      const std::string &my_message);
 void REQUIRE_F(bool ex, int line, const std::string &file,
-             const std::string &my_expression);					 
+             const std::string &my_expression);//l					 
 void CHECK_T(const std::string &mark);
 int get_string();
 bool nowtest();
