@@ -67,7 +67,7 @@ int main(){
     }
 	{
 	#ifdef funnel_heap_
-	funnel_heap<int> h;
+	funnel_heap<10000> h;
 	inserts(insert_count, fh, h); 
 	#endif
 	}
@@ -113,7 +113,7 @@ int main(){
     }
 	{
 	#ifdef funnel_heap_
-	funnel_heap<int> h;
+	funnel_heap<10000> h;
 	extract_mins(extractMin_count, fh, h); 
 	#endif
 	}
