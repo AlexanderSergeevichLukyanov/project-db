@@ -140,7 +140,7 @@ Address Alloc() {
             return (*result1 > *result2 ? *result2 : *result1);
         }
 
-        ~FunnelHeap() = default;
+        ~funnel_heap() = default;
     };
 
     // TODO: Merge
