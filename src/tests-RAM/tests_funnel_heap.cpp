@@ -321,7 +321,8 @@ TEST_CASE("funnel-heap-with-compare: 10000 insert and 10000 extract_min") {
         "After 10000 insert random  and sort random x, then start checking "
         "extract_min");
     for (int i = 0; i < 10000; ++i) {
-        CHECK(std::abs(h1.getMin() - 10) == res[i]);
+		int s = h1.getMin() - 10;
+        CHECK(std::abs(s) == res[i]);
         h1.extractMin();
     }
 }
