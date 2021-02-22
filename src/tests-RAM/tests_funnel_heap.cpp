@@ -56,7 +56,7 @@ TEST_CASE("funnel-heap: 300000 insert") {
 
 #ifdef funnel_get_min
 TEST_CASE("funnel-heap: GetMin()") {
-    funnel_heap<10000> h1;
+    funnel_heap<1000> h1;
     uint64_t min = 300;
     for (int i = 0; i < 300; ++i) {
         uint64_t x = rand() % 300 + 1;
