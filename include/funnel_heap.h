@@ -60,7 +60,7 @@ Address Alloc() {
 
     // Min-РєСѓС‡Р°
     template<std::size_t InputBufferSize, typename ComparatorType = std::less<uint64_t>>
-    class FunnelHeap {
+    class funnel_heap {
     private:
         std::vector<std::vector<BlockInfo>> Segments; // (0, 0) РЅРµ РёРјРµРµС‚ СЃРјС‹СЃР»Р°. Р’ РѕСЃС‚Р°Р»СЊРЅС‹С… СЏС‡РµР№РєР°С… РґР°РЅРЅС‹Рµ Рѕ Р±Р»РѕРєР°С….
         // Р‘РѕР»СЊС€РёРµ СЌР»РµРјРµРЅС‚С‹ Р±Р»РёР¶Рµ Рє РЅР°С‡Р°Р»Сѓ
