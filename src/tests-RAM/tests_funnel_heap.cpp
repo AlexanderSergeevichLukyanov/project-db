@@ -59,7 +59,7 @@ TEST_CASE("funnel-heap: GetMin()") {
     funnel_heap<10000> h1;
     int min = 300000;
     for (int i = 0; i < 300000; ++i) {
-        int x = rand() % 300000;
+        int x = rand() % 300000 + 1;
         if (x < min)
             min = x;
         h1.insert(x);
