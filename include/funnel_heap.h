@@ -121,7 +121,7 @@ Address Alloc() {
             }
         }
 
-        [[nodiscard]] uint64_t getMin() {
+        const uint64_t getMin() {
             if (CurrentInsert == ForInsert.begin()) {
                 assert(CurrentRoot != Root.Data.begin());
                 auto result = CurrentRoot;
