@@ -23,7 +23,7 @@
 #define funnel_extract_min_comp // extractMin() with Compare
 #define funnel_solyanka_comp // ... , check const, reference, voids methods
 // and constructors =&& && with Compare 
-//#define funnel_heap_
+#define funnel_heap_
 // //расскоментировать, когда куча будет готова
 
 /* ------------------------Р—РђРњР•РќРРўР¬------------------------ */
