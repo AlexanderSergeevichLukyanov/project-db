@@ -52,17 +52,22 @@ Address Alloc() {
 
 //namespace FunnelHeap {
     struct BlockInfo {
-        Address addr{};
+        Address BlockAddress{};
         uint64_t MinElement{};
         uint64_t MaxElement{};
         std::size_t Count{};
     };
 
+    enum class ChildrenCount {
+        ZERO,
+        ONE,
+        TWO
+    };
     // Min-РєСѓС‡Р°
     template<std::size_t InputBufferSize, typename ComparatorType = std::less<uint64_t>>
     class funnel_heap {
     private:
-        std::vector<std::vector<BlockInfo>> Segments; // (0, 0) РЅРµ РёРјРµРµС‚ СЃРјС‹СЃР»Р°. Р’ РѕСЃС‚Р°Р»СЊРЅС‹С… СЏС‡РµР№РєР°С… РґР°РЅРЅС‹Рµ Рѕ Р±Р»РѕРєР°С….
+ std::vector<std::vector<BlockInfo>> Segments; // (0, 0) РЅРµ РёРјРµРµС‚ СЃРјС‹СЃР»Р°. Р’ РѕСЃС‚Р°Р»СЊРЅС‹С… СЏС‡РµР№РєР°С… РґР°РЅРЅС‹Рµ Рѕ Р±Р»РѕРєР°С….
         // Р‘РѕР»СЊС€РёРµ СЌР»РµРјРµРЅС‚С‹ Р±Р»РёР¶Рµ Рє РЅР°С‡Р°Р»Сѓ
         Block Root{}; // Р’РјРµСЃС‚Рѕ РЅР°С‡Р°Р»СЊРЅРѕРіРѕ Р±Р»РѕРєР°
         std::vector<uint64_t> ForInsert; // STL-РєСѓС‡Р° РґР»СЏ РЅРµРґР°РІРЅРѕ РґРѕР±Р°РІР»РµРЅРЅС‹С… СЌР»РµРјРµРЅС‚РѕРІ
@@ -70,11 +75,116 @@ Address Alloc() {
         std::vector<uint64_t>::iterator CurrentRoot = Root.Data.begin();
         std::vector<uint64_t>::iterator CurrentInsert = ForInsert.begin();
 
+        BlockInfo & Segment(std::pair<std::size_t, std::size_t> coordinates) {
+            return Segments[coordinates.first][coordinates.second];
+        }
+
+        // TODO
+        BlockInfo HowManyChildren(std::pair<std::size_t, std::size_t> coordinates) {}
+
+        // TODO
+        std::pair<std::size_t, std::size_t> Child(std::pair<std::size_t, std::size_t> coordinates) {}
+
+        // TODO
+        std::pair<std::size_t, std::size_t> Left(std::pair<std::size_t, std::size_t> coordinates) {}
+
+        // TODO
+        std::pair<std::size_t, std::size_t> Right(std::pair<std::size_t, std::size_t> coordinates) {}
+
         // TODO
         void Insert() {}
 
-        // TODO
-        void Take() {}
+        void Traverse(std::pair<std::size_t, std::size_t> coordinates) {
+            if (Segment(coordinates).Count == 0) {
+                return;
+            }
+            switch (HowManyChildren(coordinates)) {
+                case ChildrenCount::ZERO : {
+                    break;
+                }
+                case ChildrenCount::ONE : {
+                    std::pair<std::size_t, std::size_t> ChildCoordinates = Child(coordinates);
+                    Segment(coordinates) = Segment(ChildCoordinates);
+                    Traverse(ChildCoordinates);
+                    break;
+                }
+                case ChildrenCount::TWO : {
+                    Block ChildLeft;
+                    Block ChildRight;
+                    std::pair<std::size_t, std::size_t> LeftCoordinates = Left(coordinates);
+                    std::pair<std::size_t, std::size_t> RightCoordinates = Right(coordinates);
+                    if (Segment(LeftCoordinates).Count != 0) {
+                        READ(AddressToPlace(Segment(LeftCoordinates).BlockAddress), ChildLeft);
+                    }
+                    if (Segment(RightCoordinates).Count != 0) {
+                        READ(AddressToPlace(Segment(RightCoordinates).BlockAddress), ChildRight);
+                    }
+                    Block New;
+                    auto CurrentLeft = ChildLeft.Data.begin();
+                    for (std::size_t i = 0; i < Segment(LeftCoordinates).Count; i++) {
+                        CurrentLeft++;
+                    }
+                    auto CurrentRight = ChildRight.Data.begin();
+                    for (std::size_t i = 0; i < Segment(RightCoordinates).Count; i++) {
+                        CurrentRight++;
+                    }
+                    auto CurrentNew = New.Data.begin();
+                    while (CurrentNew != New.Data.end() && (CurrentLeft != ChildLeft.Data.begin() || CurrentRight != ChildRight.Data.begin())) {
+                        if (CurrentLeft == ChildLeft.Data.begin()) {
+                            *CurrentNew = *CurrentRight;
+                            CurrentRight--;
+                            CurrentNew++;
+                            continue;
+                        }
+                        if (CurrentRight == ChildRight.Data.begin()) {
+                            *CurrentNew = *CurrentLeft;
+                            CurrentLeft--;
+                            CurrentNew++;
+                            continue;
+                        }
+                        if (Comparator(*CurrentLeft, *CurrentRight)) {
+                            *CurrentNew = *CurrentRight;
+                            CurrentRight--;
+                            CurrentNew++;
+                        } else {
+                            *CurrentNew = *CurrentLeft;
+                            CurrentLeft--;
+                            CurrentNew++;
+                        }
+                    }
+                    if (!New.Data.empty()) {
+                        WRITE(New, AddressToPlace(Segment(coordinates).BlockAddress));
+                    }
+                    if (ChildLeft.Data.empty()) {
+                        Traverse(LeftCoordinates);
+                    } else {
+                        WRITE(ChildLeft, AddressToPlace(Segment(LeftCoordinates).BlockAddress));
+                    }
+                    if (ChildRight.Data.empty()) {
+                        Traverse(RightCoordinates);
+                    } else {
+                        WRITE(ChildRight, AddressToPlace(Segment(RightCoordinates).BlockAddress));
+                    }
+                    break;
+                }
+            }
+        }
+
+        void Take() {
+            std::pair<std::size_t, std::size_t> Next = std::make_pair(0, 1);
+            if (Segments.empty() || Segment(Next).Count == 0) {
+                return;
+            }
+            if (Segment(Next).Count != 0) {
+                READ(AddressToPlace(Segment(Next).BlockAddress), Root);
+            }
+            CurrentRoot = Root.Data.begin();
+            for (std::size_t i = 0; i < Segment(Next).Count; i++) {
+                CurrentRoot++;
+            }
+            Traverse(Next);
+        }
+
     public:
         funnel_heap() : ForInsert(B * InputBufferSize) {}
 
@@ -122,7 +232,7 @@ Address Alloc() {
         }
 
         const uint64_t getMin() const{
-if (CurrentInsert == ForInsert.begin()) {
+			if (CurrentInsert == ForInsert.begin()) {
                 assert(CurrentRoot != Root.Data.begin());
                 auto result = CurrentRoot;
                 result--;
