@@ -234,9 +234,9 @@ void Start() {
         }
 
     public:
-        funnel_heap() : ForInsert(B * InputBufferSize) {}
+        explicit funnel_heap() : ForInsert(B * InputBufferSize) {}
 
-        explicit funnel_heap(const ComparatorType & comp) : ForInsert(B * InputBufferSize), Comparator(comp) {}
+        funnel_heap(const ComparatorType & comp) : ForInsert(B * InputBufferSize), Comparator(comp) {}
 
         void insert(uint64_t value) {
             // Р•СЃР»Рё РІ РѕРїРµСЂР°С‚РёРІРЅРѕР№ РїР°РјСЏС‚Рё РµС‰Рµ РµСЃС‚СЊ РјРµСЃС‚Рѕ
