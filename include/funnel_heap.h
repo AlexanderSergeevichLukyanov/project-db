@@ -146,7 +146,7 @@ void Start() {
             if (Segment(coordinates).Count == 0) {
                 return;
             }
-            switch (HowManyChildren(coordinates)) {
+/*            switch (HowManyChildren(coordinates)) {
                 case ChildrenCount::ZERO : {
                     break;
                 }
@@ -215,7 +215,7 @@ void Start() {
                     }
                     break;
                 }
-            }
+            }*/
         }
 
         void Take() {
