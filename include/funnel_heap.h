@@ -132,7 +132,7 @@ void Start() {
     };
 
     // Min-куча
-    template<std::size_t InputBufferSize, typename ComparatorType = std::greater<uint64_t>>
+    template<std::size_t InputBufferSize, typename ComparatorType = std::less<uint64_t>>
     class funnel_heap {
     private:
         std::vector<std::vector<BlockInfo>> Segments; // (0, 0) не имеет смысла. В остальных ячейках данные о блоках.
