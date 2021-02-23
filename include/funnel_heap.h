@@ -240,7 +240,7 @@ void Start() {
 
         void insert(uint64_t value) {
             // Р•СЃР»Рё РІ РѕРїРµСЂР°С‚РёРІРЅРѕР№ РїР°РјСЏС‚Рё РµС‰Рµ РµСЃС‚СЊ РјРµСЃС‚Рѕ
-            if (CurrentInsert != ForInsert.end()) {
+         if (CurrentInsert != ForInsert.end()) {
                 *CurrentInsert = value;
                 CurrentInsert++;
                 std::push_heap(ForInsert.begin(), CurrentInsert, Comparator);
