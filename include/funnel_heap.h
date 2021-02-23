@@ -112,7 +112,7 @@ void Start() {
         TWO
     };
     // Min-РєСѓС‡Р°
-    template<std::size_t InputBufferSize, typename ComparatorType = std::less<uint64_t>>
+    template<std::size_t InputBufferSize, typename ComparatorType = std::greater<uint64_t>>
     class funnel_heap {
     private:
  std::vector<std::vector<BlockInfo>> Segments; // (0, 0) РЅРµ РёРјРµРµС‚ СЃРјС‹СЃР»Р°. Р’ РѕСЃС‚Р°Р»СЊРЅС‹С… СЏС‡РµР№РєР°С… РґР°РЅРЅС‹Рµ Рѕ Р±Р»РѕРєР°С….
