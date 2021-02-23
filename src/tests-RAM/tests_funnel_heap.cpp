@@ -507,19 +507,19 @@ TEST_CASE("funnel-heap-with-compare: with std::greater(on max)") {
 
     heap.insert(15);
 //    CHECK(!ch.empty());
-    CHECK(ch.getMin() == 15);
+    CHECK_MESSAGE(ch.getMin() == 15, std::to_string(ch.getMin()));
 
     heap.insert(10);
 //    CHECK(!ch.empty());
-    CHECK(ch.getMin() == 15);
+    CHECK_MESSAGE(ch.getMin() == 15, std::to_string(ch.getMin()));
 
     heap.extractMin();
 //    CHECK(!ch.empty());
-    CHECK(ch.getMin() == 10);
+    CHECK_MESSAGE(ch.getMin() == 10, std::to_string(ch.getMin()));
 
     heap.extractMin();
 //    CHECK(!ch.empty());
-    CHECK(ch.getMin() == 5);
+    CHECK_MESSAGE(ch.getMin() == 5, std::to_string(ch.getMin()));
 
     heap.extractMin();
 //    CHECK(ch.empty());
