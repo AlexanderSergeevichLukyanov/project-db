@@ -132,7 +132,7 @@ void Start() {
     };
 
     // Min-куча
-    template<std::size_t InputBufferSize, typename ComparatorType = std::less<uint64_t>>
+    template<std::size_t InputBufferSize, typename ComparatorType = std::greater<uint64_t>>
     class funnel_heap {
     private:
         std::vector<std::vector<BlockInfo>> Segments; // (0, 0) не имеет смысла. В остальных ячейках данные о блоках.
@@ -285,7 +285,7 @@ void Start() {
             auto result1 = CurrentRoot;
             result1--;
             uint64_t result2 = ForInsert.front();
-            if (Comparator(result2, *result1)) {
+            if (Comparator(*result1, result2)) {
                 std::pop_heap(ForInsert.begin(), CurrentInsert, Comparator);
                 CurrentInsert--;
             } else {
@@ -309,7 +309,7 @@ void Start() {
             auto result1 = CurrentRoot;
             result1--;
             uint64_t result2 = ForInsert.front();
-            return (Comparator(result2, *result1) ? result2 : *result1);
+            return (Comparator(*result1, result2) ? result2 : *result1);
         }
 
         ~funnel_heap() = default;
