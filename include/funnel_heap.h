@@ -1,12 +1,9 @@
-#include <cassert>
-#include <cmath>
-#include <type_traits>
-#include <utility>
-#include <sstream>
-#include <fstream>
-#include <cstdint>
+#ifndef MEMORY_MANAGER
+#define MEMORY_MANAGER
+
 #include <functional>
-#include <vector>
+#include <fstream>
+#include <sstream>
 #include <sys/stat.h>
 
 const std::size_t B = 32;
@@ -34,7 +31,7 @@ Address Alloc() {
     return result;
 }
 
-// РЎС‡РµС‚С‡РёРєРё РІСЂРµРјРµРЅРё СЂР°Р±РѕС‚С‹
+// Счетчики времени работы
 int I_COUNT{};
 int O_COUNT{};
 int IO_COUNT() {
@@ -57,7 +54,7 @@ void WRITE(const Block & block, const std::string & place) {
     }
 }
 
-// РЎРѕР·РґР°РЅРёРµ РґРёСЃРєР°
+// Создание диска
 void Start() {
     I_COUNT = 0;
     O_COUNT = 0;
@@ -72,33 +69,38 @@ void Start() {
         }
     }
 }
+
+#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #ifndef FUNNELHEAP
 #define FUNNELHEAP
 
+#include <cassert>
+#include <cstdint>
+#include <functional>
+#include <vector>
 
-//#define funnel_wrong_test //не стоит расскоментировать:)
-#define funnel_construct //default constructor
-#define funnel_insert  // insert(T x)
-#define funnel_get_min // getMin()
-//#define funnel_make // make(T* array, size_t n)
-#define funnel_extract_min // extractMin()
-#define funnel_solyanka // ... , check const, reference, voids methods and
-// constructors =&& && #define funnel_construct_comp //default constructor(comp)
-#define funnel_insert_comp // insert(T x) with Compare
-#define funnel_get_min_comp // getMin() with Compare
-//#define funnel_make_comp // make(T* array, size_t n) with Compare
-#define funnel_extract_min_comp // extractMin() with Compare
-#define funnel_solyanka_comp // ... , check const, reference, voids methods
-// and constructors =&& && with Compare 
-#define funnel_heap_
-// //расскоментировать, когда куча будет готова
+    std::vector<std::size_t> kTable{2, 4, 8, 16, 32, 128, 512, 4096};
 
-/* ------------------------Р—РђРњР•РќРРўР¬------------------------ */
-
-/* -------------------------------------------------------- */
-
-
-//namespace FunnelHeap {
     struct BlockInfo {
         Address BlockAddress{};
         uint64_t MinElement{};
@@ -111,14 +113,15 @@ void Start() {
         ONE,
         TWO
     };
-    // Min-РєСѓС‡Р°
+
+    // Min-куча
     template<std::size_t InputBufferSize, typename ComparatorType = std::greater<uint64_t>>
     class funnel_heap {
     private:
- std::vector<std::vector<BlockInfo>> Segments; // (0, 0) РЅРµ РёРјРµРµС‚ СЃРјС‹СЃР»Р°. Р’ РѕСЃС‚Р°Р»СЊРЅС‹С… СЏС‡РµР№РєР°С… РґР°РЅРЅС‹Рµ Рѕ Р±Р»РѕРєР°С….
-        // Р‘РѕР»СЊС€РёРµ СЌР»РµРјРµРЅС‚С‹ Р±Р»РёР¶Рµ Рє РЅР°С‡Р°Р»Сѓ
-        Block Root{}; // Р’РјРµСЃС‚Рѕ РЅР°С‡Р°Р»СЊРЅРѕРіРѕ Р±Р»РѕРєР°
-        std::vector<uint64_t> ForInsert; // STL-РєСѓС‡Р° РґР»СЏ РЅРµРґР°РІРЅРѕ РґРѕР±Р°РІР»РµРЅРЅС‹С… СЌР»РµРјРµРЅС‚РѕРІ
+        std::vector<std::vector<BlockInfo>> Segments; // (0, 0) не имеет смысла. В остальных ячейках данные о блоках.
+        // Большие элементы ближе к началу
+        Block Root{}; // Вместо начального блока
+        std::vector<uint64_t> ForInsert; // STL-куча для недавно добавленных элементов
         ComparatorType Comparator;
         std::vector<uint64_t>::iterator CurrentRoot = Root.Data.begin();
         std::vector<uint64_t>::iterator CurrentInsert = ForInsert.begin();
@@ -128,7 +131,7 @@ void Start() {
         }
 
         // TODO
-        BlockInfo HowManyChildren(std::pair<std::size_t, std::size_t> coordinates) {}
+        ChildrenCount HowManyChildren(std::pair<std::size_t, std::size_t> coordinates) {}
 
         // TODO
         std::pair<std::size_t, std::size_t> Child(std::pair<std::size_t, std::size_t> coordinates) {}
@@ -146,15 +149,15 @@ void Start() {
             if (Segment(coordinates).Count == 0) {
                 return;
             }
-/*            switch (HowManyChildren(coordinates)) {
+            switch (HowManyChildren(coordinates)) {
                 case ChildrenCount::ZERO : {
-                    break;
+                    return;
                 }
                 case ChildrenCount::ONE : {
                     std::pair<std::size_t, std::size_t> ChildCoordinates = Child(coordinates);
                     Segment(coordinates) = Segment(ChildCoordinates);
                     Traverse(ChildCoordinates);
-                    break;
+                    return;
                 }
                 case ChildrenCount::TWO : {
                     Block ChildLeft;
@@ -213,9 +216,8 @@ void Start() {
                     } else {
                         WRITE(ChildRight, AddressToPlace(Segment(RightCoordinates).BlockAddress));
                     }
-                    break;
                 }
-            }*/
+            }
         }
 
         void Take() {
@@ -232,15 +234,14 @@ void Start() {
             }
             Traverse(Next);
         }
-
     public:
         funnel_heap() : ForInsert(B * InputBufferSize) {}
 
-        explicit funnel_heap(const ComparatorType & comp) : ForInsert(B * InputBufferSize), Comparator(comp) {}
+        funnel_heap(const ComparatorType & comp) : ForInsert(B * InputBufferSize), Comparator(comp) {}
 
         void insert(uint64_t value) {
-            // Р•СЃР»Рё РІ РѕРїРµСЂР°С‚РёРІРЅРѕР№ РїР°РјСЏС‚Рё РµС‰Рµ РµСЃС‚СЊ РјРµСЃС‚Рѕ
-         if (CurrentInsert != ForInsert.end()) {
+            // Если в оперативной памяти еще есть место
+            if (CurrentInsert != ForInsert.end()) {
                 *CurrentInsert = value;
                 CurrentInsert++;
                 std::push_heap(ForInsert.begin(), CurrentInsert, Comparator);
@@ -279,7 +280,7 @@ void Start() {
         }
 
         const uint64_t getMin() const{
-			if (CurrentInsert == ForInsert.begin()) {
+            if (CurrentInsert == ForInsert.begin()) {
                 assert(CurrentRoot != Root.Data.begin());
                 auto result = CurrentRoot;
                 result--;
@@ -298,7 +299,6 @@ void Start() {
     };
 
     // TODO: Merge
-//}
-
 #endif
+
 
