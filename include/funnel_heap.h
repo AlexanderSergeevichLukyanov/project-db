@@ -93,25 +93,6 @@ void Start() {
 
 /* ------------------------Р—РђРњР•РќРРўР¬------------------------ */
 
-
-const std::size_t B = 32;
-std::size_t CurrentBlock = 0;
-
-struct Address {
-    std::size_t Address;
-};
-
-struct Block {
-    std::vector<uint64_t> Data;
-    Block() : Data(B) {}
-};
-
-Address Alloc() {
-    Address result{CurrentBlock};
-    CurrentBlock++;
-    return result;
-}
-
 /* -------------------------------------------------------- */
 
 
