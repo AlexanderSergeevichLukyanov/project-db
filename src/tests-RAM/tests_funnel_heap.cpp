@@ -347,7 +347,7 @@ TEST_CASE("funnel-heap-with-compare: 3000 insert and 3000 extract_min") {
         "extract_min");
     for (int i = 0; i < 3000; ++i) {
 		int s= h1.getMin() - 10;
-        CHECK(std::abs(s) == res[i]);
+        CHECK_MESSAGE(std::abs(s) == res[i], std::to_string(s)+"!="+std::to_string(h1.getMin() - 10));
 		if(std::abs(s) != res[i]) break;
         h1.extractMin();
     }
