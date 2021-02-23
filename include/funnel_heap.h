@@ -5,6 +5,71 @@
 #include <cstdint>
 #include <functional>
 #include <vector>
+#include <sys/stat.h>
+
+const std::size_t B = 32;
+const std::size_t n = 1024;
+std::size_t CurrentBlock = 0;
+
+struct Address {
+    std::size_t Address{};
+};
+
+std::string AddressToPlace(Address addr) {
+    std::stringstream ss;
+    ss << "DISK/BLOCK" << addr.Address;
+    return ss.str();
+}
+
+struct Block {
+    std::vector<uint64_t> Data;
+    Block() : Data(B) {}
+};
+
+Address Alloc() {
+    Address result{CurrentBlock};
+    CurrentBlock++;
+    return result;
+}
+
+// РЎС‡РµС‚С‡РёРєРё РІСЂРµРјРµРЅРё СЂР°Р±РѕС‚С‹
+int I_COUNT{};
+int O_COUNT{};
+int IO_COUNT() {
+    return I_COUNT + O_COUNT;
+}
+
+void READ(const std::string & place, Block & block) {
+    I_COUNT++;
+    std::ifstream file(place);
+    for (uint64_t & i : block.Data) {
+        file >> i;
+    }
+}
+
+void WRITE(const Block & block, const std::string & place) {
+    O_COUNT++;
+    std::ofstream file(place);
+    for (uint64_t i : block.Data) {
+        file << i << std::endl;
+    }
+}
+
+// РЎРѕР·РґР°РЅРёРµ РґРёСЃРєР°
+void Start() {
+    I_COUNT = 0;
+    O_COUNT = 0;
+    mkdir("DISK", ACCESSPERMS);
+    for (std::size_t i = 0; i < n; i++) {
+        std::stringstream ss;
+        Address address{i};
+        ss << AddressToPlace(address);
+        std::ofstream file(ss.str());
+        for (std::size_t j = 0; j < B; j++) {
+            file << 0 << std::endl;
+        }
+    }
+}
 #ifndef FUNNELHEAP
 #define FUNNELHEAP
 
