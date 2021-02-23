@@ -122,22 +122,19 @@ Address Alloc() {
         }
 
         const uint64_t getMin() const{
-            if (CurrentInsert == ForInsert.begin()) {
+if (CurrentInsert == ForInsert.begin()) {
                 assert(CurrentRoot != Root.Data.begin());
                 auto result = CurrentRoot;
                 result--;
                 return *result;
             }
             if (CurrentRoot == Root.Data.begin()) {
-                auto result = CurrentInsert;
-                result--;
-                return *result;
+                return ForInsert.front();
             }
             auto result1 = CurrentRoot;
             result1--;
-            auto result2 = CurrentInsert;
-            result2--;
-            return (*result1 > *result2 ? *result2 : *result1);
+            uint64_t result2 = ForInsert.front();
+            return (Comparator(*result1, result2) ? result2 : *result1);
         }
 
         ~funnel_heap() = default;
