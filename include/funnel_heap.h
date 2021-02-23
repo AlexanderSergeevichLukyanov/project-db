@@ -285,7 +285,7 @@ void Start() {
             auto result1 = CurrentRoot;
             result1--;
             uint64_t result2 = ForInsert.front();
-            if (Comparator(*result1, result2)) {
+            if (Comparator(result2, *result1)) {
                 std::pop_heap(ForInsert.begin(), CurrentInsert, Comparator);
                 CurrentInsert--;
             } else {
@@ -309,7 +309,7 @@ void Start() {
             auto result1 = CurrentRoot;
             result1--;
             uint64_t result2 = ForInsert.front();
-            return (Comparator(*result1, result2) ? result2 : *result1);
+            return (Comparator(result2, *result1) ? result2 : *result1);
         }
 
         ~funnel_heap() = default;
