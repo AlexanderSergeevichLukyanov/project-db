@@ -526,3 +526,4 @@ TEST_CASE("funnel-heap-with-compare: with std::greater(on max)") {
 }
 
 #endif
+}// namespace
