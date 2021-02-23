@@ -266,9 +266,8 @@ void Start() {
             }
             auto result1 = CurrentRoot;
             result1--;
-            auto result2 = CurrentInsert;
-            result2--;
-            if (*result1 > *result2) {
+            uint64_t result2 = ForInsert.front();
+            if (Comparator(*result1, result2)) {
                 std::pop_heap(ForInsert.begin(), CurrentInsert, Comparator);
                 CurrentInsert--;
             } else {
