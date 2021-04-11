@@ -2,39 +2,85 @@
 #include "buffer.h"
 using namespace std;
 
+const std::string folder_name = "ph-data";
+std::size_t block_counter = 0;
+
+
+template <typename T>
+struct Head{
+	T data[3]{};
+	std::size_t id_tail;
+	short size=0;
+	
+	void from_buf(buffer &b){
+		for(int i=2; i>-1; --i){
+			data[i]=buf.getMax();
+			buf.extractMax();
+			size=3;
+		}
+	}
+	
+};
+
 template <typename T, size_t BlockSize, typename Compare>
 struct pairing_heap_with_buffer{
 private:
 	pairing_heap<head<T>, Compare> heads_of_blocks; //головы блоков на диске
 	buffer<T, 2*BlockSize, Compare> buf; //буффер для добавленных
 	
-	void flush_buf(){ //по факту новый блок
+	void flush_buf() { //по факту новый блок
 		
+		if(buf.size()>BlockSize*3/2){ //TODO: нормальная ли константа?
+		
+			Block_t new_bl;
+			Head new_h;
+			
+			while(!new_bl.full()){ 
+				new_bl.add(buf.getMax()); //TODO: к 64
+				buf.extractMax();
+			}
+			
+			++block_counter;
+			
+			WRITE(folder_name, block_counter, new_bl);//
+			//TODO: запись + связка -- вроде done
+			new_h.from_buf(buf);
+			h.href_to_tail=block_counter;
+			//TODO: положить бошку в кучу -- вроде done
+		}
+	
 	}
 	
-	void buf_to_block(buffer<T, BlockSize, Compare> &to, Head &h){ // ссылки не привязывает(
-		while(to.size()<BlockSize){ //buf точно не кончится, иначе не сливаем его в блок, в нем должно быть BS+3
-			to.insert(buf.getMax());
+	void buf_to_block(Block_t &to, Head &h) { // наполняет блок, бошку и блок связывает, блок пишет, бошку кладёт
+		
+		while(!to.full()){ //buf точно не кончится, иначе не сливаем его в блок, в нем должно быть BS+3
+			to.add(buf.getMax()); //TODO: к 64
 			buf.extractMax();
 		}
-		h.e3=buf.getMax();
-		buf.extractMax();
-		h.e2=buf.getMax();
-		buf.extractMax();
-		h.e1=buf.getMax();
-		buf.extractMax();
-		//TODO!!! HEAD! Не здесь, правда
+		
+		++block_counter;
+			
+		WRITE(folder_name, block_counter, new_bl);
+
+		h.from_buf(buf);
+		h.href_to_tail=block_counter;
+
+		heads_of_blocks.insert(h);
 	}
 	
-	void block_to_buf(buffer<T, BlockSize, Compare> &from){
-		while(!from.empty()){
-			buf.insert(from.getMin());
-			from.extractMin();
+	void block_to_buf(Block_t &from){ //TODO: ускорить в 2 раза, пока даже логике не подчиняется
+		
+		std::size_t bl_size = from.size();
+		
+		for(std::size_t i = 0; i < bl_size; ++i){
+			buf.insert(from[i]); //TODO: к норм
 		}
-		flush_buf();
+		
+		flush_buf(); //если переполнен окажется
+	
 	}
 	
-	void file_to_block(const std::string &filename, buffer<T, BlockSize, Compare> &to){
+	/*void file_to_block(const std::string &filename, buffer<T, BlockSize, Compare> &to){
 		T* data;
 		read(filename, data);
 		to.make(data); 
@@ -42,7 +88,7 @@ private:
 	
 	void block_to_file(const std::string &filename, buffer<T, BlockSize, Compare> &from){
 		//todo
-	}
+	}*/
 	
 	
 	
@@ -52,39 +98,31 @@ public:
 		return (heads_of_blocks.empty() && buf.empty());
 	}
 	
-	[[nodiscard]] size_t size() const{
+	[[nodiscard]] std::size_t size() const{
 		return (heads_of_blocks.size() + buf.size());
 	}
 	
 	void insert(T &x){
 		buf.insert(x);
-		if(buf.size()>..){
-			//TODO: псевдокод
-			new block new_bl;
-			new Head h;
-			buf_to_block(new_bl, h){
-			}
-			link(h, new_bl);
-			WRITE("dn", "..", new_bl);
-		}
-	}
+		flush_buf(); //авось переполнило
+	} // вроде done
 	
 	const T& getMin() const{
 		//TODO: бросить исключение на пустые
 		if(buf.empty()){
-			return heads_of_blocks.getMin().n1;
+			return heads_of_blocks.getMin().data[0];
 		}
 		
 		if(heads_of_blocks.empty()){
-			return buf.n1;
+			return buf.getMin();
 		}
 		
-		if(comp(buf.getMin(), heads_of_blocks.getMin().n1){
+		if(comp(buf.getMin(), heads_of_blocks.getMin().data[0]){
 			return buf.getMin();
 		} else{
-			return heads_of_blocks.getMin().n1;
+			return heads_of_blocks.getMin().data[0];
 		}
-	}
+	} // вроде done
 	
 	void extractMin(){
 		
