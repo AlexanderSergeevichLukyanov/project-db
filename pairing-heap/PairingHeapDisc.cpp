@@ -1,5 +1,9 @@
 #include "pairing_heap.h"
 #include "buffer.h"
+
+const size_t B = 32768; // в будущем это в конфиг-файле
+
+
 using namespace std;
 
 const std::string folder_name = "ph-data";
@@ -42,11 +46,11 @@ template <typename T, size_t BlockSize, typename Compare>
 struct pairing_heap_with_buffer{
 private:
 	pairing_heap<head<T>, Compare> heads_of_blocks; //головы блоков на диске
-	buffer<T, 2*BlockSize, Compare> buf; //буффер для добавленных
+	buffer<T, 3*BlockSize, Compare> buf; //буффер для добавленных
 	
 	void flush_buf() { //по факту новый блок
 		
-		if(buf.size()>BlockSize*3/2){ //TODO: нормальная ли константа?
+		if(buf.size()>BlockSize*2){ //TODO: нормальная ли константа?
 		
 			Block_t new_bl;
 			Head new_h;
@@ -182,7 +186,7 @@ public:
 }
 
 
-template <typename T, size_t BlockSize, typename Compare =  std::less<T>> /** TODO: мб BlockSize считать автоматом от T здесь?! */
+template <typename T, size_t BlockSize=B, typename Compare =  std::less<T>> /** TODO: мб BlockSize считать автоматом от T здесь?! */
 struct PairingHeap{
 private:
 	Compare comp;
@@ -202,28 +206,28 @@ public:
 
 	/** TODO: конструктор*/
 	
-	[[nodiscard]] bool empty() const{ //готово
+	[[nodiscard]] bool empty() const { //готово
 		return (heap_of_elements.size() == heap_of_del_elements.size()); //количество удаленных равно количеству добавленных => пусто
 	}
 	
-	[[nodiscard]] size_t size() const{ //готово
+	[[nodiscard]] size_t size() const { //готово
 		return heap_of_del_elements.size() - heap_of_del_elements.size(); //количество добавленных мину количество удаленных
 	}
 	
-	void insert(const T& x){
+	void insert(const T& x) {
 		heap_of_elements.insert(x);
 	}
 	
-	void del(const T& x){
+	void del(const T& x) {
 		heap_of_del_elements.insert(x);
 	}
 	
-	void pop(){ // pop
+	void extract() { 
 		flush_dels();
 		heap_of_elements.extractMin();
 	}
 	
-	const T& top() const{ // top
+	const T& top() const {
 		flush_dels();
 		return heap_of_elements.getMin();
 	}
