@@ -21,7 +21,7 @@
 */
 
 
-#define debug
+//#define debug
 
 #ifdef debug
 #include <cassert>
