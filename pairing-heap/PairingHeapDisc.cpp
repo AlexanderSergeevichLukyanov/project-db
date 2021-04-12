@@ -12,12 +12,28 @@ struct Head{
 	std::size_t id_tail;
 	short size=0;
 	
+	void add(T &x){
+		h[size]=x;
+		std::sort(data, data+size);
+		++size;
+	}
+	
 	void from_buf(buffer &b){
 		for(int i=2; i>-1; --i){
 			data[i]=buf.getMax();
 			buf.extractMax();
 			size=3;
 		}
+	}
+	
+	void extract(){
+		data[0]=data[1];
+		data[1]=data[2];
+		--size;
+	}
+	
+	[[nodiscard]] bool empty() const{
+		return (size==0);
 	}
 	
 };
@@ -126,36 +142,42 @@ public:
 	
 	void extractMin(){
 		
+		if(heads_of_blocks.empty()){
+			buf.extractMin();
+			return;
+		}
+		
 		if(buf.empty()){
 			Head h = heads_of_blocks.getMin();
 			heads_of_blocks.extractMin();
-			h.n1=h.n2;
-			h.n2=h.n3;
-			h.n3=NULL;
-			--h.size;
+			h.extract();
 			if(h.empty()){
-				//psevdo
-				READ;
-				block_to_buf();
-			} else{ 
-				//todo: пополнение из буфера
-				heads_of_blocks.insert(h);
-			}
+				Block_t new_bl;
+				READ(folder_name, h.id_tail, new_bl);
+				block_to_buf(new_bl);
+			} 
+			return;
+		} 
 		//	return heads_of_blocks.getMin().n1;
-		}
 		
-		if(heads_of_blocks.empty()){
-			buf.extractMin();
-			//return buf.n1;
-		}
-		
-		if(comp(buf.getMin(), heads_of_blocks.getMin().n1){
+		if(comp(buf.getMin(), heads_of_blocks.getMin().data[0]){
 			buf.extractMin();
 		} else{
-			//todo: что и в первом случае
-			//return heads_of_blocks.getMin().n1;
+			Head h = heads_of_blocks.getMin();
+			heads_of_blocks.extractMin();
+			h.extract();
+			if(h.empty()){
+				Block_t new_bl;
+				READ(folder_name, h.id_tail, new_bl);
+				block_to_buf(new_bl);
+			} else {
+				if(comp(buf.getMin(), h[h.size-1])){
+					h.add(buf.getMin());
+					buf.extractMin();
+				} 
+			}
 		}
-	}
+	} //вроде done
 	/** TODO: тут еще поколдовать надо над методами, они тривиальны, просто куча + буффер и немного алгоритмической магии) */
 }
 
@@ -196,12 +218,12 @@ public:
 		heap_of_del_elements.insert(x);
 	}
 	
-	void extractMin(){ // pop
+	void pop(){ // pop
 		flush_dels();
 		heap_of_elements.extractMin();
 	}
 	
-	const T& getMin() const{ // top
+	const T& top() const{ // top
 		flush_dels();
 		return heap_of_elements.getMin();
 	}
