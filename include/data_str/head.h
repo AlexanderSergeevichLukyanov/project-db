@@ -1,12 +1,32 @@
-template <typename T, Compare comp>
+#include <algorithm>
+template <typename T, typename Compare> struct Head;
+
+template <typename Compare>
+struct HeadCompare{
+	Compare comp;
+	HeadCompare() = default;
+	HeadCompare(Compare &comp_): comp(comp_){
+	}
+	bool operator()(Head &h1, Head &h2){
+		return comp(h1[0], h2[0]);
+	}
+};
+
+template <typename T, typename Compare=HeadCompare<std::less<T>> >
 struct Head{
 	T data[3]{};
 	std::size_t id_tail;
 	short size=0;
+	Compare comp;
+	
+	Head() = default;
+	Head(Compare &comp_): comp(comp_){
+		
+	}
 	
 	void add(T &x){
 		h[size]=x;
-		std::sort(data, data+size);
+		std::sort(data, data+size, comp);
 		++size;
 	}
 	
@@ -28,8 +48,8 @@ struct Head{
 		return (size==0);
 	}
 	
+	T& operator[](std::size_t ind){
+		return data[ind];
+	}
+	
 };
-
-bool operator <(Head &h1, Head &h2){
-	return (h1.data[0]<h2.data[0]);
-}

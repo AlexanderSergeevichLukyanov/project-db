@@ -9,11 +9,14 @@ const size_t B = 32768; // в будущем это в конфиг-файле
 const std::string folder_name = "ph-data";
 std::size_t block_counter = 0;
 
+
 namespace {
 
 template <typename T, size_t BlockSize, typename Compare>
 struct pairing_heap_with_buffer{
 private:
+	Compare comp;
+	
 	pairing_heap<head<T>, Compare> heads_of_blocks; //головы блоков на диске
 	buffer<T, 3*BlockSize, Compare> buf; //буффер для добавленных
 	
@@ -70,6 +73,11 @@ private:
 	}
 	
 public:
+
+	pairing_heap_with_buffer() = default;
+	pairing_heap_with_buffer(Compare &comp_): comp(comp_){
+		
+	}
 
 	[[nodiscard]] bool empty() const{
 		return (heads_of_blocks.empty() && buf.empty());
