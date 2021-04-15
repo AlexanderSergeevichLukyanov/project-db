@@ -11,7 +11,7 @@ TEST_CASE("check fold ph-data, file:1!"){
 	block_counter=1;
 	b.WRITE(folder_name, block_counter);
 }
-/*
+
 TEST_CASE("small-auto"){
 	Block_t<int, 10> b;
 	for(int i=0; i<10; ++i){
@@ -38,4 +38,4 @@ TEST_CASE("big-auto"){
 	for(int i=0; i<1000; ++i){
 		REQUIRE_MESSAGE(b2[i]==i*2, "#"+std::to_string(i)+": "+std::to_string(b2[i])+" != "+std::to_string(i*2));
 	}
-}*/
+}
