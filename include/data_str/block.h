@@ -1,3 +1,7 @@
+#include <cstddef>
+#include <type_traits>
+#include <string>
+
 template <typename T, std::size_t n>
 struct Block_t{
 private:
@@ -9,7 +13,7 @@ public:
 	}
 	
 	[[nodiscard]] bool full() const{
-		return (size_>=n);
+		return (size_==n);
 	}
 	
 	[[nodiscard]] std::size_t size() const{
@@ -21,17 +25,19 @@ public:
 	}
 	
 	void WRITE(std::string DirectoryName, int NextWrite) {
-		FILE *f;
-		f=fopen((DirectoryName+"/"+std::to_string(NextWrite)).c_str(), "wb+");
+		FILE *f = fopen((DirectoryName+"/"+std::to_string(NextWrite)+".bin").c_str(), "wb");
+		//int l = 4;
         fwrite(data, sizeof(T), size_, f);
+		fclose(f);
 	//	++I_COUNTER;
     }
 
     void READ(std::string DirectoryName, int NextWrite, std::size_t k=n) {
         FILE *f;
 		size_=k;
-		f=fopen((DirectoryName+"/"+std::to_string(NextWrite)).c_str(), "wb+");
+		f=fopen((DirectoryName+"/"+std::to_string(NextWrite)+".bin").c_str(), "rb");
         fread(data, sizeof(T), size_, f);
+		fclose(f);
     //    ++O_COUNTER;
     }
 	
@@ -39,3 +45,4 @@ public:
 		return data[ind];
 	}
 };
+
