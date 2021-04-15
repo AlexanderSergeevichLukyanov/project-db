@@ -25,9 +25,6 @@
 
 #ifdef debug
 #include <cassert>
-#include <string>
-#include <vector>
-#include "mytest.h"
 #endif
 #include <algorithm>
 #include <cmath>
@@ -93,7 +90,7 @@ private:
         // if(x==-1) return;
         size_t y = x + 1;
         size_t child[4] = {4 * y - 1, 4 * y, 4 * y + 1, 4 * y + 2};
-        assert(is_min_level(x));
+        // assert(is_min_level(x));
         if (size_ <= child[0]) {
             //всё
             // std::cerr<<"lol";
@@ -152,7 +149,7 @@ private:
         // if(x==-1) return;
         size_t y = x + 1;
         size_t child[4] = {4 * y - 1, 4 * y, 4 * y + 1, 4 * y + 2};
-        assert(!is_min_level(x));
+        // assert(!is_min_level(x));
         if (size_ <= child[0]) {
             //всё
         } else {
@@ -273,7 +270,7 @@ public:
             sift_up_min(ind);
         } else {
             size_t fath = father(ind);
-            // assert(fath==-1);
+            // // // assert(fath==-1);
             if (comp(buf[ind],
                      buf[fath])) {  //мы на уровне максимумов, должны быть
                 //больше своего отца, иначе:
