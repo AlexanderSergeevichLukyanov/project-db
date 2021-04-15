@@ -31,7 +31,7 @@ struct Head{
 		++size;
 	}
 	
-	void from_buf(buffer &b){
+	void from_buf(buffer<...> &b){
 		for(int i=2; i>-1; --i){
 			data[i]=buf.getMax();
 			buf.extractMax();
