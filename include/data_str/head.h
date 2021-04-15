@@ -26,12 +26,12 @@ struct Head{
 	}
 	
 	void add(T &x){
-		h[size]=x;
+		data[size]=x;
 		std::sort(data, data+size, comp);
 		++size;
 	}
 	
-	void from_buf(buffer<auto, auto, auto> &b){
+	void from_buf(buffer<auto, auto, auto> &buf){
 		for(int i=2; i>-1; --i){
 			data[i]=buf.getMax();
 			buf.extractMax();
