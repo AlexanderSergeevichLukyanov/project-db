@@ -7,7 +7,7 @@ struct HeadCompare{
 	HeadCompare() = default;
 	HeadCompare(Compare &comp_): comp(comp_){
 	}
-	bool operator()(Head &h1, Head &h2){
+	bool operator()(Head<...auto...> &h1, Head<...auto...> &h2){
 		return comp(h1[0], h2[0]);
 	}
 };
