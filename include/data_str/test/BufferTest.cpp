@@ -1,6 +1,6 @@
 #include "mytest.h" 
 #include "buffer.h"
-
+#include <climits>
 TEST_CASE("insert & getters & size") {
     buffer<int, 32> buf;
     CHECK(buf.empty());
