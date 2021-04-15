@@ -1,6 +1,6 @@
 #include "block.h"
 #include "mytest.h"
-
+#include <type_traits>
 const std::string folder_name = "ph-data";//  заглушка
 std::size_t block_counter = 0;
 
