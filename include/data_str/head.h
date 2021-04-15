@@ -6,7 +6,7 @@ template <typename Compare>
 struct HeadCompare{
 	Compare comp;
 	HeadCompare() = default;
-	HeadCompare(Compare &comp_): comp(comp_){
+	HeadCompare(const Compare &comp_): comp(comp_){
 	}
 	template <typename TT, typename Comp>
 	bool operator()(Head<TT, Comp> &h1, Head<TT, Comp> &h2){
@@ -24,11 +24,11 @@ struct Head{
 	Compare comp;
 	
 	Head() = default;
-	Head(Compare &comp_): comp(comp_){
+	Head(const Compare &comp_): comp(comp_){
 		
 	}
 	
-	void add(T x){
+	void add(const T &x){
 		data[size++]=x;
 		std::sort(data, data+size, comp);
 	}
