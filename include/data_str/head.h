@@ -1,4 +1,5 @@
 #include <algorithm>
+#include "buffer.h"
 template <typename T, typename Compare> struct Head;
 
 template <typename Compare>
