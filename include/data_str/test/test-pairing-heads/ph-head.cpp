@@ -3,7 +3,7 @@
 #include "head.h"
 
 TEST_CASE("#1 -- without-comp"){
-	pairing_heap<Head<int>, HeadCompare<std::less<T>>> ph;
+	pairing_heap<Head<int>, HeadCompare<std::less<int>>> ph;
 	for(int j=0; j<7; ++j){
 		Head<int> h;
 		for(int i=0; i<3; ++i){
