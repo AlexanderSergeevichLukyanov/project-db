@@ -17,7 +17,7 @@ struct pairing_heap_with_buffer{
 private:
 	Compare comp;
 	
-	pairing_heap<head<T>, Compare> heads_of_blocks; //головы блоков на диске
+	pairing_heap<Head<T>, HeadCompare<Compare>> heads_of_blocks; //головы блоков на диске
 	buffer<T, 3*BlockSize, Compare> buf; //буффер для добавленных
 	
 	void flush_buf() { //по факту новый блок
@@ -75,7 +75,10 @@ private:
 public:
 
 	pairing_heap_with_buffer() = default;
-	pairing_heap_with_buffer(Compare &comp_): comp(comp_){
+	pairing_heap_with_buffer(const Compare &comp_): comp(comp_), 
+	heads_of_blocks(HeadCompare<Compare>(comp))
+	//TODO: buffer!
+	{
 		
 	}
 
