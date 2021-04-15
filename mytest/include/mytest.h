@@ -22,6 +22,11 @@ void CHECK_F(bool ex, int line, const std::string &file,
 void CHECK_MESSAGE_F(bool ex, int line, const std::string &sfile,
                      const std::string &my_expression,
                      const std::string &my_message);
+void REQUIRE_F(bool ex, int line, const std::string &file,
+             const std::string &my_expression);
+void REQUIRE_MESSAGE_F(bool ex, int line, const std::string &file,
+                     const std::string &my_expression,
+                     const std::string &my_message);
 void CHECK_T(const std::string &mark);
 int get_string();
 bool nowtest();
@@ -32,9 +37,15 @@ bool nowtest();
 #define CHECK(x) mytest::CHECK_F(x, __LINE__, std::string(__FILE__), #x)
 
 // NOLINTNEXTLINE: cppcoreguidelines-macro-usage
+#define REQUIRE(x) mytest::REQUIRE_F(x, __LINE__, std::string(__FILE__), #x)
+
+// NOLINTNEXTLINE: cppcoreguidelines-macro-usage
 #define CHECK_MESSAGE(x, mes)                                                  \
   ;                                                                            \
   mytest::CHECK_MESSAGE_F(x, __LINE__, std::string(__FILE__), #x, mes);
+
+// NOLINTNEXTLINE: cppcoreguidelines-macro-usage
+#define REQUIRE_MESSAGE(x, mes)  mytest::REQUIRE_MESSAGE_F(x, __LINE__, std::string(__FILE__), #x, mes);
 
 // NOLINTNEXTLINE: cppcoreguidelines-macro-usage
 #define MYTEST_INTERNAL_TEST_CASE(class_name, name)                            \

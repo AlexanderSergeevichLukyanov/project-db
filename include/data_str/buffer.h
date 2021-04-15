@@ -242,11 +242,11 @@ public:
         }
     }
 
-    [[nodiscard]] size_t size() {
+    [[nodiscard]] std::size_t size() const{
         return size_;
     }
 
-    [[nodiscard]] bool empty() {
+    [[nodiscard]] bool empty() const{
         return (size_ == 0);
     }
 

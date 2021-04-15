@@ -16,7 +16,7 @@ public:
 		return size_;
 	}
 	
-	void add(T &x){
+	void add(const T &x){
 		data[size_++]=x;
 	}
 	
@@ -27,7 +27,7 @@ public:
 	//	++I_COUNTER;
     }
 
-    void READ(std::string DirectoryName, int NextWrite, std::size_t k) {
+    void READ(std::string DirectoryName, int NextWrite, std::size_t k=n) {
         FILE *f;
 		size_=k;
 		f=fopen((DirectoryName+"/"+std::to_string(NextWrite)).c_str(), "wb+");

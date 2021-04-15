@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <type_traits>
 #include <vector>
+#include <queue>
 #include "mytest.h"
 #include "ph_with_buffer.h"
 
@@ -517,13 +518,13 @@ TEST_CASE("pairing-heap-with-compare: with std::greater(on max)") {
     CHECK(ch.empty());
 }
 
-void add(std::priority_queue<int> &pq, pairing_heap_with_buffer<int> &ph){
+void add(std::priority_queue<int> &pq, pairing_heap_with_buffer<int, 7000> &ph){
 	int x = rand();
 	pq.push(x);
 	ph.insert(x);
 }
 
-bool extract(std::priority_queue<int> &pq, pairing_heap_with_buffer<int> &ph){
+bool extract(std::priority_queue<int> &pq, pairing_heap_with_buffer<int, 7000> &ph){
 	int x = pq.top();
 	int y = ph.getMin();
 	pq.pop();
@@ -545,5 +546,4 @@ TEST_CASE("stress test with priority_queue: 10^6 operations"){
 		}
 	}
 }
-
 }  // namespace
