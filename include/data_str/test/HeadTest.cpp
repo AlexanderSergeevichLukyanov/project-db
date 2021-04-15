@@ -24,7 +24,7 @@ TEST_CASE("Create with compare"){
 	Head<int, compa> h;
 	compa2 t = compa2(10);
 	//HeadCompare<compa2> tt(t);
-	Head<int, compa2> h2(tt);
+	Head<int, compa2> h2(t);
 }
 
 TEST_CASE("add & size"){
