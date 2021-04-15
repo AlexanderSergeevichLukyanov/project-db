@@ -16,7 +16,7 @@ TEST_CASE("#1 -- without-comp"){
 		REQUIRE(ph.getMin().data[0]==3*j);
 		ph.extractMin();
 	}
-}
+}/*
 struct compa2{
 	int x;
 	compa2(int x_): x(x_){
@@ -44,4 +44,4 @@ TEST_CASE("#2 -- with-comp"){
 	ph.extractMin();
 	CHECK(ph.getMin().data[0]==3);
 	ph.extractMin();
-}
+}*/
