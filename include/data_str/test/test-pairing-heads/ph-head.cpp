@@ -3,7 +3,7 @@
 #include "head.h"
 
 TEST_CASE("#1 -- without-comp"){
-	pairing_heap<Head<int>> ph;
+	pairing_heap<Head<int>, HeadCompare<std::less<T>>> ph;
 	for(int j=0; j<7; ++j){
 		Head<int> h;
 		for(int i=0; i<3; ++i){
@@ -12,7 +12,7 @@ TEST_CASE("#1 -- without-comp"){
 		ph.insert(h);
 	}
 	for(int j=0; j<7; ++j){
-		REQUIRE(ph.getMin().data[0]==3*j);
+		CHECK(ph.getMin().data[0]==3*j);
 		ph.extractMin();
 	}
 }/*
