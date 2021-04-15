@@ -22,6 +22,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: compile!
-        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/data_str/test/HeadTest.cpp -I include -I mytest/include -std=c++17 -o test-head
+        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/data_str/test/HeadTest.cpp -I include -I include/data_str -I mytest/include -std=c++17 -o test-head
       - name: Run tests!
         run: ./test-head
