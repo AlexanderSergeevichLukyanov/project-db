@@ -31,8 +31,8 @@ struct Head{
 		++size;
 	}
 	
-	template<typename T, std::size_t k, typename Comp> 
-	void from_buf(buffer<T, k, Comp> &buf){
+	template<typename TT, std::size_t k, typename Comp> 
+	void from_buf(buffer<TT, k, Comp> &buf){
 		for(int i=2; i>-1; --i){
 			data[i]=buf.getMax();
 			buf.extractMax();
