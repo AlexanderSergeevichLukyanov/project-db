@@ -13,7 +13,7 @@ TEST_CASE("#1 -- without-comp"){
 		ph.insert(h);
 	}
 	for(int j=0; j<7; ++j){
-		REQUIRE(ph.getMin()[0]==3*j);
+		REQUIRE(ph.getMin().data[0]==3*j);
 		ph.extractMin();
 	}
 }
@@ -38,10 +38,10 @@ TEST_CASE("#2 -- with-comp"){
 	Head<int, compa2> h3(compa2(10));
 	h3.add(1), h3.add(3), h3.add(7);
 	ph.add(h3);
-	CHECK(ph.getMin()[0]==0);
+	CHECK(ph.getMin().data[0]==0);
 	ph.extractMin();
-	CHECK(ph.getMin()[0]==1);
+	CHECK(ph.getMin().data[0]==1);
 	ph.extractMin();
-	CHECK(ph.getMin()[0]==3);
+	CHECK(ph.getMin().data[0]==3);
 	ph.extractMin();
 }
