@@ -30,17 +30,17 @@ TEST_CASE("Create with compare"){
 TEST_CASE("add & size"){
 	Head<int> h;
 	CHECK(h.empty());
-	CHECK(h.size()==0);
+	CHECK(h.size==0);
 	h.add(1);
 	CHECK(!h.empty());
-	CHECK(h.size()==1);
+	CHECK(h.size==1);
 	CHECK(h[0]==1);
 	h.add(-1);
 	CHECK(h[0]==-1);
-	CHECK(h.size()==2);
+	CHECK(h.size==2);
 	CHECK(h[1]==1);
 	h.add(10);
-	CHECK(h.size()==3);
+	CHECK(h.size==3);
 	CHECK(h[2]==10);
 	CHECK(h[0]==-1);
 	CHECK(h[1]==1);
@@ -51,7 +51,7 @@ TEST_CASE("extract"){
 	h.add(1);
 	h.add(2);
 	h.extract();
-	CHECK(h.size()==1);
+	CHECK(h.size==1);
 	CHECK(h[0]==2);
 	h.add(-1);
 	CHECK(h[0]==-1);
