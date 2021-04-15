@@ -9,7 +9,7 @@ public:
 	}
 	
 	[[nodiscard]] bool full() const{
-		return (size_==n);
+		return (size_>=n);
 	}
 	
 	[[nodiscard]] std::size_t size() const{

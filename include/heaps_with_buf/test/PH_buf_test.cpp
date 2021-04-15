@@ -24,12 +24,6 @@ public:
 };
 
 
-TEST_CASE("pairing-heap: demo-test") {
-    CHECK(2 * 2 == 5);
-}
-
-
-
 TEST_CASE("pairing-heap: constructors without Compare") {
     pairing_heap_with_buffer<int, 10> h1;
     pairing_heap_with_buffer<double, 5> h2;
@@ -77,13 +71,11 @@ TEST_CASE("pairing-heap: 300000 GetMin()") {
         if (x < min)
             min = x;
         h1.insert(x);
-        CHECK_MESSAGE(h1.getMin() == min, "generate min is other");
+        CHECK_MESSAGE(h1.getMin() == min, "#"+std::to_string(i)+": generate min is other: "+std::to_string(h1.getMin())+" != "+std::to_string(min));
         if (h1.getMin() != min)
             break;
     }
 }
-
-
 
 TEST_CASE("pairing-heap: 3000 insert and 3000 extract_min") {
     pairing_heap_with_buffer<int, 10> h1;

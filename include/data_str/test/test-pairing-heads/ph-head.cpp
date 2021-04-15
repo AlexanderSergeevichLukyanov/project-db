@@ -1,6 +1,7 @@
 #include "mytest.h"
 #include "pairing_heap.h"
 #include "head.h"
+#include <queue>
 
 TEST_CASE("#1 -- without-comp"){
 	pairing_heap<Head<int>, HeadCompare<std::less<int>>> ph;
@@ -43,4 +44,37 @@ TEST_CASE("#2 -- with-comp"){
 	ph.extractMin();
 	CHECK_MESSAGE(ph.getMin().data[0]==3, "not "+std::to_string(ph.getMin().data[0]));
 	ph.extractMin();
+}
+
+void add(std::priority_queue<int> &pq, pairing_heap<Head<int, std::less<int>>, HeadCompare<std::less<int>>> &ph){
+	int x = rand();
+	int y = rand();
+	int z = rand();
+	pq.push(x);
+	pq.push(y);
+	pq.push(z);
+	Head<int, std::less<int>> h;
+	h.add(x), h.add(y), h.add(z);
+	ph.insert(h);
+}
+
+bool check_get(std::priority_queue<int> &pq, pairing_heap<Head<int, std::less<int>>, HeadCompare<std::less<int>>> &ph){
+	int x = pq.top();
+	int y = ph.getMin().data[0];
+	return (x==y);
+}
+
+TEST_CASE("stress test with priority_queue: 10^6 operations"){
+	std::priority_queue<int> pq;
+	pairing_heap<Head<int, std::less<int>>, HeadCompare<std::less<int>>> ph;
+	for(int i = 0; i<1'000'000; ++i){
+		int r = rand() % 3;
+		if(i==0 or r>0 or !pq.empty()){ //с большей вероятностью push
+			add(pq, ph);
+			REQUIRE(pq.size()/3==ph.size());
+		} else{
+			REQUIRE_MESSAGE(check_get(pq, ph), "#"+std::to_string(i)+": minimums are not equal!");
+			REQUIRE(pq.size()/3==ph.size());
+		}
+	}
 }

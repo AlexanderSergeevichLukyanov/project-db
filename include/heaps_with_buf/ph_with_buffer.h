@@ -1,6 +1,7 @@
 #include "block.h"
 #include "head.h"
 #include "pairing_heap.h"
+#include <cassert>
 const std::string folder_name = "ph-data";//  заглушка
 std::size_t block_counter = 0;//  заглушка
 template <typename T, size_t BlockSize, typename Compare = std::less<T>>
@@ -10,8 +11,10 @@ private:
 
     pairing_heap<Head<T, Compare>, HeadCompare<Compare>>
         heads_of_blocks;  //головы блоков на диске
-    buffer<T, 3 * BlockSize, Compare> buf;  //буффер для добавленных
-
+    buffer<T, 3 * BlockSize + 5, Compare> buf;  //буффер для добавленных
+	
+	std::size_t size_=0;
+	
     void flush_buf() {  //по факту новый блок
 
         if (buf.size() > BlockSize * 2) {  // TODO: нормальная ли константа?
@@ -20,14 +23,15 @@ private:
             Head<T, Compare> new_h(comp);
 
             while (!new_bl.full()) {
-                new_bl.add(buf.getMax());  // TODO: к 64
+                new_bl.add(buf.getMax());
                 buf.extractMax();
             }
-
+			
             ++block_counter;
 
             new_bl.WRITE(folder_name, block_counter);  //
             // TODO: запись + связка -- вроде done
+			assert(buf.size()>=3);
             new_h.from_buf(buf);
             new_h.id_tail = block_counter;
             // TODO: положить бошку в кучу -- вроде done
@@ -69,21 +73,22 @@ public:
     pairing_heap_with_buffer() = default;
     pairing_heap_with_buffer(const Compare &comp_)
         : comp(comp_),
-          heads_of_blocks(HeadCompare<Compare>(comp_)),
-		  buf(comp_)
+          heads_of_blocks(HeadCompare<Compare>(comp)),
+		  buf(comp)
     // TODO: buffer!
     {
     }
 
     [[nodiscard]] bool empty() const {
-        return (heads_of_blocks.empty() && buf.empty());
+        return (size_==0);
     }
 
     [[nodiscard]] std::size_t size() const {
-        return (heads_of_blocks.size() + buf.size());
+        return size_;
     }
 
     void insert(const T &x) {
+		++size_;
         buf.insert(x);
         flush_buf();  //авось переполнило
     }                 // вроде done
@@ -106,6 +111,7 @@ public:
     }  // вроде done
 
     void extractMin() {
+		--size_;
         if (heads_of_blocks.empty()) {
             buf.extractMin();
             return;

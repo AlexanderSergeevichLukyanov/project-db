@@ -14,8 +14,6 @@ struct HeadCompare{
 	}
 };
 
-
-
 template <typename T, typename Compare=std::less<T>>
 struct Head{
 	T data[3]{};
