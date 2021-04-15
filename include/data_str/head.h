@@ -29,7 +29,7 @@ struct Head{
 	}
 	
 	void add(T x){
-		data[++size]=x;
+		data[size++]=x;
 		std::sort(data, data+size, comp);
 	}
 	
