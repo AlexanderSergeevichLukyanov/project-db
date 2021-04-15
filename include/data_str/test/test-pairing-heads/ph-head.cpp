@@ -39,8 +39,8 @@ TEST_CASE("#2 -- with-comp"){
 	ph.insert(h3);
 	CHECK_MESSAGE(ph.getMin().data[0]==0, "not "+std::to_string(ph.getMin().data[0]));
 	ph.extractMin();
-	CHECK(ph.getMin().data[0]==1, "not "+std::to_string(ph.getMin().data[0]));
+	CHECK_MESSAGE(ph.getMin().data[0]==1, "not "+std::to_string(ph.getMin().data[0]));
 	ph.extractMin();
-	CHECK(ph.getMin().data[0]==3, "not "+std::to_string(ph.getMin().data[0]));
+	CHECK_MESSAGE(ph.getMin().data[0]==3, "not "+std::to_string(ph.getMin().data[0]));
 	ph.extractMin();
 }
