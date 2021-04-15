@@ -14,7 +14,9 @@ struct HeadCompare{
 	}
 };
 
-template <typename T, typename Compare=HeadCompare<std::less<T>> >
+
+
+template <typename T, typename Compare=std::less<T>>
 struct Head{
 	T data[3]{};
 	std::size_t id_tail;

@@ -21,10 +21,10 @@ struct compa2{
 };
 
 TEST_CASE("Create with compare"){
-	Head<int, HeadCompare<compa>> h;
+	Head<int, compa> h;
 	compa2 t = compa2(10);
-	HeadCompare<compa2> tt(t);
-	Head<int, HeadCompare<compa2>> h2(tt);
+	//HeadCompare<compa2> tt(t);
+	Head<int, compa2> h2(tt);
 }
 
 TEST_CASE("add & size"){
