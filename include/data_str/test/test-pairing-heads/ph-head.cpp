@@ -30,13 +30,13 @@ TEST_CASE("#2 -- with-comp"){
 	pairing_heap<Head<int, compa2>, HeadCompare<compa2>> ph(HeadCompare<compa2>(0));
 	Head<int, compa2> h(compa2(10));
 	h.add(5), h.add(3);
-	ph.add(h);
+	ph.insert(h);
 	Head<int, compa2> h2(compa2(10));
 	h2.add(0), h2.add(8);
-	ph.add(h2);
+	ph.insert(h2);
 	Head<int, compa2> h3(compa2(10));
 	h3.add(1), h3.add(3), h3.add(7);
-	ph.add(h3);
+	ph.insert(h3);
 	CHECK(ph.getMin().data[0]==0);
 	ph.extractMin();
 	CHECK(ph.getMin().data[0]==1);
