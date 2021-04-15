@@ -8,7 +8,8 @@ struct HeadCompare{
 	HeadCompare() = default;
 	HeadCompare(Compare &comp_): comp(comp_){
 	}
-	bool operator()(Head<auto, auto> &h1, Head<auto, auto> &h2){
+	template <typename TT, typename Comp>
+	bool operator()(Head<TT, Comp> &h1, Head<TT, Comp> &h2){
 		return comp(h1[0], h2[0]);
 	}
 };
