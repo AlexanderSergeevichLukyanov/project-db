@@ -1,4 +1,3 @@
-#include "buffer.h"
 #include "head.h"
 #include "block.h"
 #include "pairing_heap.h"
