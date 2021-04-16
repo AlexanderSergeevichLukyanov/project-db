@@ -55,31 +55,33 @@ private:
     } //ok
 
     void sift_up_max(size_t x) {  //поднимаем максимум
-        if (x < 3)
-            return;
-        size_t gr_pa_ = gr_pa(x);
-        if (comp(buf[gr_pa_], buf[x])) {
-            std::swap(buf[gr_pa_], buf[x]);
-            sift_up_max(gr_pa_);
+        if (x > 2 && comp(buf[gr_pa(x)], buf[x])) {
+            std::swap(buf[gr_pa(x)], buf[x]);
+            sift_up_max(gr_pa(x));
         }
     } //ok
 
     void sift_up_min(size_t x) {  //поднимаем минимум
-        if (x==0)
-            return;
-        size_t gr_pa_ = gr_pa(x);
-        if (comp(buf[x], buf[gr_pa_])) {
-            std::swap(buf[gr_pa_], buf[x]);
-            sift_up_min(gr_pa_);
+        if (x>2 && comp(buf[x], buf[gr_pa(x)])) {
+            std::swap(buf[gr_pa(x)], buf[x]);
+            sift_up_min(gr_pa(x));
         }
     } //ok
+	
+	[[nodiscard]] bool is_grchild(size_t par, size_t ch) const{
+		return ((((par+1)*4-2)<ch) and (((par+1)*4+3)>ch));
+	}
+
+	[[nodiscard]] bool has_child(size_t par) const{
+		return (par*2+1<size_);
+	}
 
     [[nodiscard]] size_t min_child(
         size_t *child,
-        int count) {  //возвращает индекс минимального ребетёнка (внучка)
+        int count=6) {  //возвращает индекс минимального ребетёнка (внучка)
         size_t res = child[0];
         T min_ch(buf[res]);
-        for (int i = 1; i <= count; ++i) {
+        for (int i = 1; i < count && i < size_; ++i) {
             if (comp(buf[child[i]], min_ch)) {
                 min_ch = buf[child[i]];
                 res = child[i];
@@ -89,10 +91,25 @@ private:
     } // ok
 
     void sift_down_min(size_t x) {
-        // if(x==-1) return;
+     
+	 // if(x==-1) return;
         size_t y = x + 1;
-        size_t child[4] = {4 * y - 1, 4 * y, 4 * y + 1, 4 * y + 2};
-
+        size_t child[6] = {2*x+1, 2*x+2, 4 * y - 1, 4 * y, 4 * y + 1, 4 * y + 2};
+		if(has_child(x)){
+			size_t m = min_child(child);
+			if(is_grchild(x, m)){
+				if(comp(buf[m], buf[x])){
+					std::swap(buf[m], buf[x]);
+					if(comp(buf[father(m)], buf[m])){
+						std::swap(buf[father(m)], buf[m]);
+					}
+					sift_down_min(m);
+				}
+			} else if(comp(buf[m], buf[x])){
+				std::swap(buf[m], buf[x]);
+			}
+		}
+/*
         if (size_ <= child[0]){
 			int i = x;
             if (size_ <= 2 * i + 1) {
@@ -146,14 +163,15 @@ private:
                 sift_down_min(min_ch);  //продолжаем наше движение
             }
         }
+		*/
     }
 
     [[nodiscard]] size_t max_child(
         size_t *child,
-        int count) {  //возвращает индекс минимального ребёнка
+        int count=6) {  //возвращает индекс минимального ребёнка
         size_t res = child[0];
         T max_ch(buf[res]);
-        for (int i = 1; i <= count; ++i) {
+        for (int i = 1; i < count && i<size_; ++i) {
             if (comp(max_ch, buf[child[i]])) {
                 max_ch = buf[child[i]];
                 res = child[i];
@@ -165,8 +183,23 @@ private:
     void sift_down_max(size_t x) {
         // if(x==-1) return;
         size_t y = x + 1;
-        size_t child[4] = {4 * y - 1, 4 * y, 4 * y + 1, 4 * y + 2};
+        size_t child[6] = {2*x+1, 2*x+2, 4 * y - 1, 4 * y, 4 * y + 1, 4 * y + 2};
         // assert(!is_min_level(x));
+		if(has_child(x)){
+			size_t m = max_child(child);
+			if(is_grchild(x, m)){
+				if(comp(buf[x], buf[m])){
+					std::swap(buf[x], buf[m]);
+					if(comp(buf[m], buf[father(m)])){
+						std::swap(buf[m], buf[father(m)]);
+					}
+					sift_up_max(m);
+				}
+			} else if(comp(buf[x], buf[m])){
+				std::swap(buf[x], buf[m]);
+			}
+		}
+		/*
         if (size_ <= child[0]) {
 			int i = x;
             if (size_ <= 2 * i + 1) {
@@ -212,12 +245,33 @@ private:
                 }
                 sift_down_max(max_ch);  //продолжаем наше движение
             }
-        }
+        }*/
     }
 
     [[nodiscard]] bool is_min_level(size_t ind) {  //мы на уровне минимумов?
+		if(ind==0) return true;
         return (static_cast<int>(log2(++ind)) % 2 == 0);  // TODO: & 1
     }
+
+	void sift_up(size_t x){
+		if(x!=0){
+			if(is_min_level(x)){
+				if(comp(buf[father(x)], buf[x])){
+					std::swap(buf[father(x)], buf[x]);
+					sift_up_max(father(x));
+				} else{
+					sift_up_min(x);
+				}
+			} else{
+				if(comp(buf[x], buf[father(x)])){
+					std::swap(buf[x], buf[father(x)]);
+					sift_up_min(father(x));
+				} else{
+					sift_up_max(x);
+				}
+			}
+		}
+	}
 
 public:
     buffer() = default;
@@ -288,7 +342,9 @@ public:
     } //ok
 
     void insert(const T &x) {  // TODO!
-        if (size_ == 0) {
+		buf[size_++]=x;
+		sift_up(size_-1);
+       /* if (size_ == 0) {
             buf[size_++] = x;
             return;
         }
@@ -315,7 +371,7 @@ public:
                 sift_up_min(fath);
             }
             sift_up_max(ind);
-        }
+        }*/
         //вставка
     }
 

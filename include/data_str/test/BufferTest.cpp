@@ -298,8 +298,15 @@ void check_min_max_size_m(buffer<int, n, Com> &b, std::multiset<int, Com> &s, in
 	}
 	std::cout<<"-/-\n";*/
 	REQUIRE_MESSAGE(b.size() == s.size(), "#"+std::to_string(k)+": size not equal:( ...");
-	REQUIRE_MESSAGE(*it_min == b.getMin(), "#"+std::to_string(k)+": minimums not equal: right -- "+std::to_string(*it_min)+" get -- "+std::to_string(b.getMin()));
-	REQUIRE_MESSAGE(*it_max == b.getMax(), "#"+std::to_string(k)+": maximums not equal: right -- "+std::to_string(*it_max)+" get -- "+std::to_string(b.getMax()));
+	REQUIRE_MESSAGE(*it_min == b.getMin(), "#"+std::to_string(k)+": minimums not equal: right -- "+std::to_string(*it_min)+" get -- "+std::to_string(b.getMin())+" size: "+std::to_string(b.size()));
+	if(*it_max != b.getMax()){
+		std::cout<<"\n-/-";
+		for(int i = 0; i<b.size(); ++i){
+			std::cerr<<b.buf[i]<<" ";
+		}
+		std::cout<<"-/-\n";
+	}
+	REQUIRE_MESSAGE(*it_max == b.getMax(), "#"+std::to_string(k)+": maximums not equal: right -- "+std::to_string(*it_max)+" get -- "+std::to_string(b.getMax())+" size: "+std::to_string(b.size()));
 }
 
 template <typename Com, std::size_t n>
