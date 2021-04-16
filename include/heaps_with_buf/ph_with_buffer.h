@@ -134,7 +134,11 @@ public:
         if (comp(buf.getMin(), heads_of_blocks.getMin().data[0])) {
             buf.extractMin();
         } else {
-            Head<T, Compare> h = heads_of_blocks.getMin();
+            Head<T, Compare> h(comp);
+			h = heads_of_blocks.getMin();
+			h.data[0] = heads_of_blocks.getMin().data[0];
+			h.data[1] = heads_of_blocks.getMin().data[1];
+			h.data[2] = heads_of_blocks.getMin().data[2];
             heads_of_blocks.extractMin();
             h.extract();
             if (h.empty()) {
