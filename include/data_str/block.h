@@ -2,8 +2,8 @@
 #include <string>
 #include <type_traits>
 
-inline const std::size_t I_COUNTER = 0;
-inline const std::size_t O_COUNTER = 0;
+inline std::size_t I_COUNTER = 0;
+inline std::size_t O_COUNTER = 0;
 
 template <typename T, std::size_t n>
 struct Block_t {
