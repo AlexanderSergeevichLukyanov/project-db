@@ -36,15 +36,15 @@ TEST_CASE("extract") {
         buf.insert(i * 2);
     }
     CHECK(buf.getMin() == 0);
-	for(int i=0; i<buf.size(); ++i){
+	/*for(int i=0; i<buf.size(); ++i){
 		std::cout<<buf.buf[i]<<" ";
 	}
-	std::cout<<"\n";
+	std::cout<<"\n";*/
     buf.extractMin();
-	for(int i=0; i<buf.size(); ++i){
+	/*for(int i=0; i<buf.size(); ++i){
 		std::cout<<buf.buf[i]<<" ";
 	}
-	std::cout<<"\n";
+	std::cout<<"\n";*/
     CHECK(buf.size() == 9);
     CHECK_MESSAGE(buf.getMin() == 2,
                   "your answer is " + std::to_string(buf.getMin()));
@@ -307,13 +307,6 @@ void check_min_max_size_m(buffer<int, n, Com> &b, std::multiset<int, Com> &s, in
 	std::cout<<"-/-\n";*/
 	REQUIRE_MESSAGE(b.size() == s.size(), "#"+std::to_string(k)+": size not equal:( ...");
 	REQUIRE_MESSAGE(*it_min == b.getMin(), "#"+std::to_string(k)+": minimums not equal: right -- "+std::to_string(*it_min)+" get -- "+std::to_string(b.getMin())+" size: "+std::to_string(b.size()));
-	if(*it_max != b.getMax()){
-		std::cout<<"\n-/-";
-		for(int i = 0; i<b.size(); ++i){
-			std::cerr<<b.buf[i]<<" ";
-		}
-		std::cout<<"-/-\n";
-	}
 	REQUIRE_MESSAGE(*it_max == b.getMax(), "#"+std::to_string(k)+": maximums not equal: right -- "+std::to_string(*it_max)+" get -- "+std::to_string(b.getMax())+" size: "+std::to_string(b.size()));
 }
 
