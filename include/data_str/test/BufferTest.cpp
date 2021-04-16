@@ -244,8 +244,8 @@ TEST_CASE("time-test #2 (extractMin) with compare") {
     CHECK(buf.empty());
 }
 
-template <typename Com>
-void add(buffer<int, 100'000, Com> &b, std::set<int, Com> &s){
+template <typename Com, std::size_t n>
+void add(buffer<int, n, Com> &b, std::set<int, Com> &s){
 	int x = (rand()-1)*40000+rand();
 	while(s.count(x)){
 		x = (rand()-1)*40000+rand();
@@ -255,8 +255,19 @@ void add(buffer<int, 100'000, Com> &b, std::set<int, Com> &s){
 	s.insert(x);
 }
 
-template <typename Com>
-void check_min_max_size(buffer<int, 100'000, Com> &b, std::set<int, Com> &s, int k){
+template <typename Com, std::size_t n>
+void add_m(buffer<int, n, Com> &b, std::multiset<int, Com> &s){
+	int x = (rand()-1)*40000+rand();
+	while(s.count(x)){
+		x = (rand()-1)*40000+rand();
+	}
+	//std::cerr<<"+++"<<x<<"\n";
+	b.insert(x);
+	s.insert(x);
+}
+
+template <typename Com, std::size_t n>
+void check_min_max_size(buffer<int, n, Com> &b, std::set<int, Com> &s, int k){
 	REQUIRE_MESSAGE(b.size()==s.size(), "size not equal:( ...");
 	std::set<int>::iterator it_min = s.begin();
 	std::set<int>::iterator it_max = --s.end();
@@ -273,15 +284,47 @@ void check_min_max_size(buffer<int, 100'000, Com> &b, std::set<int, Com> &s, int
 	REQUIRE_MESSAGE(*it_max == b.getMax(), "#"+std::to_string(k)+": maximums not equal: right -- "+std::to_string(*it_max)+" get -- "+std::to_string(b.getMax()));
 }
 
-template <typename Com>
-void extract_min(buffer<int, 100'000, Com> &b, std::set<int, Com> &s){
+template <typename Com, std::size_t n>
+void check_min_max_size_m(buffer<int, n, Com> &b, std::multiset<int, Com> &s, int k){
+	REQUIRE_MESSAGE(b.size()==s.size(), "size not equal:( ...");
+	std::set<int>::iterator it_min = s.begin();
+	std::set<int>::iterator it_max = --s.end();
+	/*for(int n : s){
+		std::cerr<<n<<" ";
+	}
+	std::cout<<"\n-/-";
+	for(int i = 0; i<b.size(); ++i){
+		std::cerr<<b.buf[i]<<" ";
+	}
+	std::cout<<"-/-\n";*/
+	REQUIRE_MESSAGE(b.size() == s.size(), "#"+std::to_string(k)+": size not equal:( ...");
+	REQUIRE_MESSAGE(*it_min == b.getMin(), "#"+std::to_string(k)+": minimums not equal: right -- "+std::to_string(*it_min)+" get -- "+std::to_string(b.getMin()));
+	REQUIRE_MESSAGE(*it_max == b.getMax(), "#"+std::to_string(k)+": maximums not equal: right -- "+std::to_string(*it_max)+" get -- "+std::to_string(b.getMax()));
+}
+
+template <typename Com, std::size_t n>
+void extract_min(buffer<int, n, Com> &b, std::set<int, Com> &s){
 	std::set<int>::iterator it_min = s.begin();
 	s.erase(it_min);
 	b.extractMin();
 }
 
-template <typename Com>
-void extract_max(buffer<int, 100'000, Com> &b, std::set<int, Com> &s){
+template <typename Com, std::size_t n>
+void extract_min_m(buffer<int, n, Com> &b, std::multiset<int, Com> &s){
+	std::set<int>::iterator it_min = s.begin();
+	s.erase(it_min);
+	b.extractMin();
+}
+
+template <typename Com, std::size_t n>
+void extract_max(buffer<int, n, Com> &b, std::set<int, Com> &s){
+	std::set<int>::iterator it_max = --s.end();
+	s.erase(it_max);
+	b.extractMax();
+}
+
+template <typename Com, std::size_t n>
+void extract_max_m(buffer<int, n, Com> &b, std::multiset<int, Com> &s){
 	std::set<int>::iterator it_max = --s.end();
 	s.erase(it_max);
 	b.extractMax();
@@ -291,6 +334,26 @@ TEST_CASE("stress-test with set"){
 	buffer<int, 100'000> b;
 	std::set<int> s;
 	for(int i=0; i<100'000; ++i){
+		int r = rand()%5;
+		if(s.empty() or r<4){
+			add(b,s);
+		} else if(r<5){
+			extract_min(b,s);
+		} else{
+			extract_max(b,s);
+		}
+		
+		if(!s.empty()){
+			check_min_max_size(b,s,i);
+		}
+		
+	}
+}
+
+TEST_CASE("stress-test with set - big"){
+	buffer<int, 500'000> b;
+	std::set<int> s;
+	for(int i=0; i<500'000; ++i){
 		int r = rand()%5;
 		if(s.empty() or r<4){
 			add(b,s);
@@ -326,3 +389,82 @@ TEST_CASE("stress-test with set & compare"){
 		
 	}
 }
+
+TEST_CASE("stress-test with set & compare -- big"){
+	buffer<int, 500'000, CloserTo> b(CloserTo(10000));
+	std::set<int, CloserTo> s(CloserTo(10000));
+	for(int i=0; i<500'000; ++i){
+		int r = rand()%5;
+		if(s.empty() or r<4){
+			add(b,s);
+		} else if(r<5){
+			extract_min(b,s);
+		} else{
+			extract_max(b,s);
+		}
+		
+		if(!s.empty()){
+			check_min_max_size(b,s,i);
+		}
+		
+	}
+}
+
+TEST_CASE("alya PH") {
+    buffer<int, 21000, CloserTo> h1(CloserTo(1000));
+    std::vector<int> res;
+    for (int i = 0; i < 10000; ++i) {
+        int x = rand() % 10000;
+        h1.insert(x);
+        res.push_back(std::abs(x - 1000));
+    }
+    std::sort(res.begin(), res.end());
+    CHECK_TIME(
+        "After 10000 insert random  and sort random x, then start checking "
+        "extract_min");
+    for (int i = 0; i < 10000; ++i) {
+        CHECK_MESSAGE(std::abs(h1.getMin() - 1000) == res[i], std::to_string(std::abs(h1.getMin() - 1000))+" != "+std::to_string(res[i]));
+        h1.extractMin();
+    }
+}
+
+TEST_CASE("stress-test with multiset - big"){
+	buffer<int, 500'000> b;
+	std::multiset<int> s;
+	for(int i=0; i<500'000; ++i){
+		int r = rand()%5;
+		if(s.empty() or r<4){
+			add_m(b,s);
+		} else if(r<5){
+			extract_min_m(b,s);
+		} else{
+			extract_max_m(b,s);
+		}
+		
+		if(!s.empty()){
+			check_min_max_size_m(b,s,i);
+		}
+		
+	}
+}
+
+TEST_CASE("stress-test with multiset - verybig"){
+	buffer<int, 501'000> b;
+	std::multiset<int> s;
+	for(int i=0; i<501'000; ++i){
+		int r = rand()%5;
+		if(s.empty() or r<4){
+			add_m(b,s);
+		} else if(r<5){
+			extract_min_m(b,s);
+		} else{
+			extract_max_m(b,s);
+		}
+		
+		if(!s.empty()){
+			check_min_max_size_m(b,s,i);
+		}
+		
+	}
+}
+

@@ -2,13 +2,14 @@
 #include "head.h"
 #include "pairing_heap.h"
 #include <cassert>
+//#include <set>
 const std::string folder_name = "ph-data";//  заглушка
 std::size_t block_counter = 0;//  заглушка
 template <typename T, size_t BlockSize, typename Compare = std::less<T>>
 struct pairing_heap_with_buffer {
 private:
     Compare comp;
-
+	//std::multiset<int, Compare> pr;
     pairing_heap<Head<T, Compare>, HeadCompare<Compare>>
         heads_of_blocks;  //головы блоков на диске
     buffer<T, 3 * BlockSize + 5, Compare> buf;  //буффер для добавленных
@@ -18,7 +19,6 @@ private:
     void flush_buf() {  //по факту новый блок
 
         if (buf.size() > BlockSize * 2) {  // TODO: нормальная ли константа?
-
             Block_t<T, BlockSize> new_bl;
             Head<T, Compare> new_h(comp);
 
@@ -34,6 +34,7 @@ private:
 			assert(buf.size()>=3);
             new_h.from_buf(buf);
             new_h.id_tail = block_counter;
+			heads_of_blocks.insert(new_h);
             // TODO: положить бошку в кучу -- вроде done
         }
     }
@@ -71,7 +72,7 @@ private:
 
 public:
     pairing_heap_with_buffer() = default;
-    pairing_heap_with_buffer(const Compare &comp_)
+    explicit pairing_heap_with_buffer(const Compare &comp_)
         : comp(comp_),
           heads_of_blocks(HeadCompare<Compare>(comp)),
 		  buf(comp)
@@ -88,8 +89,10 @@ public:
     }
 
     void insert(const T &x) {
+		//pr.insert(x);
 		++size_;
         buf.insert(x);
+		//CHECK(*(pr.begin())==buf.getMin());
         flush_buf();  //авось переполнило
     }                 // вроде done
 
@@ -112,8 +115,11 @@ public:
 
     void extractMin() {
 		--size_;
+		//CHECK(*(pr.begin())==buf.getMin());
         if (heads_of_blocks.empty()) {
+			REQUIRE(!pr.empty());
             buf.extractMin();
+			pr.erase(pr.begin());
             return;
         }
 
