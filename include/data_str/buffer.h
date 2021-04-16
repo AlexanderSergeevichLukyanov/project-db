@@ -34,9 +34,7 @@ struct buffer {  //ничто иное как обычный minmax
 private:
     Comp comp;
     size_t size_ = 0;
-public:
     T buf[size_buffer];  // Min-Max
-private:
 
     size_t gr_pa(size_t x) {  //дед
         if (x < 3) {          //слишком высоко

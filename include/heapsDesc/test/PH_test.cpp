@@ -598,10 +598,10 @@ TEST_CASE("stress test with multiset: 10^5 operations"){
 	}
 }
 
-TEST_CASE("stress test with multiset: 10^7 operations"){
+TEST_CASE("stress test with multiset: 10^5 operations"){
 	std::multiset<int> pq;
 	PairingHeap<int> ph;
-	for(int i = 0; i<10'000'000; ++i){
+	for(int i = 0; i<100'000; ++i){
 		int r = rand() % 7;
 		if(r<7 or pq.empty()){ //с большей вероятностью add
 			add(pq, ph);
@@ -613,10 +613,10 @@ TEST_CASE("stress test with multiset: 10^7 operations"){
 	}
 }
 
-TEST_CASE("stress test with multiset: 10^6 operations"){
+TEST_CASE("stress test with multiset: 10^5 operations"){
 	std::multiset<int> pq;
 	PairingHeap<int> ph;
-	for(int i = 0; i<1'000'000; ++i){
+	for(int i = 0; i<100'000; ++i){
 		int r = rand() % 7;
 		if(r<6 or pq.empty()){ //с большей вероятностью add
 			add(pq, ph);
