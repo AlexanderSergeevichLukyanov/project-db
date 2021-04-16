@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <type_traits>
 #include <vector>
-#include <queue>
+#include <set>
 #include "mytest.h"
 #include "ph_with_buffer.h"
 
@@ -25,7 +25,7 @@ public:
 
 
 TEST_CASE("pairing-heap: constructors without Compare") {
-    pairing_heap_with_buffer<int, 10> h1;
+    pairing_heap_with_buffer<int, 7000> h1;
     pairing_heap_with_buffer<double, 5> h2;
     pairing_heap_with_buffer<std::string, 5> h3;
     // only compile
@@ -34,7 +34,7 @@ TEST_CASE("pairing-heap: constructors without Compare") {
 
 
 TEST_CASE("pairing-heap: 30000 insert") {
-    pairing_heap_with_buffer<int, 10> h1;
+    pairing_heap_with_buffer<int, 7000> h1;
     for (int i = 0; i < 30000; ++i) {
         h1.insert(rand());
     }
@@ -42,7 +42,7 @@ TEST_CASE("pairing-heap: 30000 insert") {
 }
 
 TEST_CASE("pairing-heap: 300000 insert") {
-    pairing_heap_with_buffer<int, 10> h1;
+    pairing_heap_with_buffer<int, 7000> h1;
     for (int i = 0; i < 300000; ++i) {
         h1.insert(rand());
     }
@@ -52,7 +52,7 @@ TEST_CASE("pairing-heap: 300000 insert") {
 
 
 TEST_CASE("pairing-heap: GetMin()") {
-    pairing_heap_with_buffer<int, 10> h1;
+    pairing_heap_with_buffer<int, 7000> h1;
     int min = 300000;
     for (int i = 0; i < 300000; ++i) {
         int x = rand() % 300000;
@@ -64,7 +64,7 @@ TEST_CASE("pairing-heap: GetMin()") {
 }
 
 TEST_CASE("pairing-heap: 300000 GetMin()") {
-    pairing_heap_with_buffer<int, 10> h1;
+    pairing_heap_with_buffer<int, 7000> h1;
     int min = 300000;
     for (int i = 0; i < 300000; ++i) {
         int x = rand() % 300000;
@@ -78,7 +78,7 @@ TEST_CASE("pairing-heap: 300000 GetMin()") {
 }
 
 TEST_CASE("pairing-heap: 3000 insert and 3000 extract_min") {
-    pairing_heap_with_buffer<int, 10> h1;
+    pairing_heap_with_buffer<int, 7000> h1;
     std::vector<int> res;
     for (int i = 0; i < 3000; ++i) {
         int x = rand() % 3000;
@@ -96,7 +96,7 @@ TEST_CASE("pairing-heap: 3000 insert and 3000 extract_min") {
 }
 
 TEST_CASE("pairing-heap: 10000 insert and 10000 extract_min") {
-    pairing_heap_with_buffer<int, 10> h1;
+    pairing_heap_with_buffer<int, 7000> h1;
     std::vector<int> res;
     for (int i = 0; i < 10000; ++i) {
         int x = rand() % 10000;
@@ -116,7 +116,7 @@ TEST_CASE("pairing-heap: 10000 insert and 10000 extract_min") {
 
 /*
 TEST_CASE("pairing-heap: make (30000 elements)") {
-    pairing_heap_with_buffer<int, 10> h1;
+    pairing_heap_with_buffer<int, 7000> h1;
     int arr[30000];
     int min = 30000;
     for (int i = 0; i < 30000; ++i) {
@@ -134,7 +134,7 @@ TEST_CASE("pairing-heap: make (30000 elements)") {
 }
 
 TEST_CASE("pairing-heap: make (300000 elements)") {
-    pairing_heap_with_buffer<int, 10> h1;
+    pairing_heap_with_buffer<int, 7000> h1;
     int arr[300000];
     int min = 300000;
     for (int i = 0; i < 300000; ++i) {
@@ -154,7 +154,7 @@ TEST_CASE("pairing-heap: make (300000 elements)") {
 
 
 TEST_CASE("pairing-heap: random test#1") {
-    pairing_heap_with_buffer<int, 10> h1;
+    pairing_heap_with_buffer<int, 7000> h1;
     CHECK(h1.empty());
     CHECK(h1.size() == 0);
     h1.insert(1);
@@ -192,7 +192,7 @@ TEST_CASE("pairing-heap: random test#2") {
 }
 
 TEST_CASE("pairing-heap: check const, reference methods") {
-    pairing_heap_with_buffer<int, 10> h1;
+    pairing_heap_with_buffer<int, 7000> h1;
     h1.insert(6);
     h1.insert(1);
     CHECK_MESSAGE(std::is_reference<decltype(h1.getMin())>::value,
@@ -203,7 +203,7 @@ TEST_CASE("pairing-heap: check const, reference methods") {
 }
 /*
 TEST_CASE("pairing-heap: voids must be voids...") {
-    pairing_heap_with_buffer<int, 10> h1;
+    pairing_heap_with_buffer<int, 7000> h1;
     h1.insert(6);
     h1.insert(1);
     int p[10]{};
@@ -221,10 +221,10 @@ TEST_CASE("pairing-heap: voids must be voids...") {
 }
 */
 TEST_CASE("pairing-heap: pairing_heap_with_buffer(other &&)") {
-    pairing_heap_with_buffer<int, 10> h2;
+    pairing_heap_with_buffer<int, 7000> h2;
     h2.insert(1);
     h2.insert(2);
-    pairing_heap_with_buffer<int, 10> h1(std::move(h2));
+    pairing_heap_with_buffer<int, 7000> h1(std::move(h2));
     CHECK(h1.size() == 2);
     // CHECK(h2.size() == 0);
     CHECK(h1.getMin() == 1);
@@ -236,10 +236,10 @@ TEST_CASE("pairing-heap: pairing_heap_with_buffer(other &&)") {
 }
 
 TEST_CASE("pairing-heap: operator=(other &&)") {
-    pairing_heap_with_buffer<int, 10> h2;
+    pairing_heap_with_buffer<int, 7000> h2;
     h2.insert(1);
     h2.insert(2);
-    pairing_heap_with_buffer<int, 10> h1 = std::move(h2);
+    pairing_heap_with_buffer<int, 7000> h1 = std::move(h2);
     CHECK(h1.size() == 2);
     // CHECK(h2.size() == 0);
     CHECK(h1.getMin() == 1);
@@ -251,7 +251,7 @@ TEST_CASE("pairing-heap: operator=(other &&)") {
 }
 
 TEST_CASE("pairing-heap: default contructor must be implicit") {
-    [[maybe_unused]] pairing_heap_with_buffer<int, 10> h1 = {};
+    [[maybe_unused]] pairing_heap_with_buffer<int, 7000> h1 = {};
     // only compile
 }
 
@@ -259,14 +259,14 @@ TEST_CASE("pairing-heap: default contructor must be implicit") {
 
 
 TEST_CASE("pairing-heap: constructors with Compare") {
-    pairing_heap_with_buffer<int, 10, CloserTo> heap(CloserTo(10));
+    pairing_heap_with_buffer<int, 7000, CloserTo> heap(CloserTo(10));
     // only compile
 }
 
 
 
 TEST_CASE("pairing-heap-with-compare: 30000 insert") {
-    pairing_heap_with_buffer<int, 10, CloserTo> h1(CloserTo(10));
+    pairing_heap_with_buffer<int, 7000, CloserTo> h1(CloserTo(10));
     for (int i = 0; i < 30000; ++i) {
         h1.insert(rand());
     }
@@ -274,7 +274,7 @@ TEST_CASE("pairing-heap-with-compare: 30000 insert") {
 }
 
 TEST_CASE("pairing-heap-with-compare: 300000 insert") {
-    pairing_heap_with_buffer<int, 10, CloserTo> h1(CloserTo(10));
+    pairing_heap_with_buffer<int, 7000, CloserTo> h1(CloserTo(10));
     for (int i = 0; i < 300000; ++i) {
         h1.insert(rand());
     }
@@ -284,7 +284,7 @@ TEST_CASE("pairing-heap-with-compare: 300000 insert") {
 
 
 TEST_CASE("pairing-heap-with-compare: 3000 insert and 3000 extract_min") {
-    pairing_heap_with_buffer<int, 10, CloserTo> h1(CloserTo(10));
+    pairing_heap_with_buffer<int, 7000, CloserTo> h1(CloserTo(10));
     std::vector<int> res;
     for (int i = 0; i < 3000; ++i) {
         int x = rand() % 3000;
@@ -302,7 +302,7 @@ TEST_CASE("pairing-heap-with-compare: 3000 insert and 3000 extract_min") {
 }
 
 TEST_CASE("pairing-heap-with-compare: 10000 insert and 10000 extract_min") {
-    pairing_heap_with_buffer<int, 10, CloserTo> h1(CloserTo(10));
+    pairing_heap_with_buffer<int, 7000, CloserTo> h1(CloserTo(10));
     std::vector<int> res;
     for (int i = 0; i < 10000; ++i) {
         int x = rand() % 10000;
@@ -314,7 +314,7 @@ TEST_CASE("pairing-heap-with-compare: 10000 insert and 10000 extract_min") {
         "After 10000 insert random  and sort random x, then start checking "
         "extract_min");
     for (int i = 0; i < 10000; ++i) {
-        CHECK(std::abs(h1.getMin() - 10) == res[i]);
+        CHECK_MESSAGE(std::abs(h1.getMin() - 10) == res[i], "#"+std::to_string(i)+": "+std::to_string(std::abs(h1.getMin() - 10))+" != "+std::to_string(res[i]));
         h1.extractMin();
     }
 }
@@ -322,7 +322,7 @@ TEST_CASE("pairing-heap-with-compare: 10000 insert and 10000 extract_min") {
 
 
 TEST_CASE("pairing-heap-with-compare: 3000 insert and 3000 extract_min") {
-    pairing_heap_with_buffer<int, 10, CloserTo> h1(CloserTo(10));
+    pairing_heap_with_buffer<int, 7000, CloserTo> h1(CloserTo(10));
     std::vector<int> res;
     for (int i = 0; i < 3000; ++i) {
         int x = rand() % 3000;
@@ -340,7 +340,7 @@ TEST_CASE("pairing-heap-with-compare: 3000 insert and 3000 extract_min") {
 }
 
 TEST_CASE("pairing-heap-with-compare: 10000 insert and 10000 extract_min") {
-    pairing_heap_with_buffer<int, 10, CloserTo> h1(CloserTo(10));
+    pairing_heap_with_buffer<int, 7000, CloserTo> h1(CloserTo(10));
     std::vector<int> res;
     for (int i = 0; i < 10000; ++i) {
         int x = rand() % 10000;
@@ -352,7 +352,7 @@ TEST_CASE("pairing-heap-with-compare: 10000 insert and 10000 extract_min") {
         "After 10000 insert random  and sort random x, then start checking "
         "extract_min");
     for (int i = 0; i < 10000; ++i) {
-        CHECK(std::abs(h1.getMin() - 10) == res[i]);
+        CHECK_MESSAGE(std::abs(h1.getMin() - 10) == res[i], std::to_string(std::abs(h1.getMin() - 10))+" != "+std::to_string(res[i]));
         h1.extractMin();
     }
 }
@@ -360,7 +360,7 @@ TEST_CASE("pairing-heap-with-compare: 10000 insert and 10000 extract_min") {
 
 /*
 TEST_CASE("pairing-heap: make (30000 elements)") {
-    pairing_heap_with_buffer<int, 10, CloserTo> h1(CloserTo(10));
+    pairing_heap_with_buffer<int, 7000, CloserTo> h1(CloserTo(10));
     int arr[30000];
     int min = 30000;
     for (int i = 0; i < 30000; ++i) {
@@ -378,7 +378,7 @@ TEST_CASE("pairing-heap: make (30000 elements)") {
 }
 
 TEST_CASE("pairing-heap: make (300000 elements)") {
-    pairing_heap_with_buffer<int, 10, CloserTo> h1(CloserTo(10));
+    pairing_heap_with_buffer<int, 7000, CloserTo> h1(CloserTo(10));
     int arr[300000];
     int min = 300000;
     for (int i = 0; i < 300000; ++i) {
@@ -399,7 +399,7 @@ TEST_CASE("pairing-heap: make (300000 elements)") {
 
 
 TEST_CASE("pairing-heap-with-compare: random test") {
-    pairing_heap_with_buffer<int, 10, CloserTo> h1(CloserTo(10));
+    pairing_heap_with_buffer<int, 7000, CloserTo> h1(CloserTo(10));
     CHECK(h1.empty());
     CHECK(h1.size() == 0);
     h1.insert(1);
@@ -418,7 +418,7 @@ TEST_CASE("pairing-heap-with-compare: random test") {
 }
 
 TEST_CASE("pairing-heap-with-compare: check const, reference methods") {
-    pairing_heap_with_buffer<int, 10, CloserTo> h1(CloserTo(10));
+    pairing_heap_with_buffer<int, 7000, CloserTo> h1(CloserTo(10));
     h1.insert(7);
     h1.insert(1);
     CHECK_MESSAGE(std::is_reference<decltype(h1.getMin())>::value,
@@ -429,7 +429,7 @@ TEST_CASE("pairing-heap-with-compare: check const, reference methods") {
 }
 /*
 TEST_CASE("pairing-heap-with-compare: voids must be voids...") {
-    pairing_heap_with_buffer<int, 10, CloserTo> h1(CloserTo(10));
+    pairing_heap_with_buffer<int, 7000, CloserTo> h1(CloserTo(10));
     h1.insert(7);
     h1.insert(1);
     int p[10]{};
@@ -447,10 +447,10 @@ TEST_CASE("pairing-heap-with-compare: voids must be voids...") {
 }
 */
 TEST_CASE("pairing-heap-with-compare: pairing_heap_with_buffer(other &&)") {
-    pairing_heap_with_buffer<int, 10, CloserTo> h2(CloserTo(10));
+    pairing_heap_with_buffer<int, 7000, CloserTo> h2(CloserTo(10));
     h2.insert(1);
     h2.insert(2);
-    pairing_heap_with_buffer<int, 10, CloserTo> h1(std::move(h2));
+    pairing_heap_with_buffer<int, 7000, CloserTo> h1(std::move(h2));
     CHECK(h1.size() == 2);
     //   CHECK(h2.size() == 0);
     CHECK(h1.getMin() == 2);
@@ -462,10 +462,10 @@ TEST_CASE("pairing-heap-with-compare: pairing_heap_with_buffer(other &&)") {
 }
 
 TEST_CASE("pairing-heap-with-compare: operator=(other &&)") {
-    pairing_heap_with_buffer<int, 10, CloserTo> h2(CloserTo(10));
+    pairing_heap_with_buffer<int, 7000, CloserTo> h2(CloserTo(10));
     h2.insert(1);
     h2.insert(2);
-    pairing_heap_with_buffer<int, 10, CloserTo> h1 = std::move(h2);
+    pairing_heap_with_buffer<int, 7000, CloserTo> h1 = std::move(h2);
     CHECK(h1.size() == 2);
     // CHECK(h2.size() == 0);
     CHECK(h1.getMin() == 2);
@@ -478,12 +478,12 @@ TEST_CASE("pairing-heap-with-compare: operator=(other &&)") {
 
 TEST_CASE(
     "pairing-heap-with-compare: constructor from comparator is explicit") {
-    CHECK((std::is_constructible_v<pairing_heap_with_buffer<int, 10>, std::less<int>>));
-    CHECK((!std::is_convertible_v<std::less<int>, pairing_heap_with_buffer<int, 10>>));
+    CHECK((std::is_constructible_v<pairing_heap_with_buffer<int, 7000>, std::less<int>>));
+    CHECK((!std::is_convertible_v<std::less<int>, pairing_heap_with_buffer<int, 7000>>));
 }
 
 TEST_CASE("pairing-heap-with-compare: with std::greater(on max)") {
-    pairing_heap_with_buffer<int, 10, std::greater<>> heap;
+    pairing_heap_with_buffer<int, 7000, std::greater<>> heap;
     const auto &ch = heap;
 
     heap.insert(5);
@@ -510,30 +510,33 @@ TEST_CASE("pairing-heap-with-compare: with std::greater(on max)") {
     CHECK(ch.empty());
 }
 
-void add(std::priority_queue<int> &pq, pairing_heap_with_buffer<int, 7000> &ph){
-	int x = rand();
-	pq.push(x);
+void add(std::set<int> &pq, pairing_heap_with_buffer<int, 7000> &ph){
+	int x = 40000*rand()+rand();
+	while(pq.count(x)){
+		x = (rand()-1)*40000+rand();
+	}
+	pq.insert(x);
 	ph.insert(x);
 }
 
-bool extract(std::priority_queue<int> &pq, pairing_heap_with_buffer<int, 7000> &ph){
-	int x = pq.top();
+void extract(std::set<int> &pq, pairing_heap_with_buffer<int, 7000> &ph, int k){
+	int x = *(pq.begin());
 	int y = ph.getMin();
-	pq.pop();
+	pq.erase(pq.begin());
 	ph.extractMin();
-	return (x==y);
+	REQUIRE_MESSAGE(x==y, "#"+std::to_string(k)+": minimums are not equal: "+std::to_string(x)+" != "+std::to_string(y));
 }
 
 TEST_CASE("stress test with priority_queue: 10^6 operations"){
-	std::priority_queue<int> pq;
+	std::set<int> pq;
 	pairing_heap_with_buffer<int, 7000> ph;
-	for(int i = 0; i<1'000'000; ++i){
+	for(int i = 0; i<100'000; ++i){
 		int r = rand() % 3;
-		if(r==1 && !pq.empty()){ //с меньшей вероятностью push
+		if(r<2 or pq.empty()){ //с большей вероятностью push
 			add(pq, ph);
 			REQUIRE(pq.size()==ph.size());
 		} else{
-			REQUIRE_MESSAGE(extract(pq, ph), "minimums are not equal!");
+			extract(pq, ph, i);
 			REQUIRE(pq.size()==ph.size());
 		}
 	}

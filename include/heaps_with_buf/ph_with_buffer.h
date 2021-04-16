@@ -118,21 +118,23 @@ public:
         }
 
         if (buf.empty()) {
-            Head h = heads_of_blocks.getMin();
+            Head<T, Compare> h = heads_of_blocks.getMin();
             heads_of_blocks.extractMin();
             h.extract();
             if (h.empty()) {
                 Block_t<T, BlockSize> new_bl;
-                new_bl.READ(folder_name, h.id_tail, BlockSize);
+                new_bl.READ(folder_name, h.id_tail);
                 block_to_buf(new_bl);
-            }
+            } else{
+				heads_of_blocks.insert(h);
+			}
             return;
         }
 
         if (comp(buf.getMin(), heads_of_blocks.getMin().data[0])) {
             buf.extractMin();
         } else {
-            Head h = heads_of_blocks.getMin();
+            Head<T, Compare> h = heads_of_blocks.getMin();
             heads_of_blocks.extractMin();
             h.extract();
             if (h.empty()) {
@@ -144,6 +146,7 @@ public:
                     h.add(buf.getMin());
                     buf.extractMin();
                 }
+				heads_of_blocks.insert(h);
             }
         }
     }

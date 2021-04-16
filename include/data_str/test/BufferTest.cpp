@@ -1,6 +1,7 @@
 #include "mytest.h" 
 #include "buffer.h"
 #include <climits>
+#include <set>
 TEST_CASE("insert & getters & size") {
     buffer<int, 32> buf;
     CHECK(buf.empty());
@@ -241,4 +242,87 @@ TEST_CASE("time-test #2 (extractMin) with compare") {
         buf.extractMin();
     }
     CHECK(buf.empty());
+}
+
+template <typename Com>
+void add(buffer<int, 100'000, Com> &b, std::set<int, Com> &s){
+	int x = (rand()-1)*40000+rand();
+	while(s.count(x)){
+		x = (rand()-1)*40000+rand();
+	}
+	//std::cerr<<"+++"<<x<<"\n";
+	b.insert(x);
+	s.insert(x);
+}
+
+template <typename Com>
+void check_min_max_size(buffer<int, 100'000, Com> &b, std::set<int, Com> &s, int k){
+	REQUIRE_MESSAGE(b.size()==s.size(), "size not equal:( ...");
+	std::set<int>::iterator it_min = s.begin();
+	std::set<int>::iterator it_max = --s.end();
+	/*for(int n : s){
+		std::cerr<<n<<" ";
+	}
+	std::cout<<"\n-/-";
+	for(int i = 0; i<b.size(); ++i){
+		std::cerr<<b.buf[i]<<" ";
+	}
+	std::cout<<"-/-\n";*/
+	REQUIRE_MESSAGE(b.size() == s.size(), "#"+std::to_string(k)+": size not equal:( ...");
+	REQUIRE_MESSAGE(*it_min == b.getMin(), "#"+std::to_string(k)+": minimums not equal: right -- "+std::to_string(*it_min)+" get -- "+std::to_string(b.getMin()));
+	REQUIRE_MESSAGE(*it_max == b.getMax(), "#"+std::to_string(k)+": maximums not equal: right -- "+std::to_string(*it_max)+" get -- "+std::to_string(b.getMax()));
+}
+
+template <typename Com>
+void extract_min(buffer<int, 100'000, Com> &b, std::set<int, Com> &s){
+	std::set<int>::iterator it_min = s.begin();
+	s.erase(it_min);
+	b.extractMin();
+}
+
+template <typename Com>
+void extract_max(buffer<int, 100'000, Com> &b, std::set<int, Com> &s){
+	std::set<int>::iterator it_max = --s.end();
+	s.erase(it_max);
+	b.extractMax();
+}
+
+TEST_CASE("stress-test with set"){
+	buffer<int, 100'000> b;
+	std::set<int> s;
+	for(int i=0; i<100'000; ++i){
+		int r = rand()%5;
+		if(s.empty() or r<4){
+			add(b,s);
+		} else if(r<5){
+			extract_min(b,s);
+		} else{
+			extract_max(b,s);
+		}
+		
+		if(!s.empty()){
+			check_min_max_size(b,s,i);
+		}
+		
+	}
+}
+
+TEST_CASE("stress-test with set & compare"){
+	buffer<int, 100'000, CloserTo> b(CloserTo(10));
+	std::set<int, CloserTo> s(CloserTo(10));
+	for(int i=0; i<100'000; ++i){
+		int r = rand()%5;
+		if(s.empty() or r<4){
+			add(b,s);
+		} else if(r<5){
+			extract_min(b,s);
+		} else{
+			extract_max(b,s);
+		}
+		
+		if(!s.empty()){
+			check_min_max_size(b,s,i);
+		}
+		
+	}
 }

@@ -34,15 +34,17 @@ struct buffer {  //ничто иное как обычный minmax
 private:
     Comp comp;
     size_t size_ = 0;
+public:
     T buf[size_buffer];  // Min-Max
+private:
 
     size_t gr_pa(size_t x) {  //дед
-        if (x < 4) {          //слишком высоко
+        if (x < 3) {          //слишком высоко
             abort();
         } else {
             return (x - 3) / 4;
         }
-    }
+    } //ok
 
     size_t father(size_t x) {
         if (x == 0) {
@@ -50,31 +52,31 @@ private:
         } else {
             return (x - 1) / 2;
         }
-    }
+    } //ok
 
     void sift_up_max(size_t x) {  //поднимаем максимум
-        if (x < 4)
+        if (x < 3)
             return;
         size_t gr_pa_ = gr_pa(x);
         if (comp(buf[gr_pa_], buf[x])) {
             std::swap(buf[gr_pa_], buf[x]);
             sift_up_max(gr_pa_);
         }
-    }
+    } //ok
 
     void sift_up_min(size_t x) {  //поднимаем минимум
-        if (x < 4)
+        if (x==0)
             return;
         size_t gr_pa_ = gr_pa(x);
         if (comp(buf[x], buf[gr_pa_])) {
             std::swap(buf[gr_pa_], buf[x]);
             sift_up_min(gr_pa_);
         }
-    }
+    } //ok
 
     [[nodiscard]] size_t min_child(
         size_t *child,
-        int count) {  //возвращает индекс минимального ребетёнка
+        int count) {  //возвращает индекс минимального ребетёнка (внучка)
         size_t res = child[0];
         T min_ch(buf[res]);
         for (int i = 1; i <= count; ++i) {
@@ -84,17 +86,32 @@ private:
             }
         }
         return res;
-    }
+    } // ok
 
     void sift_down_min(size_t x) {
         // if(x==-1) return;
         size_t y = x + 1;
         size_t child[4] = {4 * y - 1, 4 * y, 4 * y + 1, 4 * y + 2};
-        // assert(is_min_level(x));
-        if (size_ <= child[0]) {
-            //всё
-            // std::cerr<<"lol";
-        } else {
+
+        if (size_ <= child[0]){
+			int i = x;
+            if (size_ <= 2 * i + 1) {
+                } else if (size_ <= 2 * i + 2) {
+                    if (comp(buf[2 * i + 1], buf[i])) {
+                        std::swap(buf[i], buf[2 * i + 1]);
+                    }
+                } else {
+                    if (comp(buf[2 * i + 2], buf[2 * i + 1])) {
+                        if (comp(buf[2*i+2], buf[i])) {
+                            std::swap(buf[i], buf[2 * i + 2]);
+                        }
+                    } else {
+                        if (comp(buf[2*i+1], buf[i])) {
+                            std::swap(buf[i], buf[2 * i + 1]);
+                        }
+                    }
+                }
+		} else {
             size_t min_ch =
                 min_child(child, std::min(child[3], size_ - 1) -
                                      child[0]);  //выбрали младшенького внучка
@@ -151,7 +168,23 @@ private:
         size_t child[4] = {4 * y - 1, 4 * y, 4 * y + 1, 4 * y + 2};
         // assert(!is_min_level(x));
         if (size_ <= child[0]) {
-            //всё
+			int i = x;
+            if (size_ <= 2 * i + 1) {
+                } else if (size_ <= 2 * i + 2) {
+                    if (comp(buf[i], buf[2 * i + 1])) {
+                        std::swap(buf[i], buf[2 * i + 1]);
+                    }
+                } else {
+                    if (comp(buf[2 * i + 1], buf[2 * i + 2])) {
+                        if (comp(buf[i], buf[2 * i + 2])) {
+                            std::swap(buf[i], buf[2 * i + 2]);
+                        }
+                    } else {
+                        if (comp(buf[i], buf[2 * i + 1])) {
+                            std::swap(buf[i], buf[2 * i + 1]);
+                        }
+                    }
+                }
         } else {
             size_t max_ch =
                 max_child(child, std::min(child[3], size_ - 1) -
@@ -231,8 +264,12 @@ public:
     const T &getMax() const {
         if (size_ == 1) {
             return buf[0];
-        } else if (size_ == 2) {
-            return buf[1];
+        } else if (size_ == 2) { //opt!
+			if(comp(buf[0], buf[1])){
+				return buf[1];
+			} else{
+				return buf[0];
+			}
         } else {
             if (comp(buf[1], buf[2]))
                 return buf[2];
@@ -244,11 +281,11 @@ public:
 
     [[nodiscard]] std::size_t size() const{
         return size_;
-    }
+    } //ok
 
     [[nodiscard]] bool empty() const{
         return (size_ == 0);
-    }
+    } //ok
 
     void insert(const T &x) {  // TODO!
         if (size_ == 0) {
