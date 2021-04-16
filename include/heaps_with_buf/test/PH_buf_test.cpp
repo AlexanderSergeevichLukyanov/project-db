@@ -511,7 +511,7 @@ TEST_CASE("pairing-heap-with-compare: with std::greater(on max)") {
 }
 
 void add(std::set<int> &pq, pairing_heap_with_buffer<int, 7000> &ph){
-	int x = 40000*rand()+rand();
+	int x = 40000*(rand()-1)+rand();
 	while(pq.count(x)){
 		x = (rand()-1)*40000+rand();
 	}
