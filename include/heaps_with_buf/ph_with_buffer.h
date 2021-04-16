@@ -119,7 +119,7 @@ public:
         if (heads_of_blocks.empty()) {
 		//	REQUIRE(!pr.empty());
             buf.extractMin();
-			pr.erase(pr.begin());
+//			pr.erase(pr.begin());
             return;
         }
 
