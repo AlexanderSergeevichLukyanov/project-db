@@ -117,7 +117,7 @@ public:
 		--size_;
 		//CHECK(*(pr.begin())==buf.getMin());
         if (heads_of_blocks.empty()) {
-			REQUIRE(!pr.empty());
+		//	REQUIRE(!pr.empty());
             buf.extractMin();
 			pr.erase(pr.begin());
             return;
