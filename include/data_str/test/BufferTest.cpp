@@ -449,6 +449,17 @@ TEST_CASE("stress-test with multiset - big"){
 }
 
 TEST_CASE("stress-test with multiset & compare - big"){
+	buffer<int, 50'000, CloserTo> b(CloserTo(10));
+	std::multiset<int, CloserTo> s(CloserTo(10));
+	for(int i=0; i<30'000; ++i){
+		add_m(b,s);
+	}
+	for(int i=0; i<30'000; ++i){
+		extract_min_m(b,s);
+	}
+}
+
+TEST_CASE("stress-test with multiset & compare - big"){
 	buffer<int, 500'000, CloserTo> b(CloserTo(10));
 	std::multiset<int, CloserTo> s(CloserTo(10));
 	for(int i=0; i<500'000; ++i){
