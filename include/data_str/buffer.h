@@ -109,61 +109,6 @@ private:
 				std::swap(buf[m], buf[x]);
 			}
 		}
-/*
-        if (size_ <= child[0]){
-			int i = x;
-            if (size_ <= 2 * i + 1) {
-                } else if (size_ <= 2 * i + 2) {
-                    if (comp(buf[2 * i + 1], buf[i])) {
-                        std::swap(buf[i], buf[2 * i + 1]);
-                    }
-                } else {
-                    if (comp(buf[2 * i + 2], buf[2 * i + 1])) {
-                        if (comp(buf[2*i+2], buf[i])) {
-                            std::swap(buf[i], buf[2 * i + 2]);
-                        }
-                    } else {
-                        if (comp(buf[2*i+1], buf[i])) {
-                            std::swap(buf[i], buf[2 * i + 1]);
-                        }
-                    }
-                }
-		} else {
-            size_t min_ch =
-                min_child(child, std::min(child[3], size_ - 1) -
-                                     child[0]);  //выбрали младшенького внучка
-            // std::cerr<<min_ch;
-            if (comp(buf[min_ch],
-                     buf[x])) {  //если дедушка не младше - фигово, тут всё
-                                 //наоборот
-                std::swap(buf[min_ch], buf[x]);
-                size_t fath = father(min_ch);
-                if (comp(buf[fath],
-                         buf[min_ch])) {  //а не конфликтуем ли с папой?
-                    //он больше должен быть
-                    std::swap(buf[fath], buf[min_ch]);
-                }
-                int i = min_ch;
-                if (size_ <= 2 * i + 1) {
-                } else if (size_ <= 2 * i + 2) {
-                    if (comp(buf[2 * i + 1], buf[min_ch])) {
-                        std::swap(buf[min_ch], buf[2 * i + 1]);
-                    }
-                } else {
-                    if (comp(buf[2 * i + 2], buf[2 * i + 2])) {
-                        if (comp(buf[2 * i + 2], buf[min_ch])) {
-                            std::swap(buf[min_ch], buf[2 * i + 2]);
-                        }
-                    } else {
-                        if (comp(buf[2 * i + 1], buf[min_ch])) {
-                            std::swap(buf[min_ch], buf[2 * i + 1]);
-                        }
-                    }
-                }
-                sift_down_min(min_ch);  //продолжаем наше движение
-            }
-        }
-		*/
     }
 
     [[nodiscard]] size_t max_child(
@@ -199,53 +144,6 @@ private:
 				std::swap(buf[x], buf[m]);
 			}
 		}
-		/*
-        if (size_ <= child[0]) {
-			int i = x;
-            if (size_ <= 2 * i + 1) {
-                } else if (size_ <= 2 * i + 2) {
-                    if (comp(buf[i], buf[2 * i + 1])) {
-                        std::swap(buf[i], buf[2 * i + 1]);
-                    }
-                } else {
-                    if (comp(buf[2 * i + 1], buf[2 * i + 2])) {
-                        if (comp(buf[i], buf[2 * i + 2])) {
-                            std::swap(buf[i], buf[2 * i + 2]);
-                        }
-                    } else {
-                        if (comp(buf[i], buf[2 * i + 1])) {
-                            std::swap(buf[i], buf[2 * i + 1]);
-                        }
-                    }
-                }
-        } else {
-            size_t max_ch =
-                max_child(child, std::min(child[3], size_ - 1) -
-                                     child[0]);  //выбрали старшенького внучка
-            // std::cerr<<max_ch;
-            if (comp(buf[x],
-                     buf[max_ch])) {  //если дедушка не старше - фигово, неправильно это
-                std::swap(buf[max_ch], buf[x]);  // TODO!!!!
-                size_t i = max_ch;
-                if (size_ <= 2 * i + 1) {
-                } else if (size_ <= 2 * i + 2) {
-                    if (comp(buf[max_ch], buf[2 * i + 1])) {
-                        std::swap(buf[max_ch], buf[2 * i + 1]);
-                    }
-                } else {
-                    if (comp(buf[2 * i + 1], buf[2 * i + 2])) {
-                        if (comp(buf[max_ch], buf[2 * i + 2])) {
-                            std::swap(buf[max_ch], buf[2 * i + 2]);
-                        }
-                    } else {
-                        if (comp(buf[max_ch], buf[2 * i + 1])) {
-                            std::swap(buf[max_ch], buf[2 * i + 1]);
-                        }
-                    }
-                }
-                sift_down_max(max_ch);  //продолжаем наше движение
-            }
-        }*/
     }
 
     [[nodiscard]] bool is_min_level(size_t ind) {  //мы на уровне минимумов?
@@ -354,34 +252,6 @@ public:
     void insert(const T &x) {  // TODO!
 		buf[size_++]=x;
 		sift_up(size_-1);
-       /* if (size_ == 0) {
-            buf[size_++] = x;
-            return;
-        }
-
-        size_t ind = size_++;
-        buf[ind] = x;
-        if (is_min_level(ind)) {
-            size_t fath = father(ind);
-            // assert(fath==-1);
-            if (comp(buf[fath],
-                     buf[ind])) {  //мы должны быть меньше своего отца на
-                //минимальном уровне, иначе:
-                std::swap(buf[fath], buf[ind]);
-                sift_up_max(fath);
-            }
-            sift_up_min(ind);
-        } else {
-            size_t fath = father(ind);
-            // // // assert(fath==-1);
-            if (comp(buf[ind],
-                     buf[fath])) {  //мы на уровне максимумов, должны быть
-                //больше своего отца, иначе:
-                std::swap(buf[fath], buf[ind]);
-                sift_up_min(fath);
-            }
-            sift_up_max(ind);
-        }*/
         //вставка
     }
 
