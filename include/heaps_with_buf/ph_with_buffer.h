@@ -3,8 +3,8 @@
 #include "pairing_heap.h"
 #include <cassert>
 //#include <set>
-const std::string folder_name = "ph-data";//  заглушка
-std::size_t block_counter = 0;//  заглушка
+inline const std::string folder_name = "ph-data";//  заглушка
+inline std::size_t block_counter = 0;//  заглушка
 template <typename T, size_t BlockSize, typename Compare = std::less<T>>
 struct pairing_heap_with_buffer {
 private:

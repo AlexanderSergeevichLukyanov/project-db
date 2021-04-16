@@ -81,7 +81,7 @@ private:
         int count=6) {  //возвращает индекс минимального ребетёнка (внучка)
         size_t res = child[0];
         T min_ch(buf[res]);
-        for (int i = 1; i < count && i < size_; ++i) {
+        for (int i = 1; i < count && child[i] < size_; ++i) {
             if (comp(buf[child[i]], min_ch)) {
                 min_ch = buf[child[i]];
                 res = child[i];
@@ -171,7 +171,7 @@ private:
         int count=6) {  //возвращает индекс минимального ребёнка
         size_t res = child[0];
         T max_ch(buf[res]);
-        for (int i = 1; i < count && i<size_; ++i) {
+        for (int i = 1; i < count && child[i]<size_; ++i) {
             if (comp(max_ch, buf[child[i]])) {
                 max_ch = buf[child[i]];
                 res = child[i];
@@ -193,7 +193,7 @@ private:
 					if(comp(buf[m], buf[father(m)])){
 						std::swap(buf[m], buf[father(m)]);
 					}
-					sift_up_max(m);
+					sift_down_max(m);
 				}
 			} else if(comp(buf[x], buf[m])){
 				std::swap(buf[x], buf[m]);
@@ -250,7 +250,7 @@ private:
 
     [[nodiscard]] bool is_min_level(size_t ind) {  //мы на уровне минимумов?
 		if(ind==0) return true;
-        return (static_cast<int>(log2(++ind)) % 2 == 0);  // TODO: & 1
+        return (static_cast<int>(log2(1+ind)) % 2 == 0);  // TODO: & 1
     }
 
 	void sift_up(size_t x){
@@ -293,7 +293,7 @@ public:
         }
 
         std::swap(buf[0], buf[--size_]);
-        sift_down_min(0);
+        sift_down(0);
     }
 
     void extractMax() {  // TODO!
@@ -311,10 +311,12 @@ public:
         if (comp(buf[2], buf[1])) {
             std::swap(buf[1], buf[--size_]);
             sift_down(1);
+		//	std::cerr<<"l";
             // max_val = &buf[1];
         } else {
             std::swap(buf[2], buf[--size_]);
             sift_down(2);
+		//	std::cerr<<"r";
         }
         /// size_--;
     }

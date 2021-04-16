@@ -36,7 +36,15 @@ TEST_CASE("extract") {
         buf.insert(i * 2);
     }
     CHECK(buf.getMin() == 0);
+	for(int i=0; i<buf.size(); ++i){
+		std::cout<<buf.buf[i]<<" ";
+	}
+	std::cout<<"\n";
     buf.extractMin();
+	for(int i=0; i<buf.size(); ++i){
+		std::cout<<buf.buf[i]<<" ";
+	}
+	std::cout<<"\n";
     CHECK(buf.size() == 9);
     CHECK_MESSAGE(buf.getMin() == 2,
                   "your answer is " + std::to_string(buf.getMin()));

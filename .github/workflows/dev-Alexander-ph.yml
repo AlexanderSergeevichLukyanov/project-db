@@ -61,6 +61,18 @@ jobs:
         run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/heaps_with_buf/test/PH_buf_test.cpp -I include -I include/heaps_with_buf -I include/data_str -I mytest/include -std=c++17 -o ph-buf
       - name: Run tests!
         run: ./ph-buf
+  PairingHeap:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: compile!
+        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/heapsDesc/test/PH_test.cpp -I include -I include/heaps_with_buf -I include/heapsDesc -I include/data_str -I mytest/include -std=c++17 -o PH-test
+      - name: Run tests!
+        run: ./PH-test
   block:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest

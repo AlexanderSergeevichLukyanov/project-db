@@ -510,16 +510,13 @@ TEST_CASE("pairing-heap-with-compare: with std::greater(on max)") {
     CHECK(ch.empty());
 }
 
-void add(std::set<int> &pq, pairing_heap_with_buffer<int, 7000> &ph){
+void add(std::multiset<int> &pq, pairing_heap_with_buffer<int, 7000> &ph){
 	int x = rand();
-	while(pq.count(x)){
-		x = rand();
-	}
 	pq.insert(x);
 	ph.insert(x);
 }
 
-void extract(std::set<int> &pq, pairing_heap_with_buffer<int, 7000> &ph, int k){
+void extract(std::multiset<int> &pq, pairing_heap_with_buffer<int, 7000> &ph, int k){
 	int x = *(pq.begin());
 	int y = ph.getMin();
 	pq.erase(pq.begin());
@@ -528,7 +525,7 @@ void extract(std::set<int> &pq, pairing_heap_with_buffer<int, 7000> &ph, int k){
 }
 
 TEST_CASE("stress test with priority_queue: 10^6 operations"){
-	std::set<int> pq;
+	std::multiset<int> pq;
 	pairing_heap_with_buffer<int, 7000> ph;
 	for(int i = 0; i<100'000; ++i){
 		int r = rand() % 3;
