@@ -272,6 +272,14 @@ private:
 			}
 		}
 	}
+	
+	void sift_down(size_t x){
+		if(is_min_level(x)){
+			sift_down_min(x);
+		} else{
+			sift_down_max(x);
+		}
+	}
 
 public:
     buffer() = default;
@@ -302,11 +310,11 @@ public:
         // T *max_val = buf[2];
         if (comp(buf[2], buf[1])) {
             std::swap(buf[1], buf[--size_]);
-            sift_down_max(1);
+            sift_down(1);
             // max_val = &buf[1];
         } else {
             std::swap(buf[2], buf[--size_]);
-            sift_down_max(2);
+            sift_down(2);
         }
         /// size_--;
     }
