@@ -60,9 +60,9 @@ private:
     void block_to_buf(Block_t<T, nn> &from) {  // TODO: ускорить в 2 раза, пока
                                                // даже логике не подчиняется
 
-        std::size_t bl_size = from.size();
+        //std::size_t bl_size = from.size();
 
-        for (std::size_t i = 0; i < bl_size; ++i) {
+        for (std::size_t i = 0; i < BlockSize; ++i) {
             buf.insert(from[i]);  // TODO: к норм
         }
 
@@ -134,11 +134,7 @@ public:
         if (comp(buf.getMin(), heads_of_blocks.getMin().data[0])) {
             buf.extractMin();
         } else {
-            Head<T, Compare> h(comp);
-			h = heads_of_blocks.getMin();
-			h.data[0] = heads_of_blocks.getMin().data[0];
-			h.data[1] = heads_of_blocks.getMin().data[1];
-			h.data[2] = heads_of_blocks.getMin().data[2];
+            Head<T, Compare> h = heads_of_blocks.getMin();
             heads_of_blocks.extractMin();
             h.extract();
             if (h.empty()) {

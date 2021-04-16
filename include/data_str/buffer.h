@@ -201,7 +201,7 @@ private:
                     }
                 } else {
                     if (comp(buf[2 * i + 1], buf[2 * i + 2])) {
-                        if (buf[max_ch] < buf[2 * i + 2]) {
+                        if (comp(buf[max_ch], buf[2 * i + 2])) {
                             std::swap(buf[max_ch], buf[2 * i + 2]);
                         }
                     } else {
