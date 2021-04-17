@@ -77,7 +77,7 @@ TEST_CASE("Subtree"){
         //        std::cerr << InCoreResult[Index] << " ";
             }
         //    std::cerr << std::endl;
-		CHECKTIME("Total. I_COUNT: "+std::to_string(I_COUNTER)+"; O_COUNT: "+std::to_string(I_COUNTER));
+		CHECK_TIME("Total. I_COUNT: "+std::to_string(I_COUNTER)+"; O_COUNT: "+std::to_string(I_COUNTER));
         } else {
             CHECK_MESSAGE(false, "Pizdec. O_o");
         }
