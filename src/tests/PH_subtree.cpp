@@ -15,8 +15,7 @@ struct Calculator {
 
 TEST_CASE("Subtree"){
 	EMHS::m = 3;
-    EMHS::B = 48;
-	B=48;
+    //EMHS::B = 48;
     std::size_t MaxSize = 20;
     for (std::size_t Test = 0; Test < 100000; Test++) {
         std::vector<std::size_t> Tree(rand() % MaxSize + 1);
