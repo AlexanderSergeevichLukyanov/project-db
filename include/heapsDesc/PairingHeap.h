@@ -1,6 +1,6 @@
 #include "ph_with_buffer.h"
 
-inline const std::size_t B = 48;
+inline const std::size_t B = 1024;
 
 template <typename T, typename Compare = std::less<T>>
 struct PairingHeap {
