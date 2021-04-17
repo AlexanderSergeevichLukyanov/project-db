@@ -69,13 +69,15 @@ TEST_CASE("Subtree"){
             OutCoreResult[Index] = Output[Index + 1];
         }
 		CHECK_MESSAGE(Tree.size() == Output[0], "sizes not equal!");
+		CHECK_MESSAGE(InCoreResult == OutCoreResult, "InCoreResult must be equal OutCoreResult!");
         if (Tree.size() == Output[0] && InCoreResult == OutCoreResult) {
-            std::cerr << "Ok." << std::endl;
-            std::cerr << Tree.size() << std::endl;
+        //   std::cerr << "Ok." << std::endl;
+        //   std::cerr << Tree.size() << std::endl;
             for (std::size_t Index = 0; Index < Tree.size(); Index++) {
-                std::cerr << InCoreResult[Index] << " ";
+        //        std::cerr << InCoreResult[Index] << " ";
             }
-            std::cerr << std::endl;
+        //    std::cerr << std::endl;
+		CHECKTIME("Total. I_COUNT: "+std::to_string(I_COUNTER)+"; O_COUNT: "+std::to_string(I_COUNTER));
         } else {
             CHECK_MESSAGE(false, "Pizdec. O_o");
         }
