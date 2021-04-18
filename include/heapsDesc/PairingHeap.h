@@ -13,11 +13,10 @@ private:
         heap_of_del_elements;  //удалённые
 
     void flush_dels() {  //убираем удаленные, пока он сравнимы с top
-        if (!heap_of_del_elements.empty() && !heap_of_elements.empty() &&
-            heap_of_del_elements.getMin() == heap_of_elements.getMin()) {
+        while (!heap_of_del_elements.empty() && !heap_of_elements.empty() &&
+               heap_of_del_elements.getMin() == heap_of_elements.getMin()) {
             heap_of_del_elements.extractMin();  //убрали
             heap_of_elements.extractMin();      //убрали
-            flush_dels();  // рекусивно продолжаем убиарть всё это
         }  //обе не пусты и равны минимумы
     }
 
