@@ -45,6 +45,10 @@ private:
             return (x - 1) / 2;
         }
     }
+	
+	[[nodiscard]] bool is_min_level(std::size_t ind) const{  // мы на уровне минимумов?
+        return ((static_cast<int>(log2(1 + ind)) & 1) == 0);  // идейный остаток по модулю 2, зато быстрый) TODO: fast log2
+    }
 
     void sift_up_max(size_t x) {  //поднимаем максимум
         if (x > 2 && comp(buf[gr_pa(x)], buf[x])) {
@@ -53,22 +57,22 @@ private:
         }
     }
 
-    void sift_up_min(size_t x) {  //поднимаем минимум
+    void sift_up_min(std::size_t x) {  //поднимаем минимум
         if (x > 2 && comp(buf[x], buf[gr_pa(x)])) {
             std::swap(buf[gr_pa(x)], buf[x]);
             sift_up_min(gr_pa(x));
         }
     }
 
-    [[nodiscard]] bool is_grchild(size_t par, size_t ch) const {
-        return ((((par + 1) * 4 - 2) < ch) and (((par + 1) * 4 + 3) > ch));
+    [[nodiscard]] bool is_grchild(std::size_t par, std::size_t ch) const { // является ли ch внуком par ?
+        return ((((par + 1) * 4 - 2) < ch) && (((par + 1) * 4 + 3) > ch));
     }
 
-    [[nodiscard]] bool has_child(size_t par) const {
+    [[nodiscard]] bool has_child(std::size_t par) const { // есть ли у par дети?
         return (par * 2 + 1 < size_);
     }
 
-    [[nodiscard]] std::size_t min_child(
+    [[nodiscard]] std::size_t min_child( // возвращает минимальный элемент из передеанного массива индексов
         std::size_t *child,
         int count = 6) {  //возвращает индекс минимального ребетёнка (внучка)
         std::size_t res = child[0];
@@ -82,7 +86,7 @@ private:
         return res;
     }
 
-    void sift_down_min(size_t x) {
+    void sift_down_min(std::size_t x) { // толкаем вниз по минимумам
         size_t y = x + 1;
         size_t child[6] = {2 * x + 1, 2 * x + 2, 4 * y - 1,
                            4 * y,     4 * y + 1, 4 * y + 2};
@@ -103,7 +107,7 @@ private:
         }
     }
 
-    [[nodiscard]] size_t max_child(
+    [[nodiscard]] std::size_t max_child( // возвращает минимальный элемент из передеанного массива индексов
         size_t *child,
         int count = 6) {  //возвращает индекс максимального ребёнка
         size_t res = child[0];
@@ -117,13 +121,13 @@ private:
         return res;
     }
 
-    void sift_down_max(size_t x) {
-        size_t y = x + 1;
-        size_t child[6] = {2 * x + 1, 2 * x + 2, 4 * y - 1,
+    void sift_down_max(std::size_t x) { // толкаем вниз по максимумам
+        std::size_t y = x + 1;
+        std::size_t child[6] = {2 * x + 1, 2 * x + 2, 4 * y - 1,
                            4 * y,     4 * y + 1, 4 * y + 2};
 
         if (has_child(x)) {
-            size_t m = max_child(child);
+            std::size_t m = max_child(child);
             if (is_grchild(x, m)) {
                 if (comp(buf[x], buf[m])) {
                     std::swap(buf[x], buf[m]);
@@ -138,13 +142,7 @@ private:
         }
     }
 
-    [[nodiscard]] bool is_min_level(size_t ind) {  //мы на уровне минимумов?
-        if (ind == 0)
-            return true;
-        return (static_cast<int>(log2(1 + ind)) % 2 == 0);  // TODO: & 1
-    }
-
-    void sift_up(size_t x) {
+    void sift_up(std::size_t x) { // толкаем вверх
         if (x != 0) {
             if (is_min_level(x)) {
                 if (comp(buf[father(x)], buf[x])) {
@@ -164,7 +162,7 @@ private:
         }
     }
 
-    void sift_down(size_t x) {
+    void sift_down(std::size_t x) { // толкаем вниз
         if (is_min_level(x)) {
             sift_down_min(x);
         } else {
@@ -177,7 +175,7 @@ public:
     explicit buffer(const Comp &comp_) : comp(comp_) {
     }
 
-    void extractMin() {  // TODO!
+    void extractMin() { 
         if (size_ == 1) {
             size_--;
             return;
@@ -214,12 +212,8 @@ public:
     const T &getMax() const {
         if (size_ == 1) {
             return buf[0];
-        } else if (size_ == 2) {  // opt!
-            if (comp(buf[0], buf[1])) {
-                return buf[1];
-            } else {
-                return buf[0];
-            }
+        } else if (size_ == 2) { 
+			return buf[1];
         } else {
             if (comp(buf[1], buf[2])) {
                 return buf[2];
@@ -237,7 +231,7 @@ public:
         return (size_ == 0);
     }
 
-    void insert(const T &x) {  // TODO!
+    void insert(const T &x) {
         buf[size_++] = x;
         sift_up(size_ - 1);
     }

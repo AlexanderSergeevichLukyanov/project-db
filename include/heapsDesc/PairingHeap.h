@@ -1,6 +1,6 @@
 #include "ph_with_buffer.h"
 
-inline const std::size_t B = 1024;
+inline const std::size_t B = 32000;
 
 template <typename T, typename Compare = std::less<T>>
 struct PairingHeap {
@@ -21,8 +21,8 @@ private:
     }
 
 public:
-    PairingHeap() = default;
 
+    PairingHeap() = default;
     explicit PairingHeap(const Compare &comp_)
         : comp(comp_), heap_of_elements(comp), heap_of_del_elements(comp) {
     }
@@ -52,7 +52,7 @@ public:
         heap_of_elements.extractMin();
     }
 
-    const T &top() {
+    const T &top() { // Внимание! Метод не константый! Мб произойдёт удаление минимумов
         flush_dels();
         return heap_of_elements.getMin();
     }
@@ -61,4 +61,5 @@ public:
         heap_of_del_elements.insert(x);
         heap_of_elements.insert(new_x);
     }
+	
 };

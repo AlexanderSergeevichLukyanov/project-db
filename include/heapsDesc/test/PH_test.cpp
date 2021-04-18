@@ -201,7 +201,7 @@ TEST_CASE("pairing-heap: check const, reference methods") {
         std::is_const_v<std::remove_reference_t<decltype(h1.top())>>,
         "method top() must be const");
 }
-/*
+
 TEST_CASE("pairing-heap: voids must be voids...") {
     PairingHeap<int> h1;
     h1.add(6);
@@ -211,27 +211,20 @@ TEST_CASE("pairing-heap: voids must be voids...") {
     CHECK_MESSAGE(std::is_void_v<decltype(h1.extract())>,
                   "method extract() must be void! not " + str1 + " !");
 
-    std::string str2(typeid(h1.make(p, 10)).name());
-    CHECK_MESSAGE(std::is_void_v<decltype(h1.make(p, 10))>,
-                  "method make( must be void! not " + str2 + "!");
-
     std::string str3(typeid(h1.extract()).name());
     CHECK_MESSAGE(std::is_void_v<decltype(h1.add(10))>,
                   "method add() must be void! not " + str3 + " !");
 }
-*/
+
 TEST_CASE("pairing-heap: PairingHeap(other &&)") {
     PairingHeap<int> h2;
     h2.add(1);
     h2.add(2);
     PairingHeap<int> h1(std::move(h2));
     CHECK(h1.size() == 2);
-    // CHECK(h2.size() == 0);
     CHECK(h1.top() == 1);
     h1.extract();
     CHECK(h1.size() == 1);
-    // CHECK(h2.size() == 0);
-    // CHECK(h2.empty());
     CHECK(h1.top() == 2);
 }
 
@@ -241,12 +234,9 @@ TEST_CASE("pairing-heap: operator=(other &&)") {
     h2.add(2);
     PairingHeap<int> h1 = std::move(h2);
     CHECK(h1.size() == 2);
-    // CHECK(h2.size() == 0);
     CHECK(h1.top() == 1);
     h1.extract();
     CHECK(h1.size() == 1);
-    // CHECK(h2.size() == 0);
-    // CHECK(h2.empty());
     CHECK(h1.top() == 2);
 }
 
@@ -427,7 +417,7 @@ TEST_CASE("pairing-heap-with-compare: check const, reference methods") {
         std::is_const_v<std::remove_reference_t<decltype(h1.top())>>,
         "method top() must be const");
 }
-/*
+
 TEST_CASE("pairing-heap-with-compare: voids must be voids...") {
     PairingHeap<int, CloserTo> h1(CloserTo(10));
     h1.add(7);
@@ -437,27 +427,20 @@ TEST_CASE("pairing-heap-with-compare: voids must be voids...") {
     CHECK_MESSAGE(std::is_void_v<decltype(h1.extract())>,
                   "method extract() must be void! not " + str1 + " !");
 
-    std::string str2(typeid(h1.make(p, 10)).name());
-    CHECK_MESSAGE(std::is_void_v<decltype(h1.make(p, 10))>,
-                  "method make( must be void! not " + str2 + "!");
-
     std::string str3(typeid(h1.extract()).name());
     CHECK_MESSAGE(std::is_void_v<decltype(h1.add(10))>,
                   "method add() must be void! not " + str3 + " !");
 }
-*/
+
 TEST_CASE("pairing-heap-with-compare: PairingHeap(other &&)") {
     PairingHeap<int, CloserTo> h2(CloserTo(10));
     h2.add(1);
     h2.add(2);
     PairingHeap<int, CloserTo> h1(std::move(h2));
     CHECK(h1.size() == 2);
-    //   CHECK(h2.size() == 0);
     CHECK(h1.top() == 2);
     h1.extract();
     CHECK(h1.size() == 1);
-    // CHECK(h2.size() == 0);
-    // CHECK(h2.empty());
     CHECK(h1.top() == 1);
 }
 
@@ -467,12 +450,9 @@ TEST_CASE("pairing-heap-with-compare: operator=(other &&)") {
     h2.add(2);
     PairingHeap<int, CloserTo> h1 = std::move(h2);
     CHECK(h1.size() == 2);
-    // CHECK(h2.size() == 0);
     CHECK(h1.top() == 2);
     h1.extract();
     CHECK(h1.size() == 1);
-    // CHECK(h2.size() == 0);
-    // CHECK(h2.empty());
     CHECK(h1.top() == 1);
 }
 
