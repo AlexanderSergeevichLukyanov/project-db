@@ -73,19 +73,7 @@ jobs:
         run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/heapsDesc/test/SH_test.cpp -I include -I include/heaps_with_buf -I include/heapsDesc -I include/data_str -I mytest/include -std=c++17 -o sh-test
       - name: Run tests!
         run: ./sh-test
-  # softHeap-timetest:
-    # # The type of runner that the job will run on
-    # runs-on: ubuntu-latest
-
-    # # Steps represent a sequence of tasks that will be executed as part of the job
-    # steps:
-      # # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      # - uses: actions/checkout@v2
-      # - name: compile!
-        # run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp src/tests/stress-Big-data/SH.cpp -I include -I include/heaps_with_buf -I include/heapsDesc -I include/data_str -I mytest/include -std=c++17 -o sh-time-test
-      # - name: Run tests!
-        # run: ./sh-time-test
-  softHeap-Subtree:
+  softHeap-timetest:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -94,9 +82,21 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: compile!
-        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp src/tests/SH_subtree.cpp -I include -I include/heapsDesc -I include/heaps_with_buf -I include/data_str -I mytest/include -std=c++17 -o sh-subtree
+        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp src/tests/stress-Big-data/SH.cpp -I include -I include/heaps_with_buf -I include/heapsDesc -I include/data_str -I mytest/include -std=c++17 -o sh-time-test
       - name: Run tests!
-        run: ./sh-subtree
+        run: ./sh-time-test
+  # softHeap-Subtree:
+    # # The type of runner that the job will run on
+    # runs-on: ubuntu-latest
+
+    # # Steps represent a sequence of tasks that will be executed as part of the job
+    # steps:
+      # # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # - uses: actions/checkout@v2
+      # - name: compile!
+        # run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp src/tests/SH_subtree.cpp -I include -I include/heapsDesc -I include/heaps_with_buf -I include/data_str -I mytest/include -std=c++17 -o sh-subtree
+      # - name: Run tests!
+        # run: ./sh-subtree
   block:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
