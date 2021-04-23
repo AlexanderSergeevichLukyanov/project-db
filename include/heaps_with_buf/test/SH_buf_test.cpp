@@ -484,7 +484,7 @@ TEST_CASE(
 
 TEST_CASE("soft-heap-with-compare: with std::greater(on max)") {
     soft_heap_with_buffer<int, 7000, std::greater<>> heap;
-    const auto &ch = heap;
+    auto &ch = heap;
 
     heap.insert(5);
     CHECK(!ch.empty());
