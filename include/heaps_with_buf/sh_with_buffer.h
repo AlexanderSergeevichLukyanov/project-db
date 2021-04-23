@@ -90,7 +90,7 @@ public:
         flush_buf();  //авось переполнило
     }
 
-    const T &getMin() const {
+    const T &getMin() {
         // TODO: бросить исключение на пустые
         if (buf.empty()) {
             return heads_of_blocks.getMin().data[0];
