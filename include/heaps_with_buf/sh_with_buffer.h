@@ -3,7 +3,7 @@
 #include "head.h"
 #include "soft_heap.h"
 
-inline const std::string folder_name = "ph-data";
+inline const std::string folder_name = "sh-data";
 inline std::size_t block_counter = 0;
 
 template <typename T, size_t BlockSize, typename Compare = std::less<T>>

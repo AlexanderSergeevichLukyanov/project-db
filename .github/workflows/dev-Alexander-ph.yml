@@ -58,7 +58,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: compile!
-        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/heaps_with_buf/test/sh_buf_test.cpp -I include -I include/heaps_with_buf -I include/data_str -I mytest/include -std=c++17 -o sh-buf
+        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/heaps_with_buf/test/SH_buf_test.cpp -I include -I include/heaps_with_buf -I include/data_str -I mytest/include -std=c++17 -o sh-buf
       - name: Run tests!
         run: ./sh-buf
   softHeap:
@@ -70,7 +70,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: compile!
-        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/heapsDesc/test/sh_test.cpp -I include -I include/heaps_with_buf -I include/heapsDesc -I include/data_str -I mytest/include -std=c++17 -o sh-test
+        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/heapsDesc/test/SH_test.cpp -I include -I include/heaps_with_buf -I include/heapsDesc -I include/data_str -I mytest/include -std=c++17 -o sh-test
       - name: Run tests!
         run: ./sh-test
   softHeap-timetest:
@@ -82,7 +82,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: compile!
-        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp src/tests/stress-Big-data/sh.cpp -I include -I include/heaps_with_buf -I include/heapsDesc -I include/data_str -I mytest/include -std=c++17 -o sh-time-test
+        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp src/tests/stress-Big-data/SH.cpp -I include -I include/heaps_with_buf -I include/heapsDesc -I include/data_str -I mytest/include -std=c++17 -o sh-time-test
       - name: Run tests!
         run: ./sh-time-test
   # softHeap-Subtree:
