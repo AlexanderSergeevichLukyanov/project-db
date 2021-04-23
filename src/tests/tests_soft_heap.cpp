@@ -29,8 +29,8 @@ TEST_CASE("soft-heap: demo-test") {
 
 #ifdef soft_construct
 TEST_CASE("soft-heap: constructors without Compare") {
-    soft_heap<int> h1;
-    soft_heap<double> h2;
+    soft_heap<int> h1(0.0001);
+    soft_heap<double> h2(0.0001);
     soft_heap<std::string> h3;
     // only compile
 }
@@ -38,7 +38,7 @@ TEST_CASE("soft-heap: constructors without Compare") {
 
 #ifdef soft_insert
 TEST_CASE("soft-heap: 30000 insert") {
-    soft_heap<int> h1;
+    soft_heap<int> h1(0.0001);
     for (int i = 0; i < 30000; ++i) {
         h1.insert(rand());
     }
@@ -46,7 +46,7 @@ TEST_CASE("soft-heap: 30000 insert") {
 }
 
 TEST_CASE("soft-heap: 300000 insert") {
-    soft_heap<int> h1;
+    soft_heap<int> h1(0.0001);
     for (int i = 0; i < 300000; ++i) {
         h1.insert(rand());
     }
@@ -56,26 +56,26 @@ TEST_CASE("soft-heap: 300000 insert") {
 
 #ifdef soft_get_min
 TEST_CASE("soft-heap: GetMin()") {
-    soft_heap<int> h1;
+    soft_heap<int> h1(0.0001);
     int min = 300000;
     for (int i = 0; i < 300000; ++i) {
-        int x = rand() % 300000;
+        int x = rand() % 300000 + 1;
         if (x < min)
             min = x;
         h1.insert(x);
     }
-    CHECK_MESSAGE(h1.getMin() == min, "generate min is other");
+    CHECK_MESSAGE(h1.getMin() == min, "generate min is other: "+std::to_string(h1.getMin())+" != "+std::to_string(min));
 }
 
 TEST_CASE("soft-heap: 300000 GetMin()") {
-    soft_heap<int> h1;
+    soft_heap<int> h1(0.0001);
     int min = 300000;
     for (int i = 0; i < 300000; ++i) {
         int x = rand() % 300000;
         if (x < min)
             min = x;
         h1.insert(x);
-        CHECK_MESSAGE(h1.getMin() == min, "generate min is other");
+        REQUIRE_MESSAGE(h1.getMin() == min, "generate min is other");
         if (h1.getMin() != min)
             break;
     }
@@ -84,7 +84,7 @@ TEST_CASE("soft-heap: 300000 GetMin()") {
 
 #ifdef soft_extract_min
 TEST_CASE("soft-heap: 3000 insert and 3000 extract_min") {
-    soft_heap<int> h1;
+    soft_heap<int> h1(0.0001);
     std::vector<int> res;
     for (int i = 0; i < 3000; ++i) {
         int x = rand() % 3000;
@@ -96,13 +96,13 @@ TEST_CASE("soft-heap: 3000 insert and 3000 extract_min") {
         "After 3000 insert random  and sort random x, then start checking "
         "extract_min");
     for (int i = 0; i < 3000; ++i) {
-        CHECK(h1.getMin() == res[i]);
+        REQUIRE_MESSAGE(h1.getMin() == res[i], "№"+std::to_string(i));
         h1.extractMin();
     }
 }
 
 TEST_CASE("soft-heap: 10000 insert and 10000 extract_min") {
-    soft_heap<int> h1;
+    soft_heap<int> h1(0.0001);
     std::vector<int> res;
     for (int i = 0; i < 10000; ++i) {
         int x = rand() % 10000;
@@ -114,7 +114,7 @@ TEST_CASE("soft-heap: 10000 insert and 10000 extract_min") {
         "After 10000 insert random  and sort random x, then start checking "
         "extract_min");
     for (int i = 0; i < 10000; ++i) {
-        CHECK(h1.getMin() == res[i]);
+        REQUIRE_MESSAGE(h1.getMin() == res[i], "№"+std::to_string(i));
         h1.extractMin();
     }
 }
@@ -122,7 +122,7 @@ TEST_CASE("soft-heap: 10000 insert and 10000 extract_min") {
 
 #ifdef soft_make
 TEST_CASE("soft-heap: make (30000 elements)") {
-    soft_heap<int> h1;
+    soft_heap<int> h1(0.0001);
     int arr[30000];
     int min = 30000;
     for (int i = 0; i < 30000; ++i) {
@@ -131,7 +131,7 @@ TEST_CASE("soft-heap: make (30000 elements)") {
         if (min > x)
             min = x;
     }
-    h1.make(arr, 30000);
+    h1make(arr, 30000);
     CHECK_MESSAGE(h1.size() == 30000,
                   "size heap must be equal to the array size(30000), but no " +
                       std::to_string(h1.size()));
@@ -140,7 +140,7 @@ TEST_CASE("soft-heap: make (30000 elements)") {
 }
 
 TEST_CASE("soft-heap: make (300000 elements)") {
-    soft_heap<int> h1;
+    soft_heap<int> h1(0.0001);
     int arr[300000];
     int min = 300000;
     for (int i = 0; i < 300000; ++i) {
@@ -149,7 +149,7 @@ TEST_CASE("soft-heap: make (300000 elements)") {
         if (min > x)
             min = x;
     }
-    h1.make(arr, 300000);
+    h1make(arr, 300000);
     CHECK_MESSAGE(h1.size() == 300000,
                   "size heap must be equal to the array size(300000), but no " +
                       std::to_string(h1.size()));
@@ -160,7 +160,7 @@ TEST_CASE("soft-heap: make (300000 elements)") {
 
 #ifdef soft_solyanka
 TEST_CASE("soft-heap: random test#1") {
-    soft_heap<int> h1;
+    soft_heap<int> h1(0.0001);
     CHECK(h1.empty());
     CHECK(h1.size() == 0);
     h1.insert(1);
@@ -179,7 +179,7 @@ TEST_CASE("soft-heap: random test#1") {
 }
 
 TEST_CASE("soft-heap: random test#2") {
-    soft_heap<double> h1;
+    soft_heap<double> h1(0.0001);
     CHECK(h1.empty());
     CHECK(h1.size() == 0);
     h1.insert(1.0);
@@ -197,19 +197,8 @@ TEST_CASE("soft-heap: random test#2") {
     CHECK(h1.getMin() == 1.0);
 }
 
-TEST_CASE("soft-heap: check const, reference methods") {
-    soft_heap<int> h1;
-    h1.insert(6);
-    h1.insert(1);
-    CHECK_MESSAGE(std::is_reference<decltype(h1.getMin())>::value,
-                  "method getMin() must be &getMin()");
-    CHECK_MESSAGE(
-        std::is_const_v<std::remove_reference_t<decltype(h1.getMin())>>,
-        "method getMin() must be const");
-}
-
 TEST_CASE("soft-heap: voids must be voids...") {
-    soft_heap<int> h1;
+    soft_heap<int> h1(0.0001);
     h1.insert(6);
     h1.insert(1);
     int p[10]{};
@@ -217,44 +206,44 @@ TEST_CASE("soft-heap: voids must be voids...") {
     CHECK_MESSAGE(std::is_void_v<decltype(h1.extractMin())>,
                   "method extractMin() must be void! not " + str1 + " !");
 #ifdef soft_make
-    std::string str2(typeid(h1.make(p, 10)).name());
-    CHECK_MESSAGE(std::is_void_v<decltype(h1.make(p, 10))>,
+    std::string str2(typeid(h1make(p, 10)).name());
+    CHECK_MESSAGE(std::is_void_v<decltype(h1make(p, 10))>,
                   "method make( must be void! not " + str2 + "!");
 #endif
     std::string str3(typeid(h1.extractMin()).name());
     CHECK_MESSAGE(std::is_void_v<decltype(h1.insert(10))>,
                   "method insert() must be void! not " + str3 + " !");
 }
-
+/*
 TEST_CASE("soft-heap: soft_heap(other &&)") {
-    soft_heap<int> h2;
+    soft_heap<int> h2(0.0001);
     h2.insert(1);
     h2.insert(2);
     soft_heap<int> h1(std::move(h2));
     CHECK(h1.size() == 2);
-    // CHECK(h2.size() == 0);
+    // CHECK(h2size() == 0);
     CHECK(h1.getMin() == 1);
     h1.extractMin();
     CHECK(h1.size() == 1);
-    // CHECK(h2.size() == 0);
+    // CHECK(h2size() == 0);
     // CHECK(h2.empty());
     CHECK(h1.getMin() == 2);
 }
 
 TEST_CASE("soft-heap: operator=(other &&)") {
-    soft_heap<int> h2;
+    soft_heap<int> h2(0.0001);
     h2.insert(1);
     h2.insert(2);
     soft_heap<int> h1 = std::move(h2);
     CHECK(h1.size() == 2);
-    // CHECK(h2.size() == 0);
+    // CHECK(h2size() == 0);
     CHECK(h1.getMin() == 1);
     h1.extractMin();
     CHECK(h1.size() == 1);
-    // CHECK(h2.size() == 0);
+    // CHECK(h2size() == 0);
     // CHECK(h2.empty());
     CHECK(h1.getMin() == 2);
-}
+}*/
 
 TEST_CASE("soft-heap: default contructor must be implicit") {
     [[maybe_unused]] soft_heap<int> h1 = {};
@@ -272,7 +261,7 @@ TEST_CASE("soft-heap: constructors with Compare") {
 
 #ifdef soft_insert_comp
 TEST_CASE("soft-heap-with-compare: 30000 insert") {
-    soft_heap<int, CloserTo> h1(CloserTo(10));
+    soft_heap<int, CloserTo> h1(0.0001)(CloserTo(10));
     for (int i = 0; i < 30000; ++i) {
         h1.insert(rand());
     }
@@ -280,7 +269,7 @@ TEST_CASE("soft-heap-with-compare: 30000 insert") {
 }
 
 TEST_CASE("soft-heap-with-compare: 300000 insert") {
-    soft_heap<int, CloserTo> h1(CloserTo(10));
+    soft_heap<int, CloserTo> h1(0.0001)(CloserTo(10));
     for (int i = 0; i < 300000; ++i) {
         h1.insert(rand());
     }
@@ -290,7 +279,7 @@ TEST_CASE("soft-heap-with-compare: 300000 insert") {
 
 #ifdef soft_extract_min_comp
 TEST_CASE("soft-heap-with-compare: 3000 insert and 3000 extract_min") {
-    soft_heap<int, CloserTo> h1(CloserTo(10));
+    soft_heap<int, CloserTo> h1(0.0001)(CloserTo(10));
     std::vector<int> res;
     for (int i = 0; i < 3000; ++i) {
         int x = rand() % 3000;
@@ -308,7 +297,7 @@ TEST_CASE("soft-heap-with-compare: 3000 insert and 3000 extract_min") {
 }
 
 TEST_CASE("soft-heap-with-compare: 10000 insert and 10000 extract_min") {
-    soft_heap<int, CloserTo> h1(CloserTo(10));
+    soft_heap<int, CloserTo> h1(0.0001)(CloserTo(10));
     std::vector<int> res;
     for (int i = 0; i < 10000; ++i) {
         int x = rand() % 10000;
@@ -328,7 +317,7 @@ TEST_CASE("soft-heap-with-compare: 10000 insert and 10000 extract_min") {
 
 #ifdef soft_extract_min_comp
 TEST_CASE("soft-heap-with-compare: 3000 insert and 3000 extract_min") {
-    soft_heap<int, CloserTo> h1(CloserTo(10));
+    soft_heap<int, CloserTo> h1(0.0001)(CloserTo(10));
     std::vector<int> res;
     for (int i = 0; i < 3000; ++i) {
         int x = rand() % 3000;
@@ -346,7 +335,7 @@ TEST_CASE("soft-heap-with-compare: 3000 insert and 3000 extract_min") {
 }
 
 TEST_CASE("soft-heap-with-compare: 10000 insert and 10000 extract_min") {
-    soft_heap<int, CloserTo> h1(CloserTo(10));
+    soft_heap<int, CloserTo> h1(0.0001)(CloserTo(10));
     std::vector<int> res;
     for (int i = 0; i < 10000; ++i) {
         int x = rand() % 10000;
@@ -366,7 +355,7 @@ TEST_CASE("soft-heap-with-compare: 10000 insert and 10000 extract_min") {
 
 #ifdef soft_make_comp
 TEST_CASE("soft-heap: make (30000 elements)") {
-    soft_heap<int, CloserTo> h1(CloserTo(10));
+    soft_heap<int, CloserTo> h1(0.0001)(CloserTo(10));
     int arr[30000];
     int min = 30000;
     for (int i = 0; i < 30000; ++i) {
@@ -375,7 +364,7 @@ TEST_CASE("soft-heap: make (30000 elements)") {
         if (min > std::abs(x - 10))
             min = std::abs(x - 10);
     }
-    h1.make(arr, 30000);
+    h1make(arr, 30000);
     CHECK_MESSAGE(h1.size() == 30000,
                   "size heap must be equal to the array size(30000), but no " +
                       std::to_string(h1.size()));
@@ -384,7 +373,7 @@ TEST_CASE("soft-heap: make (30000 elements)") {
 }
 
 TEST_CASE("soft-heap: make (300000 elements)") {
-    soft_heap<int, CloserTo> h1(CloserTo(10));
+    soft_heap<int, CloserTo> h1(0.0001)(CloserTo(10));
     int arr[300000];
     int min = 300000;
     for (int i = 0; i < 300000; ++i) {
@@ -393,7 +382,7 @@ TEST_CASE("soft-heap: make (300000 elements)") {
         if (min > std::abs(x - 10))
             min = std::abs(x - 10);
     }
-    h1.make(arr, 300000);
+    h1make(arr, 300000);
     CHECK_MESSAGE(h1.size() == 300000,
                   "size heap must be equal to the array size(300000), but no " +
                       std::to_string(h1.size()));
@@ -405,7 +394,7 @@ TEST_CASE("soft-heap: make (300000 elements)") {
 #ifdef soft_solyanka_comp
 
 TEST_CASE("soft-heap-with-compare: random test") {
-    soft_heap<int, CloserTo> h1(CloserTo(10));
+    soft_heap<int, CloserTo> h1(0.0001)(CloserTo(10));
     CHECK(h1.empty());
     CHECK(h1.size() == 0);
     h1.insert(1);
@@ -424,7 +413,7 @@ TEST_CASE("soft-heap-with-compare: random test") {
 }
 
 TEST_CASE("soft-heap-with-compare: check const, reference methods") {
-    soft_heap<int, CloserTo> h1(CloserTo(10));
+    soft_heap<int, CloserTo> h1(0.0001)(CloserTo(10));
     h1.insert(7);
     h1.insert(1);
     CHECK_MESSAGE(std::is_reference<decltype(h1.getMin())>::value,
@@ -435,7 +424,7 @@ TEST_CASE("soft-heap-with-compare: check const, reference methods") {
 }
 
 TEST_CASE("soft-heap-with-compare: voids must be voids...") {
-    soft_heap<int, CloserTo> h1(CloserTo(10));
+    soft_heap<int, CloserTo> h1(0.0001)(CloserTo(10));
     h1.insert(7);
     h1.insert(1);
     int p[10]{};
@@ -443,8 +432,8 @@ TEST_CASE("soft-heap-with-compare: voids must be voids...") {
     CHECK_MESSAGE(std::is_void_v<decltype(h1.extractMin())>,
                   "method extractMin() must be void! not " + str1 + " !");
 #ifdef soft_make_comp
-    std::string str2(typeid(h1.make(p, 10)).name());
-    CHECK_MESSAGE(std::is_void_v<decltype(h1.make(p, 10))>,
+    std::string str2(typeid(h1make(p, 10)).name());
+    CHECK_MESSAGE(std::is_void_v<decltype(h1make(p, 10))>,
                   "method make( must be void! not " + str2 + "!");
 #endif
     std::string str3(typeid(h1.extractMin()).name());
@@ -453,31 +442,31 @@ TEST_CASE("soft-heap-with-compare: voids must be voids...") {
 }
 
 TEST_CASE("soft-heap-with-compare: soft_heap(other &&)") {
-    soft_heap<int, CloserTo> h2(CloserTo(10));
+    soft_heap<int, CloserTo> h2(0.0001)(CloserTo(10));
     h2.insert(1);
     h2.insert(2);
-    soft_heap<int, CloserTo> h1(std::move(h2));
+    soft_heap<int, CloserTo> h1(0.0001)(std::move(h2(0.0001)));
     CHECK(h1.size() == 2);
-    // CHECK(h2.size() == 0);
+    // CHECK(h2size() == 0);
     CHECK(h1.getMin() == 2);
     h1.extractMin();
     CHECK(h1.size() == 1);
-    // CHECK(h2.size() == 0);
+    // CHECK(h2size() == 0);
     // CHECK(h2.empty());
     CHECK(h1.getMin() == 1);
 }
 
 TEST_CASE("soft-heap-with-compare: operator=(other &&)") {
-    soft_heap<int, CloserTo> h2(CloserTo(10));
+    soft_heap<int, CloserTo> h2(0.0001)(CloserTo(10));
     h2.insert(1);
     h2.insert(2);
-    soft_heap<int, CloserTo> h1 = std::move(h2);
+    soft_heap<int, CloserTo> h1(0.0001) = std::move(h2(0.0001));
     CHECK(h1.size() == 2);
-    // CHECK(h2.size() == 0);
+    // CHECK(h2size() == 0);
     CHECK(h1.getMin() == 2);
     h1.extractMin();
     CHECK(h1.size() == 1);
-    // CHECK(h2.size() == 0);
+    // CHECK(h2size() == 0);
     // CHECK(h2.empty());
     CHECK(h1.getMin() == 1);
 }
