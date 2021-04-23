@@ -1,11 +1,11 @@
-name: dev-Alexander-pairing-heap
+name: dev-Alexander-soft-heap
 
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: 
-      - dev-Alexander-pairing-heap
+      - dev-Alexander-soft-heap
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -25,7 +25,7 @@ jobs:
         run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/data_str/test/HeadTest.cpp -I include -I include/data_str -I mytest/include -std=c++17 -o test-head
       - name: Run tests!
         run: ./test-head
-  ph-with-head:
+  sh-with-head:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -34,9 +34,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: compile!
-        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/data_str/test/test-pairing-heads/ph-head.cpp -I include -I include/data_str -I mytest/include -std=c++17 -o ph-heads
+        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/data_str/test/test-soft-heads/sh-head.cpp -I include -I include/data_str -I mytest/include -std=c++17 -o sh-heads
       - name: Run tests!
-        run: ./ph-heads
+        run: ./sh-heads
   buffer:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -49,7 +49,7 @@ jobs:
         run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/data_str/test/BufferTest.cpp -I include -I include/data_str -I mytest/include -std=c++17 -o test-buf
       - name: Run tests!
         run: ./test-buf
-  ph-with-buffer:
+  sh-with-buffer:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -58,10 +58,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: compile!
-        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/heaps_with_buf/test/PH_buf_test.cpp -I include -I include/heaps_with_buf -I include/data_str -I mytest/include -std=c++17 -o ph-buf
+        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/heaps_with_buf/test/sh_buf_test.cpp -I include -I include/heaps_with_buf -I include/data_str -I mytest/include -std=c++17 -o sh-buf
       - name: Run tests!
-        run: ./ph-buf
-  PairingHeap:
+        run: ./sh-buf
+  softHeap:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -70,10 +70,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: compile!
-        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/heapsDesc/test/PH_test.cpp -I include -I include/heaps_with_buf -I include/heapsDesc -I include/data_str -I mytest/include -std=c++17 -o PH-test
+        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/heapsDesc/test/sh_test.cpp -I include -I include/heaps_with_buf -I include/heapsDesc -I include/data_str -I mytest/include -std=c++17 -o sh-test
       - name: Run tests!
-        run: ./PH-test
-  PairingHeap-timetest:
+        run: ./sh-test
+  softHeap-timetest:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -82,10 +82,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: compile!
-        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp src/tests/stress-Big-data/PH.cpp -I include -I include/heaps_with_buf -I include/heapsDesc -I include/data_str -I mytest/include -std=c++17 -o PH-time-test
+        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp src/tests/stress-Big-data/sh.cpp -I include -I include/heaps_with_buf -I include/heapsDesc -I include/data_str -I mytest/include -std=c++17 -o sh-time-test
       - name: Run tests!
-        run: ./PH-time-test
-  # PairingHeap-Subtree:
+        run: ./sh-time-test
+  # softHeap-Subtree:
     # # The type of runner that the job will run on
     # runs-on: ubuntu-latest
 
@@ -94,9 +94,9 @@ jobs:
       # # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       # - uses: actions/checkout@v2
       # - name: compile!
-        # run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp src/tests/PH_subtree.cpp -I include -I include/heapsDesc -I include/heaps_with_buf -I include/data_str -I mytest/include -std=c++17 -o PH-subtree
+        # run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp src/tests/sh_subtree.cpp -I include -I include/heapsDesc -I include/heaps_with_buf -I include/data_str -I mytest/include -std=c++17 -o sh-subtree
       # - name: Run tests!
-        # run: ./PH-subtree
+        # run: ./sh-subtree
   block:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -106,6 +106,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: compile!
-        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/data_str/test/BlockTest.cpp -I include -I include/heaps_with_buf -I include/data_str -I mytest/include -std=c++17 -o ph-block
+        run: g++ mytest/src/mytest.cpp mytest/src/mytest_main.cpp include/data_str/test/BlockTest.cpp -I include -I include/heaps_with_buf -I include/data_str -I mytest/include -std=c++17 -o sh-block
       - name: Run tests!
-        run: ./ph-block
+        run: ./sh-block
