@@ -4,30 +4,29 @@
 #include <type_traits>
 #include <utility>
 
-const int DELETED = 2;
-
+static const int DELETED = 2;
 
 //#define soft_wrong_test //не стоит расскоментировать:)
-#define soft_construct //default constructor
-#define soft_insert  // insert(T x)
-#define soft_get_min // getMin()
+#define soft_construct  // default constructor
+#define soft_insert     // insert(T x)
+#define soft_get_min    // getMin()
 //#define soft_make // make(T* array, size_t n)
-#define soft_extract_min // extractMin()
-#define soft_solyanka // ... , check const, reference, voids methods and
+#define soft_extract_min  // extractMin()
+#define soft_solyanka     // ... , check const, reference, voids methods and
 // constructors =&& && #define soft_construct_comp //default constructor(comp)
-#define soft_insert_comp // insert(T x) with Compare
-#define soft_get_min_comp // getMin() with Compare
+#define soft_insert_comp   // insert(T x) with Compare
+#define soft_get_min_comp  // getMin() with Compare
 //#define soft_make_comp // make(T* array, size_t n) with Compare
-#define soft_extract_min_comp // extractMin() with Compare
-#define soft_solyanka_comp // ... , check const, reference, voids methods and
-// constructors =&& && with Compare 
-#define soft_heap_ //расскоментировать,
+#define soft_extract_min_comp  // extractMin() with Compare
+#define soft_solyanka_comp  // ... , check const, reference, voids methods and
+// constructors =&& && with Compare
+#define soft_heap_  //расскоментировать,
 // когда куча будет готова
 
-template <typename E, typename Compare=std::less<E>>
+template <typename E, typename Compare = std::less<E>>
 struct soft_heap {
-	Compare comp;
-	std::size_t size_=0;
+    Compare comp;
+    std::size_t size_ = 0;
     struct ListCell {
         E *elem;
         int del;
@@ -64,110 +63,107 @@ struct soft_heap {
     soft_heap();
 
     soft_heap(E *e);
-	
-	explicit soft_heap(const Compare &comp_): comp(comp_){
-		this->epsilon = 0.000001;
+    soft_heap(E *e, double epsilon_);
+
+    explicit soft_heap(const Compare &comp_) : comp(comp_) {
+        this->epsilon = 0.000001;
         this->rank = 0;
         this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
         this->first = nullptr;
-	}
-	
-	soft_heap(const Compare &comp_, E *e): comp(comp_) {
+    }
+
+    soft_heap(const Compare &comp_, E *e) : comp(comp_) {
         this->epsilon = 0.000001;
         this->rank = 0;
         this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
         this->first = new Tree(e);
     }
-	
+
     soft_heap(double epsi);
 
     ~soft_heap();
 
-	[[nodiscard]] bool empty() const {
-		return (size_==0);
-	}
-	
-	[[nodiscard]] std::size_t size() const{
-		return size_;
-	}
+    [[nodiscard]] bool empty() const {
+        return (size_ == 0);
+    }
 
-    void insert(const E &e){
-		++size_;
-		E *e_copy = new E(e);
-		if (this->first == nullptr) {
-			this->first = new Tree(e_copy);
-		}
-		else{
-			soft_heap <E, Compare> *q = new soft_heap<E, Compare>(comp, e_copy);
-			q->max_node_rank = this->max_node_rank;
-			q->epsilon = this->epsilon;
-			meld(q);
-			delete q;
-		}
-	}
-	
+    [[nodiscard]] std::size_t size() const {
+        return size_;
+    }
+
+    void insert(const E &e) {
+        ++size_;
+        E *e_copy = new E(e, epsilon_);
+        if (this->first == nullptr) {
+            this->first = new Tree(e_copy);
+        } else {
+            soft_heap<E, Compare> *q = new soft_heap<E, Compare>(comp, e_copy);
+            q->max_node_rank = this->max_node_rank;
+            q->epsilon = this->epsilon;
+            meld(q);
+            delete q;
+        }
+    }
+
     void meld(soft_heap *Q);
 
     void extractMin() {
-		extr();
-	}
-	
+        extr();
+    }
+
     double epsilon = 0.000001;
     Tree *first;
     int max_node_rank;
     int rank;
-	
-	const E getMin(){
-		E e_(extr());
-		insert(e_);
-		return e_;
-	}		
 
-    private:
-	
-	const E &extr(){
-		--size_;
-		int *deleted = new int(2);//DELETED = 2
-		E *e = nullptr;
-		while (*deleted == DELETED) {
-			if (this->first == nullptr) {
-				delete deleted;
-			}
+    const E getMin() {
+        E e_(extr());
+        insert(e_);
+        return e_;
+    }
 
-			Tree *t = this->first->sufmin;
-			Node *x = t->root;
-			e = pick_elem(t, deleted);
+private:
+    const E &extr() {
+        --size_;
+        int *deleted = new int(2);  
+        E *e = nullptr;
+        while (*deleted == DELETED) {
+            if (this->first == nullptr) {
+                delete deleted;
+            }
 
-			if (x->num <= x->size / 2) {
-				if (!leaf(x)) {
-					sift(x);
-					update_suffix_min(t);
-				} else if (x->num == 0) {
-					delete x;
-					remove_tree(this, t);
+            Tree *t = this->first->sufmin;
+            Node *x = t->root;
+            e = pick_elem(t, deleted);
 
-					if (t->next == nullptr) {
-						if (t->prev == nullptr)
-							this->rank = -1;
-						else
-							this->rank = t->prev->rank;
-					}
+            if (x->num <= x->size / 2) {
+                if (!leaf(x)) {
+                    sift(x);
+                    update_suffix_min(t);
+                } else if (x->num == 0) {
+                    delete x;
+                    remove_tree(this, t);
 
-					if (t->prev != NULL)
-						update_suffix_min(t->prev);
-					t->prev = nullptr;
-					t->next = nullptr;
-					t->root = nullptr;
-					delete t;
-				}
-			}
-		}
-		delete deleted;
+                    if (t->next == nullptr) {
+                        if (t->prev == nullptr)
+                            this->rank = -1;
+                        else
+                            this->rank = t->prev->rank;
+                    }
+
+                    if (t->prev != NULL)
+                        update_suffix_min(t->prev);
+                    t->prev = nullptr;
+                    t->next = nullptr;
+                    t->root = nullptr;
+                    delete t;
+                }
+            }
+        }
+        delete deleted;
         return *e;
-	
-	}
-	
-	
+    }
+
     void sift(Node *x);
 
     Node *combine(Node *x, Node *y);
@@ -195,15 +191,16 @@ struct soft_heap {
     int listSize(Node *x);
 };
 
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 soft_heap<E, Compare>::ListCell::ListCell(E *e) {
     this->elem = e;
-    this->del = 1; //NOT_DELETED = 1
+    this->del = 1;  // NOT_DELETED = 1
     this->next = nullptr;
 }
 
-template<typename E, typename Compare>
-soft_heap<E, Compare>::Node::Node(soft_heap<E, Compare>::Node *l, soft_heap<E, Compare>::Node *r) {
+template <typename E, typename Compare>
+soft_heap<E, Compare>::Node::Node(soft_heap<E, Compare>::Node *l,
+                                  soft_heap<E, Compare>::Node *r) {
     this->list = nullptr;
     this->rank = l->rank + 1;
     this->size = 0;
@@ -213,7 +210,7 @@ soft_heap<E, Compare>::Node::Node(soft_heap<E, Compare>::Node *l, soft_heap<E, C
     this->right = r;
 }
 
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 soft_heap<E, Compare>::Node::Node(E *e) {
     this->list = new ListCell(e);
     this->rank = 0;
@@ -224,7 +221,7 @@ soft_heap<E, Compare>::Node::Node(E *e) {
     this->right = nullptr;
 }
 
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 soft_heap<E, Compare>::Tree::Tree(E *e) {
     this->root = new Node(e);
     this->rank = 0;
@@ -233,7 +230,7 @@ soft_heap<E, Compare>::Tree::Tree(E *e) {
     this->sufmin = this;
 }
 
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 soft_heap<E, Compare>::soft_heap(E *e) {
     this->epsilon = 0.000001;
     this->rank = 0;
@@ -241,7 +238,15 @@ soft_heap<E, Compare>::soft_heap(E *e) {
     this->first = new Tree(e);
 }
 
-template<typename E, typename Compare>
+template <typename E, typename Compare>
+soft_heap<E, Compare>::soft_heap(E *e, double epsilon_) {
+    this->epsilon = epsilon_;
+    this->rank = 0;
+    this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
+    this->first = new Tree(e);
+}
+
+template <typename E, typename Compare>
 soft_heap<E, Compare>::soft_heap() {
     this->epsilon = 0.000001;
     this->rank = 0;
@@ -249,7 +254,7 @@ soft_heap<E, Compare>::soft_heap() {
     this->first = nullptr;
 }
 
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 soft_heap<E, Compare>::soft_heap(double epsi) {
     this->epsilon = epsi;
     this->rank = 0;
@@ -257,11 +262,9 @@ soft_heap<E, Compare>::soft_heap(double epsi) {
     this->first = nullptr;
 }
 
-
 /*DESTRUCTORS*/
 
-
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 soft_heap<E, Compare>::~soft_heap() {
     if (this->first != nullptr) {
         delete this->first;
@@ -269,7 +272,7 @@ soft_heap<E, Compare>::~soft_heap() {
     }
 }
 
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 soft_heap<E, Compare>::ListCell::~ListCell() {
     if (this->next != nullptr) {
         delete this->next;
@@ -277,7 +280,7 @@ soft_heap<E, Compare>::ListCell::~ListCell() {
     }
 }
 
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 soft_heap<E, Compare>::Node::~Node() {
     if (this->list != nullptr) {
         delete this->list;
@@ -293,7 +296,7 @@ soft_heap<E, Compare>::Node::~Node() {
     }
 }
 
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 soft_heap<E, Compare>::Tree::~Tree() {
     if (this->root != nullptr) {
         delete this->root;
@@ -311,16 +314,14 @@ soft_heap<E, Compare>::Tree::~Tree() {
     }
 }
 
-
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 void soft_heap<E, Compare>::swapLR(Node *x) {
     Node *tmp = x->left;
     x->left = x->right;
     x->right = tmp;
 }
 
-
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 void soft_heap<E, Compare>::thisSwap(soft_heap *Q) {
     Tree *tQ = Q->first;
     int rkQ = Q->rank;
@@ -332,23 +333,21 @@ void soft_heap<E, Compare>::thisSwap(soft_heap *Q) {
     this->rank = rkQ;
 }
 
-
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 void soft_heap<E, Compare>::meld(soft_heap *Q) {
     if (this->rank > Q->rank)
         thisSwap(Q);
 
     merge_into(Q);
-    //SEEMS ALWAYS GOOD AFTER MERGE_INTO
-    //The tricky one seems to be repeated_combine
+    // SEEMS ALWAYS GOOD AFTER MERGE_INTO
+    // The tricky one seems to be repeated_combine
     repeated_combine(Q, this->rank);
 
     thisSwap(Q);
     Q->first = nullptr;
 }
 
-
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 E *soft_heap<E, Compare>::pick_elem(Tree *t, int *deleted) {
     soft_heap<E, Compare>::ListCell *actual = t->root->list;
     E *act_elem = actual->elem;
@@ -358,7 +357,7 @@ E *soft_heap<E, Compare>::pick_elem(Tree *t, int *deleted) {
         t->root->list = nullptr;
         sift(t->root);
     }
-        /*First elt of the list size > 1*/
+    /*First elt of the list size > 1*/
     else {
         t->root->list = actual->next;
         actual->next = nullptr;
@@ -368,7 +367,7 @@ E *soft_heap<E, Compare>::pick_elem(Tree *t, int *deleted) {
     return act_elem;
 }
 
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 int soft_heap<E, Compare>::listSize(Node *x) {
     if (x->list == nullptr)
         return 0;
@@ -381,8 +380,7 @@ int soft_heap<E, Compare>::listSize(Node *x) {
     return cpt;
 }
 
-
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 void soft_heap<E, Compare>::concatenate(Node *n1, Node *n2) {
     if (n1->list == nullptr and n2->list == nullptr)
         return;
@@ -395,18 +393,17 @@ void soft_heap<E, Compare>::concatenate(Node *n1, Node *n2) {
         while (l->next != nullptr)
             l = l->next;
         l->next = n2->list;
-
     }
     n1->num += n2->num;
     n2->num = 0;
     n2->list = nullptr;
 }
 
-
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 void soft_heap<E, Compare>::sift(Node *x) {
     while (x->num < x->size && !leaf(x)) {
-        if (x->left == nullptr || (x->right != nullptr && comp(*x->right->ckey, *x->left->ckey)))
+        if (x->left == nullptr ||
+            (x->right != nullptr && comp(*x->right->ckey, *x->left->ckey)))
             swapLR(x);
 
         concatenate(x, x->left);
@@ -420,11 +417,11 @@ void soft_heap<E, Compare>::sift(Node *x) {
     }
 }
 
-
 /************EPSYLON USE HERE max node rank**********/
 
-template<typename E, typename Compare>
-typename soft_heap<E, Compare>::Node *soft_heap<E, Compare>::combine(Node *x, Node *y) {
+template <typename E, typename Compare>
+typename soft_heap<E, Compare>::Node *soft_heap<E, Compare>::combine(Node *x,
+                                                                     Node *y) {
     Node *z = new Node(x, y);
     if (z->rank <= this->max_node_rank)
         z->size = 1;
@@ -434,14 +431,12 @@ typename soft_heap<E, Compare>::Node *soft_heap<E, Compare>::combine(Node *x, No
     return z;
 }
 
-
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 bool soft_heap<E, Compare>::leaf(Node *x) {
     return x->left == nullptr && x->right == nullptr;
 }
 
-
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 void soft_heap<E, Compare>::merge_into(soft_heap *q) {
     if (this->rank > q->rank)
         return;
@@ -458,8 +453,7 @@ void soft_heap<E, Compare>::merge_into(soft_heap *q) {
     }
 }
 
-
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 void soft_heap<E, Compare>::insert_tree(soft_heap *q, Tree *t1, Tree *t2) {
     t1->next = t2;
     if (t2->prev == nullptr) {
@@ -468,14 +462,13 @@ void soft_heap<E, Compare>::insert_tree(soft_heap *q, Tree *t1, Tree *t2) {
     } else
         t2->prev->next = t1;
     t2->prev = t1;
-
 }
 
-
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 void soft_heap<E, Compare>::update_suffix_min(Tree *t) {
     while (t != nullptr) {
-        if (t->next == nullptr || comp(*t->root->ckey, *t->next->sufmin->root->ckey))
+        if (t->next == nullptr ||
+            comp(*t->root->ckey, *t->next->sufmin->root->ckey))
             t->sufmin = t;
         else
             t->sufmin = t->next->sufmin;
@@ -483,8 +476,7 @@ void soft_heap<E, Compare>::update_suffix_min(Tree *t) {
     }
 }
 
-
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 void soft_heap<E, Compare>::remove_tree(soft_heap *q, Tree *t) {
     if (t->prev == nullptr)
         q->first = t->next;
@@ -494,12 +486,12 @@ void soft_heap<E, Compare>::remove_tree(soft_heap *q, Tree *t) {
         t->next->prev = t->prev;
 }
 
-
-template<typename E, typename Compare>
+template <typename E, typename Compare>
 void soft_heap<E, Compare>::repeated_combine(soft_heap *q, int rk) {
     Tree *t = q->first;
     while (t->next != nullptr) {
-        if (t->next->rank == t->rank && (t->next->next == nullptr || t->rank != t->next->next->rank)) {
+        if (t->next->rank == t->rank &&
+            (t->next->next == nullptr || t->rank != t->next->next->rank)) {
             t->root = combine(t->root, t->next->root);
             t->rank = t->root->rank;
 
