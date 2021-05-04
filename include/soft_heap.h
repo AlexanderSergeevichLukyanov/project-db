@@ -93,7 +93,7 @@ struct soft_heap {
 
     void insert(const E &e) {
         ++size_;
-        E *e_copy = new E(e, epsilon_);
+        E *e_copy = new E(e, epsilon);
         if (this->first == nullptr) {
             this->first = new Tree(e_copy);
         } else {
