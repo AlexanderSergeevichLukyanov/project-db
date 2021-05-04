@@ -226,7 +226,7 @@ soft_heap<E, Compare>::Tree::Tree(E *e) {
     this->next = nullptr;
     this->sufmin = this;
 }
-
+/*
 template <typename E, typename Compare>
 soft_heap<E, Compare>::soft_heap(E *e) {
     this->epsilon = 0.000001;
@@ -234,7 +234,7 @@ soft_heap<E, Compare>::soft_heap(E *e) {
     this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
     this->first = new Tree(e);
 }
-
+*/
 template <typename E, typename Compare>
 soft_heap<E, Compare>::soft_heap() {
     this->epsilon = 0.000001;
