@@ -65,15 +65,15 @@ struct soft_heap {
     soft_heap(E *e);
     soft_heap(E *e, double epsilon_);
 
-    explicit soft_heap(const Compare &comp_) : comp(comp_) {
+    explicit soft_heap(const Compare &comp_, double epsilon_=0.0000001) : comp(comp_) {
         this->epsilon = 0.000001;
         this->rank = 0;
         this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
         this->first = nullptr;
     }
 
-    soft_heap(const Compare &comp_, E *e) : comp(comp_) {
-        this->epsilon = 0.000001;
+    soft_heap(const Compare &comp_, E *e, double epsilon_=0.0000001) : comp(comp_) {
+        this->epsilon = epsilon_;
         this->rank = 0;
         this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
         this->first = new Tree(e);
@@ -93,11 +93,11 @@ struct soft_heap {
 
     void insert(const E &e) {
         ++size_;
-        E *e_copy = new E(e, epsilon);
+        E *e_copy = new E(e);
         if (this->first == nullptr) {
             this->first = new Tree(e_copy);
         } else {
-            soft_heap<E, Compare> *q = new soft_heap<E, Compare>(comp, e_copy);
+            soft_heap<E, Compare> *q = new soft_heap<E, Compare>(comp, e_copy, epsilon);
             q->max_node_rank = this->max_node_rank;
             q->epsilon = this->epsilon;
             meld(q);
