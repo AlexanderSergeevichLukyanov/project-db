@@ -527,29 +527,3 @@ void soft_heap<E, Compare>::repeated_combine(soft_heap *q, int rk) {
         q->rank = t->rank;
     update_suffix_min(t);
 }
-
-
-
-
-
-
-/*******FAKE DELETE********/
-
-template<typename E, typename Compare>
-bool soft_heap<E, Compare>::searchAndDestroyFake(Node *child, E *e) {
-
-    ListCell *l = child->list;
-    bool success = false;
-
-    while (l != nullptr) {
-        if (*l->elem == *e) {
-            l->del = 2; //DELETED = 2
-            return true;
-        }
-        l = l->next;
-    }
-
-    if (child->left != nullptr) success = searchAndDestroyFake(child->left, e);
-    if (!success && child->right != nullptr) success = searchAndDestroyFake(child->right, e);
-    return success;
-}
