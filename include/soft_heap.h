@@ -62,9 +62,6 @@ struct soft_heap {
 
     soft_heap();
 
-    soft_heap(E *e);
-    soft_heap(E *e, double epsilon_);
-
     explicit soft_heap(const Compare &comp_, double epsilon_=0.0000001) : comp(comp_) {
         this->epsilon = 0.000001;
         this->rank = 0;
@@ -237,15 +234,7 @@ soft_heap<E, Compare>::soft_heap(E *e) {
     this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
     this->first = new Tree(e);
 }
-/*
-template <typename E, typename Compare>
-soft_heap<E, Compare>::soft_heap(E *e, double epsilon_) {
-    this->epsilon = epsilon_;
-    this->rank = 0;
-    this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
-    this->first = new Tree(e);
-}
-*/
+
 template <typename E, typename Compare>
 soft_heap<E, Compare>::soft_heap() {
     this->epsilon = 0.000001;
