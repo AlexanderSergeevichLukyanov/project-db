@@ -69,17 +69,17 @@ struct soft_heap {
 	
 	explicit soft_heap(const Compare &comp_): comp(comp_){
 		this->epsilon = 0.000001;
-    this->rank = 0;
-    this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
-    this->first = nullptr;
+        this->rank = 0;
+        this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
+        this->first = nullptr;
 	}
 	
 	soft_heap(const Compare &comp_, E *e): comp(comp_) {
-    this->epsilon = 0.000001;
-    this->rank = 0;
-    this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
-    this->first = new Tree(e);
-}
+        this->epsilon = 0.000001;
+        this->rank = 0;
+        this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
+        this->first = new Tree(e);
+    }
 	
     soft_heap(double epsi);
 
@@ -112,7 +112,6 @@ struct soft_heap {
 
     void extractMin() {
 		extr();
-    //return e;
 	}
 	
     double epsilon = 0.000001;
@@ -135,7 +134,6 @@ struct soft_heap {
 		while (*deleted == DELETED) {
 			if (this->first == nullptr) {
 				delete deleted;
-	//            return std::nullopt;
 			}
 
 			Tree *t = this->first->sufmin;
@@ -531,68 +529,8 @@ void soft_heap<E, Compare>::repeated_combine(soft_heap *q, int rk) {
 }
 
 
-/*************DELETE*************/
 
 
-/**
- * Lets assume that this function delete and stop at the first occurence of the e element
- * About the case when e is present not only one time in the heap
- * This function is the users delete and not the delete of the extract
- * @tparam E
- * @param parent
- * @param child
- * @param e
- * @return
- */
-template<typename E, typename Compare>
-int soft_heap<E, Compare>::searchAndDestroy(Node *parent, Node *child, E *e, bool force_delete) {
-
-    ListCell *l = child->list;
-    ListCell *prev = nullptr;
-    int success = NOT_DELETED;
-
-    while (l != nullptr) {
-        if (*l->elem == *e) {
-            if (l->del == 2 && !force_delete)
-                return ABORTED_DEL;
-
-            if (prev == nullptr && l->next == nullptr) {
-                child->list = nullptr;
-                child->num--;
-                sift(child);
-                if (parent->left == child && parent->left->list == nullptr) {
-                    parent->left = nullptr;
-                    delete child;
-                } else if (parent->right == child && parent->right->list == nullptr) {
-                    parent->right = nullptr;
-                    delete child;
-                }
-
-            }
-                /*First elt of the list size > 1*/
-            else if (prev == nullptr) {
-                child->list = l->next;
-                l->next = nullptr;
-
-            }
-                /*Last element*/
-            else if (l->next == nullptr)
-                prev->next = nullptr;
-
-                /*Element in the middle of the list*/
-            else
-                prev->next = l->next;
-            delete l;
-            return DELETED;
-        }
-        prev = l;
-        l = l->next;
-    }
-
-    if (child->left != nullptr) success = searchAndDestroy(child, child->left, e, force_delete);
-    if (success == NOT_DELETED && child->right != nullptr) success = searchAndDestroy(child, child->right, e, force_delete);
-    return success;
-}
 
 
 /*******FAKE DELETE********/
