@@ -4,9 +4,7 @@
 #include <type_traits>
 #include <utility>
 
-#define ABORTED_DEL 0
-#define NOT_DELETED 1
-#define DELETED 2
+const int DELETED = 2;
 
 
 //#define soft_wrong_test //не стоит расскоментировать:)
@@ -173,10 +171,6 @@ struct soft_heap {
     void sift(Node *x);
 
     Node *combine(Node *x, Node *y);
-
-    int searchAndDestroy(Node *parent, Node *child, E *e, bool force_delete = false);
-
-    bool searchAndDestroyFake(Node *child, E *e);
 
     void merge_into(soft_heap *q);
 
