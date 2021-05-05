@@ -30,7 +30,7 @@ struct soft_heap {
     struct ListCell {
         E *elem;
         int del;
-        ListCell *next;
+        ListCell *next = nullptr;
 
         ListCell(E *e);
 
@@ -189,10 +189,10 @@ private:
 };
 
 template <typename E, typename Compare>
-soft_heap<E, Compare>::ListCell::ListCell(E *e) {
-    this->elem = e;
-    this->del = 1;  // NOT_DELETED = 1
-    this->next = nullptr;
+soft_heap<E, Compare>::ListCell::ListCell(E *e) : elem(e), del(1) {
+    //this->elem = e;
+    //this->del = 1;  // NOT_DELETED = 1
+    //this->next = nullptr;
 }
 
 template <typename E, typename Compare>
@@ -226,15 +226,7 @@ soft_heap<E, Compare>::Tree::Tree(E *e) {
     this->next = nullptr;
     this->sufmin = this;
 }
-/*
-template <typename E, typename Compare>
-soft_heap<E, Compare>::soft_heap(E *e) {
-    this->epsilon = 0.000001;
-    this->rank = 0;
-    this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
-    this->first = new Tree(e);
-}
-*/
+
 template <typename E, typename Compare>
 soft_heap<E, Compare>::soft_heap() {
     this->epsilon = 0.000001;
@@ -371,7 +363,7 @@ int soft_heap<E, Compare>::listSize(Node *x) {
 
 template <typename E, typename Compare>
 void soft_heap<E, Compare>::concatenate(Node *n1, Node *n2) {
-    if (n1->list == nullptr and n2->list == nullptr)
+    if (n1->list == nullptr && n2->list == nullptr)
         return;
     else if (n1->list == nullptr)
         n1->list = n2->list;
