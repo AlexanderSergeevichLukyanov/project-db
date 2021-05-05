@@ -28,7 +28,7 @@ struct soft_heap {
     Compare comp;
     std::size_t size_ = 0;
     struct ListCell {
-        E *elem;
+        E *elem = nullptr;
         int del;
         ListCell *next = nullptr;
 
@@ -38,10 +38,10 @@ struct soft_heap {
     };
 
     struct Node {
-        int rank, size, num;
-        E *ckey;
-        Node *left, *right;
-        ListCell *list;
+        int rank, size = 0, num;
+        E *ckey = nullptr;
+        Node *left = nullptr, *right = nullptr;
+        ListCell *list = nullptr;
 
         Node(Node *l, Node *r);
 
@@ -51,8 +51,8 @@ struct soft_heap {
     };
 
     struct Tree {
-        Node *root;
-        Tree *prev, *next, *sufmin;
+        Node *root = nullptr;
+        Tree *prev = nullptr, *next = nullptr, *sufmin = nullptr;
         int rank;
 
         Tree(E *e);
@@ -190,21 +190,20 @@ private:
 
 template <typename E, typename Compare>
 soft_heap<E, Compare>::ListCell::ListCell(E *e) : elem(e), del(1) {
-    //this->elem = e;
-    //this->del = 1;  // NOT_DELETED = 1
-    //this->next = nullptr;
 }
 
 template <typename E, typename Compare>
 soft_heap<E, Compare>::Node::Node(soft_heap<E, Compare>::Node *l,
-                                  soft_heap<E, Compare>::Node *r) {
-    this->list = nullptr;
-    this->rank = l->rank + 1;
-    this->size = 0;
-    this->num = this->size;
-    this->ckey = 0;
-    this->left = l;
-    this->right = r;
+                                  soft_heap<E, Compare>::Node *r) :
+rank(l->rank + 1), num(size), ckey(0), left(l), right(r)
+                                 {
+    ///this->list = nullptr;
+    //this->rank = l->rank + 1;
+    //this->size = 0;
+    //this->num = this->size;
+   // this->ckey = 0;
+    //this->left = l;
+    //this->right = r;
 }
 
 template <typename E, typename Compare>
