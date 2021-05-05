@@ -197,24 +197,19 @@ soft_heap<E, Compare>::Node::Node(soft_heap<E, Compare>::Node *l,
                                   soft_heap<E, Compare>::Node *r) :
 rank(l->rank + 1), num(size), ckey(0), left(l), right(r)
                                  {
-    ///this->list = nullptr;
-    //this->rank = l->rank + 1;
-    //this->size = 0;
-    //this->num = this->size;
-   // this->ckey = 0;
-    //this->left = l;
-    //this->right = r;
 }
 
 template <typename E, typename Compare>
-soft_heap<E, Compare>::Node::Node(E *e) {
+soft_heap<E, Compare>::Node::Node(E *e) :
+rank(0), size(1), num(size), ckey(e)
+{
     this->list = new ListCell(e);
-    this->rank = 0;
-    this->size = 1;
-    this->num = this->size;
-    this->ckey = e;
-    this->left = nullptr;
-    this->right = nullptr;
+ //   this->rank = 0;
+   // this->size = 1;
+//    this->num = this->size;
+  //  this->ckey = e;
+//    this->left = nullptr;
+  //  this->right = nullptr;
 }
 
 template <typename E, typename Compare>
