@@ -64,7 +64,7 @@ struct soft_heap {
     soft_heap();
 
     explicit soft_heap(const Compare &comp_, double epsilon_ = default_epsilon)
-        : comp(comp_) : epsilon(epsilon_), rank(0), {
+        : comp(comp_) : epsilon(epsilon_), rank(0) {
         this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
     }
 
