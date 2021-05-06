@@ -66,16 +66,16 @@ struct soft_heap {
     Tree *first = nullptr;
     int max_node_rank;
     int rank;
-    
+
     soft_heap();
 
     explicit soft_heap(const Compare &comp_, double epsilon_ = default_epsilon)
-        : comp(comp_) : epsilon(epsilon_), rank(0) {
+        : comp(comp_), epsilon(epsilon_), rank(0) {
         this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
     }
 
     soft_heap(const Compare &comp_, E *e, double epsilon_ = default_epsilon)
-        : comp(comp_) : epsilon(epsilon_), rank(0) {
+        : comp(comp_), epsilon(epsilon_), rank(0) {
         this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
         this->first = new Tree(e);
     }
