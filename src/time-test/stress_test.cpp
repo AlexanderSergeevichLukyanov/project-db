@@ -100,7 +100,7 @@ int main(){
 	std::cerr<<"\x1b[33mAfter 200'000 extractMin():\n\x1b[0m";
 	const int extractMin_count=200'000;
 	{
-	#ifdef list__heap_
+	#ifdef list_ffkf_heap_
 	list_heap<int> h;
 	extract_mins(extractMin_count, lh, h); 
 	#endif
