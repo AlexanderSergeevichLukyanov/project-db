@@ -97,8 +97,8 @@ int main(){
 	min_max();
 	
 	
-	std::cerr<<"\x1b[33mAfter 300'000 extractMin():\n\x1b[0m";
-	const int extractMin_count=300'000;
+	std::cerr<<"\x1b[33mAfter 100'000 extractMin():\n\x1b[0m";
+	const int extractMin_count=100'000;
 /*	{
 	#ifdef list_ffkf_heap_
 	list_heap<int> h;
