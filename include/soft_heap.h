@@ -63,18 +63,13 @@ struct soft_heap {
 
     soft_heap();
 
-    explicit soft_heap(const Compare &comp_, double epsilon_ = 0.0000001)
-        : comp(comp_) {
-        this->epsilon = 0.000001;
-        this->rank = 0;
+    explicit soft_heap(const Compare &comp_, double epsilon_ = default_epsilon)
+        : comp(comp_) : epsilon(epsilon_), rank(0), {
         this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
-        this->first = nullptr;
     }
 
-    soft_heap(const Compare &comp_, E *e, double epsilon_ = 0.0000001)
-        : comp(comp_) {
-        this->epsilon = epsilon_;
-        this->rank = 0;
+    soft_heap(const Compare &comp_, E *e, double epsilon_ = default_epsilon)
+        : comp(comp_) : epsilon(epsilon_), rank(0) {
         this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
         this->first = new Tree(e);
     }
@@ -243,15 +238,15 @@ soft_heap<E, Compare>::ListCell::~ListCell() {
 
 template <typename E, typename Compare>
 soft_heap<E, Compare>::Node::~Node() {
-    if (this->list != nullptr) {
+    if (this->list) {
         delete this->list;
         this->list = nullptr;
     }
-    if (this->left != nullptr) {
+    if (this->left) {
         delete this->left;
         this->left = nullptr;
     }
-    if (this->right != nullptr) {
+    if (this->right) {
         delete this->right;
         this->right = nullptr;
     }
@@ -259,16 +254,16 @@ soft_heap<E, Compare>::Node::~Node() {
 
 template <typename E, typename Compare>
 soft_heap<E, Compare>::Tree::~Tree() {
-    if (this->root != nullptr) {
+    if (this->root) {
         delete this->root;
         this->root = nullptr;
     }
-    if (this->prev != nullptr) {
+    if (this->prev) {
         this->prev->next = nullptr;
         delete this->prev;
         this->prev = nullptr;
     }
-    if (this->next != nullptr) {
+    if (this->next) {
         this->next->prev = nullptr;
         delete this->next;
         this->next = nullptr;
