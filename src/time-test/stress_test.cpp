@@ -97,10 +97,10 @@ int main(){
 	min_max();
 	
 	
-	std::cerr<<"\x1b[33mAfter 20'000 extractMin():\n\x1b[0m";
-	const int extractMin_count=20000;
+	std::cerr<<"\x1b[33mAfter 200'000 extractMin():\n\x1b[0m";
+	const int extractMin_count=200'000;
 	{
-	#ifdef list_heap_
+	#ifdef list__heap_
 	list_heap<int> h;
 	extract_mins(extractMin_count, lh, h); 
 	#endif
