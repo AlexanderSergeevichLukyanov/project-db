@@ -51,8 +51,8 @@ void extract_mins(int count, float &time_, T &test_str){
 
 
 int main(){
-	std::cerr<<"\x1b[33mAfter 10'000'000 insert():\n\x1b[0m";
-	const int insert_count=10'000'000;
+	std::cerr<<"\x1b[33mAfter 1'000'000 insert():\n\x1b[0m";
+	const int insert_count=1'000'000;
 	{
 	#ifdef list_hedsap_
 	list_fdheap<int> h;
