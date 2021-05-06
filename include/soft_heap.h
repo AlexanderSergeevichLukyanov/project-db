@@ -5,7 +5,7 @@
 #include <utility>
 
 static const int DELETED = 2;
-static const double default_epsilon = 0.0000000001;
+static const double default_epsilon = 0.0001;
 
 //#define soft_wrong_test //не стоит расскоментировать:)
 #define soft_construct  // default constructor
