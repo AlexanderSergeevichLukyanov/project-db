@@ -5,6 +5,7 @@
 #include <utility>
 
 static const int DELETED = 2;
+static const double default_epsilon = 0.000001;
 
 //#define soft_wrong_test //не стоит расскоментировать:)
 #define soft_construct  // default constructor
@@ -112,7 +113,7 @@ struct soft_heap {
     }
 
     double epsilon = 0.000001;
-    Tree *first;
+    Tree *first = nullptr;
     int max_node_rank;
     int rank;
 
@@ -213,12 +214,11 @@ soft_heap<E, Compare>::Tree::Tree(E *e) : rank(0) {
 }
 
 template <typename E, typename Compare>
-soft_heap<E, Compare>::soft_heap() {
-    this->epsilon = 0.000001;
-    this->rank = 0;
+soft_heap<E, Compare>::soft_heap() : epsilon(default_epsilon), rank(0)  {
+//    this->epsilon = 0.000001;
+//    this->rank = 0;
     this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
-    this->first = nullptr;
-}
+//    this->first = nullptr}
 
 template <typename E, typename Compare>
 soft_heap<E, Compare>::soft_heap(double epsi) {
