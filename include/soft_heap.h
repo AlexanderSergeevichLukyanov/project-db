@@ -26,12 +26,7 @@ static const double default_epsilon = 0.000001;
 
 template <typename E, typename Compare = std::less<E>>
 struct soft_heap {
-    Compare comp;
-    std::size_t size_ = 0;
-    double epsilon = default_epsilon;
-    Tree *first = nullptr;
-    int max_node_rank;
-    int rank;
+
     struct ListCell {
         E *elem = nullptr;
         int del;
@@ -65,6 +60,13 @@ struct soft_heap {
         ~Tree();
     };
 
+    Compare comp;
+    std::size_t size_ = 0;
+    double epsilon = default_epsilon;
+    Tree *first = nullptr;
+    int max_node_rank;
+    int rank;
+    
     soft_heap();
 
     explicit soft_heap(const Compare &comp_, double epsilon_ = default_epsilon)
