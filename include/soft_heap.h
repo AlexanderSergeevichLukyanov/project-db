@@ -28,6 +28,10 @@ template <typename E, typename Compare = std::less<E>>
 struct soft_heap {
     Compare comp;
     std::size_t size_ = 0;
+    double epsilon = default_epsilon;
+    Tree *first = nullptr;
+    int max_node_rank;
+    int rank;
     struct ListCell {
         E *elem = nullptr;
         int del;
@@ -107,10 +111,6 @@ struct soft_heap {
         extr();
     }
 
-    double epsilon = 0.000001;
-    Tree *first = nullptr;
-    int max_node_rank;
-    int rank;
 
     const E getMin() {
         E e_(extr());
