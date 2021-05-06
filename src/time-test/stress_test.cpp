@@ -39,7 +39,7 @@ void inserts(int count, float &time_, T &test_str){
 
 template<class T> 
 void extract_mins(int count, float &time_, T &test_str){
-		for(int i=0; i<count; ++i){
+		for(int i=0; i<count+10; ++i){
 			test_str.insert(rand());
 		}
 	int time_start = clock();
@@ -97,8 +97,8 @@ int main(){
 	min_max();
 	
 	
-	std::cerr<<"\x1b[33mAfter 500'000 extractMin():\n\x1b[0m";
-	const int extractMin_count=500'000;
+	std::cerr<<"\x1b[33mAfter 300'000 extractMin():\n\x1b[0m";
+	const int extractMin_count=300'000;
 /*	{
 	#ifdef list_ffkf_heap_
 	list_heap<int> h;
