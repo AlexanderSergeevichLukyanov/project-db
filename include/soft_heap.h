@@ -5,7 +5,7 @@
 #include <utility>
 
 static const int DELETED = 2;
-static const long double default_epsilon =0.01;
+static const long double default_epsilon =0.0001;
 
 //#define soft_wrong_test //не стоит расскоментировать:)
 #define soft_construct  // default constructor
@@ -62,7 +62,7 @@ struct soft_heap {
 
     Compare comp;
     std::size_t size_ = 0;
-    long double epsilon = 0.1;
+    long double epsilon = 0;
     Tree *first = nullptr;
     int max_node_rank;
     int rank;
