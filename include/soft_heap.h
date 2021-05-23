@@ -223,17 +223,17 @@ soft_heap<E, Compare>::soft_heap(double epsilon_) : epsilon(epsilon_), rank(0) {
 
 template <typename E, typename Compare>
 soft_heap<E, Compare>::~soft_heap() {
-    if (this->first) {
-        delete this->first;
-        this->first = nullptr;
+    if (first != nullptr) {
+        delete first;
+        first = nullptr;
     }
 }
 
 template <typename E, typename Compare>
 soft_heap<E, Compare>::ListCell::~ListCell() {
-    if (this->next) {
-        delete this->next;
-        this->next = nullptr;
+    if (next != nullptr) {
+        delete next;
+        next = nullptr;
     }
 }
 
