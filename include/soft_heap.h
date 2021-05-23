@@ -62,7 +62,7 @@ struct soft_heap {
 
     Compare comp;
     std::size_t size_ = 0;
-    long double epsilon = default_epsilon;
+    long double epsilon = 0.0000000000000000000001;
     Tree *first = nullptr;
     int max_node_rank;
     int rank;
