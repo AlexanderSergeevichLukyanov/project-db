@@ -120,11 +120,11 @@ struct soft_heap {
 private:
     const E &extr() {
         --size_;
-        int *deleted = new int(2);
+        bool flag = true;
         E *e = nullptr;
-        while (*deleted == DELETED) {
+        while (flag) {
             if (first == nullptr) {
-                delete deleted;
+                flag = false;
             }
 
             Tree *t = first->sufmin;
@@ -155,7 +155,7 @@ private:
                 }
             }
         }
-        delete deleted;
+       // delete deleted;
         return *e;
     }
 
