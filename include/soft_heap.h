@@ -178,7 +178,7 @@ private:
 
     void concatenate(Node *n1, Node *n2);
 
-    E *pick_elem(Tree *t, int *deleted);
+    E *pick_elem(Tree *t, int &deleted);
 
     void swapLR(Node *x);
 
