@@ -91,7 +91,7 @@ struct soft_heap {
     }
 
     void insert(E e_) {
-        E *e = std::move(e_);
+        E *e = new E(std::move(e_));
         ++size_;
         if (first == nullptr) {
             first = new Tree(e);
