@@ -5,7 +5,7 @@
 #include <utility>
 
 static const int DELETED = 2;
-static const long double default_epsilon =0.1;
+static const long double default_epsilon =0.01;
 
 //#define soft_wrong_test //не стоит расскоментировать:)
 #define soft_construct  // default constructor
@@ -120,11 +120,12 @@ struct soft_heap {
 private:
     const E &extr() {
         --size_;
-        bool flag = true;
+        //int *deleted = new int(2);
+        int deleted = 2;
         E *e = nullptr;
-        while (flag) {
+        while (deleted == DELETED) {
             if (first == nullptr) {
-                flag = false;
+                deleted = 1;
             }
 
             Tree *t = first->sufmin;
@@ -155,7 +156,7 @@ private:
                 }
             }
         }
-       // delete deleted;
+        //delete deleted;
         return *e;
     }
 
@@ -303,10 +304,10 @@ void soft_heap<E, Compare>::meld(soft_heap *Q) {
 }
 
 template <typename E, typename Compare>
-E *soft_heap<E, Compare>::pick_elem(Tree *t, int *deleted) {
+E *soft_heap<E, Compare>::pick_elem(Tree *t, int &deleted) {
     soft_heap<E, Compare>::ListCell *actual = t->root->list;
     E *act_elem = actual->elem;
-    *deleted = actual->del;
+    deleted = actual->del;
     if (actual->next == nullptr) {
         delete t->root->list;
         t->root->list = nullptr;
