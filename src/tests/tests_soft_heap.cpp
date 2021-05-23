@@ -75,7 +75,7 @@ TEST_CASE("soft-heap: 300000 GetMin()") {
         if (x < min)
             min = x;
         h1.insert(x);
-        REQUIRE_MESSAGE(h1.getMin() == min, "generate min is other");
+        REQUIRE_MESSAGE(h1.getMin() == min, "generate min is other"+std::to_string(i));
         if (h1.getMin() != min)
             break;
     }
