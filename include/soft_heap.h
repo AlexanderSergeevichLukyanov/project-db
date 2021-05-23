@@ -93,7 +93,7 @@ struct soft_heap {
     void insert(E e) {
         ++size_;
         if (first == nullptr) {
-            first = new Tree(e);
+            first = new Tree(&e);
         } else {
             soft_heap<E, Compare> *q = new soft_heap<E, Compare>(comp, e, epsilon);
             q->max_node_rank = max_node_rank;
