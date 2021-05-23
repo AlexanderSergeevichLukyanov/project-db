@@ -170,10 +170,10 @@ int main(){
 	min_max();
 
 	
-	std::cout<<clock();
+	std::cout<<clock()<<"\n";
 	rand_test_soft();
-	std::cout<<clock();
+	std::cout<<clock()<<"\n";
 	
 	rand_test_pairing();
-	std::cout<<clock();
+	std::cout<<clock()<<"\n";
 }
