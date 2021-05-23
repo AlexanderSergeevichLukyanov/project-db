@@ -125,11 +125,11 @@ private:
         int *deleted = new int(2);
         E *e = nullptr;
         while (*deleted == DELETED) {
-            if (this->first == nullptr) {
+            if (first == nullptr) {
                 delete deleted;
             }
 
-            Tree *t = this->first->sufmin;
+            Tree *t = first->sufmin;
             Node *x = t->root;
             e = pick_elem(t, deleted);
 
@@ -143,12 +143,12 @@ private:
 
                     if (t->next == nullptr) {
                         if (t->prev == nullptr)
-                            this->rank = -1;
+                            rank = -1;
                         else
-                            this->rank = t->prev->rank;
+                            rank = t->prev->rank;
                     }
 
-                    if (t->prev != NULL)
+                    if (t->prev != nullptr)
                         update_suffix_min(t->prev);
                     t->prev = nullptr;
                     t->next = nullptr;
