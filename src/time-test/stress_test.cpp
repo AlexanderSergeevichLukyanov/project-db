@@ -146,4 +146,30 @@ int main(){
 	}
 	
 	min_max();
+
+	soft_heap<int> sh_1;
+	pairing_heap<int> ph_1;
+	std::cout<<clock();
+	void rand_test_soft() {
+		for(int i=0; i<1000000; ++i){
+			if(rand()%3 == 1 && sh_1.size()!=0){
+				sh_1.extractMin();
+			} else{
+				sh_1.insert(rand());
+			}
+		}
+	}
+	rand_test_soft();
+	std::cout<<clock();
+	void rand_test_pairing() {
+		for(int i=0; i<1000000; ++i){
+			if(rand()%3 == 1 && ph_1.size()!=0){
+				ph_1.extractMin();
+			} else{
+				ph_1.insert(rand());
+			}
+		}
+	}
+	rand_test_pairing();
+	std::cout<<clock();
 }
