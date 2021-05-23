@@ -56,7 +56,7 @@ TEST_CASE("soft-heap: 300000 insert") {
 
 #ifdef soft_get_min
 TEST_CASE("soft-heap: GetMin()") {
-    soft_heap<int> h1(0.0001);
+    soft_heap<int> h1(0.000001);
     int min = 300000;
     for (int i = 0; i < 300000; ++i) {
         int x = rand() % 300000 + 1;
@@ -68,7 +68,7 @@ TEST_CASE("soft-heap: GetMin()") {
 }
 
 TEST_CASE("soft-heap: 300000 GetMin()") {
-    soft_heap<int> h1(0.0001);
+    soft_heap<int> h1(0.000001);
     int min = 300000;
     for (int i = 0; i < 300000; ++i) {
         int x = rand() % 300000;
