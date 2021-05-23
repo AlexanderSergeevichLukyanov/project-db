@@ -95,13 +95,12 @@ struct soft_heap {
     void insert(const E &e) {
         ++size_;
         E *e_copy = new E(e);
-        if (this->first == nullptr) {
-            this->first = new Tree(e_copy);
+        if (first == nullptr) {
+            first = new Tree(e_copy);
         } else {
-            soft_heap<E, Compare> *q =
-                new soft_heap<E, Compare>(comp, e_copy, epsilon);
-            q->max_node_rank = this->max_node_rank;
-            q->epsilon = this->epsilon;
+            soft_heap<E, Compare> *q = new soft_heap<E, Compare>(comp, e_copy, epsilon);
+            q->max_node_rank = max_node_rank;
+            q->epsilon = epsilon;
             meld(q);
             delete q;
         }
