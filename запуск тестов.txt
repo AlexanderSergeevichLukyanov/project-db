@@ -1,0 +1,23 @@
+#data-str
+	# Буффер
+	./all_include.sh lib/include/test/data-str-test/BufferTest.cpp buffer-test 
+
+	# Голова
+
+	./all_include.sh lib/include/test/data-str-test/HeadTest.cpp head-test
+
+	# Pairing-heap голов ТЕСТ УСТАРЕЛ!!!
+
+	./all_include.sh lib/include/test/data-str-test/ph-head.cpp ph-head-test
+
+#RAM-heaps
+	# Pairing-heap
+	./all_include.sh lib/include/test/RAM-test/tests_pairing_heap.cpp ph-RAM-test
+
+#soft-and-pairing-with-buffer-test
+	# Pairting-heap
+	./all_include.sh lib/include/test/soft-and-pairing-with-buffer-test/PH_buf_test.cpp ph-buf-test
+
+#HeapTESTs
+	# Pairing-heap
+	./all_include.sh lib/include/test/HEAP-test/PH_test.cpp PH
