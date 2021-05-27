@@ -5,10 +5,6 @@
 #include <sstream>
 #include <memory>
 
-
-std::size_t I_COUNTER{};
-std::size_t O_COUNTER{};
-
 namespace EMHS {
     std::size_t B = 32'00;
     std::size_t m = 15;
@@ -60,29 +56,24 @@ public:
 
 //    void (* READ)(uint64_t NextWrite, Block_t &);
 
-    std::string NameMake(uint64_t NextWrite) {
-        std::stringstream StringStream;
-        StringStream << "lib/DISK/" << NextWrite;
-        std::string Name;
-        StringStream >> Name;
-        return Name;
-    }
+
+} // EMHS
+
+
 
     template<typename T>
-    void READ(uint64_t NextWrite, EMHS::Block_t<T> & Block) {
+    void READ(uint64_t NextWrite, EMHS::Block_t<T> & Block);/* {
         std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "rb"), & fclose);
         fread(& Block[0], sizeof(T), Block.capacity(), File.get());
         I_COUNTER++;
-    }
+    }*/
     
     template<typename T>
-    void WRITE(uint64_t NextWrite, const EMHS::Block_t<T> & Block) {
+    void WRITE(uint64_t NextWrite, const EMHS::Block_t<T> & Block);/* {
         //std::cerr<<NameMake(NextWrite);
         std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "wb"), & fclose);
         fwrite(& Block[0], sizeof(T), Block.capacity(), File.get());
         O_COUNTER++;
-    }
-
-} // EMHS
+    }*/
 
 #endif

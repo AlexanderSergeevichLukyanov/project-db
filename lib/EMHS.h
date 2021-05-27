@@ -6,8 +6,9 @@
 #include "disk.h"
 #include "towerheap.h"
 #include "flowerheap.h"
+#include "SoftHeap.h"
 #include "PairingHeap.h"
-//#include "SoftHeap.h"
+#include "default_disk_rw.h"
 
 namespace EMHS {
 

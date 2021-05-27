@@ -1,8 +1,7 @@
 #include <cassert>
-#include "head.h"
+//#include "head.h"
 #include "pairing_heap.h"
 //#include "disk.h"
-inline std::size_t block_counter = 0;
 
 namespace EMHS{
 template <typename T, typename Compare = std::less<T>>
@@ -21,7 +20,7 @@ private:
 
     void flush_buf() {  //по факту новый блок
 
-        if (buf.size()>B/sizeof(T) +max_head_size+5) {  // TODO: к норм виду
+        if (buf.size()>2 * B/sizeof(T) +max_head_size+5) {  // TODO: к норм виду
             Block_t<T>/*<T, B/8>*/ new_bl;
             Head<T, Compare> new_h(max_head_size, comp);
 
@@ -52,19 +51,19 @@ private:
 
 public:
 
-    pairing_heap_with_buffer(): buf( 2 * B / sizeof(T) + 3 * max_head_size, comp) {
+    pairing_heap_with_buffer(): buf( 3 * B / sizeof(T) + 3 * max_head_size, comp) {
     }
 
     pairing_heap_with_buffer(std::size_t max_size_) :
     max_size(max_size_),
     max_head_size( std::min(static_cast<std::size_t>(100), ( max_size*sizeof(T) ) / (B * (m - 3)) ) ),
-    buf(2 * B / sizeof(T) + 3 * max_head_size, comp) {
+    buf(3 * B / sizeof(T) + 3 * max_head_size, comp) {
     };
 
     explicit pairing_heap_with_buffer(const Compare &comp_)
         : comp(comp_), 
         heads_of_blocks(HeadCompare<Compare>(comp)), 
-        buf(2 * B / sizeof(T) + 3 * max_head_size, comp){
+        buf(3 * B / sizeof(T) + 3 * max_head_size, comp){
     }
 
     explicit pairing_heap_with_buffer(std::size_t max_size_, const Compare &comp_)
@@ -72,7 +71,7 @@ public:
         heads_of_blocks(HeadCompare<Compare>(comp)), 
         max_size(max_size_), 
         max_head_size( std::min(static_cast<std::size_t>(100), ( max_size*sizeof(T) ) / (B * (m - 3)) ) ),
-        buf(2 * B / sizeof(T) + 3 * max_head_size, comp) {
+        buf(3 * B / sizeof(T) + 3 * max_head_size, comp) {
     }
 
     [[nodiscard]] bool empty() const {
@@ -191,6 +190,13 @@ public:
 
     explicit PairingHeap(uint64_t max_size, const Compare &comp_):
 		comp(comp_), heap_of_elements(max_size, comp), heap_of_del_elements(comp) 
+    {
+
+    }
+
+    PairingHeap(uint64_t max_size):
+		heap_of_elements(max_size, comp),
+		heap_of_del_elements(comp) 
     {
 
     }

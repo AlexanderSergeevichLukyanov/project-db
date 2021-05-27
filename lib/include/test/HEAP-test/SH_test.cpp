@@ -3,7 +3,9 @@
 #include <vector>
 #include <set>
 #include "mytest.h"
-#include "SoftHeap.h"
+#include "EMHS.h"
+
+using namespace EMHS;
 
 namespace {
 struct CloserTo {
@@ -27,7 +29,6 @@ public:
 TEST_CASE("soft-heap: constructors without Compare") {
     SoftHeap<int> h1;
     SoftHeap<double> h2;
-    SoftHeap<std::string> h3;
     // only compile
 }
 
@@ -91,6 +92,10 @@ TEST_CASE("soft-heap: 3000 add and 3000 extract_min") {
         "extract_min");
     for (int i = 0; i < 3000; ++i) {
         CHECK(h1.top() == res[i]);
+        if(h1.top() != res[i]){
+            std::cerr << "#" << i << ": " <<std::to_string(h1.top()) << " != " << std::to_string(res[i]) << "\n";
+            break;
+        }
         h1.extract();
     }
 }
@@ -109,49 +114,13 @@ TEST_CASE("soft-heap: 10000 add and 10000 extract_min") {
         "extract_min");
     for (int i = 0; i < 10000; ++i) {
         CHECK(h1.top() == res[i]);
+        if(h1.top() != res[i]){
+            std::cerr << std::to_string(h1.top()) << " != " << std::to_string(res[i]) << "\n";
+            break;
+        }
         h1.extract();
     }
 }
-
-
-/*
-TEST_CASE("soft-heap: make (30000 elements)") {
-    SoftHeap<int> h1;
-    int arr[30000];
-    int min = 30000;
-    for (int i = 0; i < 30000; ++i) {
-        int x = rand() % 30000;
-        arr[i] = x;
-        if (min > x)
-            min = x;
-    }
-    h1.make(arr, 30000);
-    CHECK_MESSAGE(h1.size() == 30000,
-                  "size heap must be equal to the array size(30000), but no " +
-                      std::to_string(h1.size()));
-    CHECK_MESSAGE(h1.top() == min,
-                  "min heap must be equal to the array min");
-}
-
-TEST_CASE("soft-heap: make (300000 elements)") {
-    SoftHeap<int> h1;
-    int arr[300000];
-    int min = 300000;
-    for (int i = 0; i < 300000; ++i) {
-        int x = rand() % 300000;
-        arr[i] = x;
-        if (min > x)
-            min = x;
-    }
-    h1.make(arr, 300000);
-    CHECK_MESSAGE(h1.size() == 300000,
-                  "size heap must be equal to the array size(300000), but no " +
-                      std::to_string(h1.size()));
-    CHECK_MESSAGE(h1.top() == min,
-                  "min heap must be equal to the array min");
-}
-*/
-
 
 TEST_CASE("soft-heap: random test#1") {
     SoftHeap<int> h1;
@@ -216,29 +185,6 @@ TEST_CASE("soft-heap: voids must be voids...") {
                   "method add() must be void! not " + str3 + " !");
 }
 
-TEST_CASE("soft-heap: SoftHeap(other &&)") {
-    SoftHeap<int> h2;
-    h2.add(1);
-    h2.add(2);
-    SoftHeap<int> h1(std::move(h2));
-    CHECK(h1.size() == 2);
-    CHECK(h1.top() == 1);
-    h1.extract();
-    CHECK(h1.size() == 1);
-    CHECK(h1.top() == 2);
-}
-
-TEST_CASE("soft-heap: operator=(other &&)") {
-    SoftHeap<int> h2;
-    h2.add(1);
-    h2.add(2);
-    SoftHeap<int> h1 = std::move(h2);
-    CHECK(h1.size() == 2);
-    CHECK(h1.top() == 1);
-    h1.extract();
-    CHECK(h1.size() == 1);
-    CHECK(h1.top() == 2);
-}
 
 TEST_CASE("soft-heap: default contructor must be implicit") {
     [[maybe_unused]] SoftHeap<int> h1 = {};
@@ -287,6 +233,10 @@ TEST_CASE("soft-heap-with-compare: 3000 add and 3000 extract_min") {
         "extract_min");
     for (int i = 0; i < 3000; ++i) {
         CHECK(std::abs(h1.top() - 10) == res[i]);
+        if(std::abs(h1.top() - 10) != res[i]){
+            std::cerr << std::to_string(h1.top()) << " != " << std::to_string(res[i]) << "\n";
+            break;
+        }
         h1.extract();
     }
 }
@@ -304,7 +254,7 @@ TEST_CASE("soft-heap-with-compare: 10000 add and 10000 extract_min") {
         "After 10000 add random  and sort random x, then start checking "
         "extract_min");
     for (int i = 0; i < 10000; ++i) {
-        CHECK_MESSAGE(std::abs(h1.top() - 10) == res[i], "#"+std::to_string(i)+": "+std::to_string(std::abs(h1.top() - 10))+" != "+std::to_string(res[i]));
+        REQUIRE_MESSAGE(std::abs(h1.top() - 10) == res[i], "#"+std::to_string(i)+": "+std::to_string(std::abs(h1.top() - 10))+" != "+std::to_string(res[i]));
         h1.extract();
     }
 }
@@ -324,7 +274,7 @@ TEST_CASE("soft-heap-with-compare: 3000 add and 3000 extract_min") {
         "After 3000 add random  and sort random x, then start checking "
         "extract_min");
     for (int i = 0; i < 3000; ++i) {
-        CHECK(std::abs(h1.top() - 10) == res[i]);
+        REQUIRE(std::abs(h1.top() - 10) == res[i]);
         h1.extract();
     }
 }
@@ -342,50 +292,10 @@ TEST_CASE("soft-heap-with-compare: 10000 add and 10000 extract_min") {
         "After 10000 add random  and sort random x, then start checking "
         "extract_min");
     for (int i = 0; i < 10000; ++i) {
-        CHECK_MESSAGE(std::abs(h1.top() - 10) == res[i], std::to_string(std::abs(h1.top() - 10))+" != "+std::to_string(res[i]));
+        REQUIRE_MESSAGE(std::abs(h1.top() - 10) == res[i], std::to_string(std::abs(h1.top() - 10))+" != "+std::to_string(res[i]));
         h1.extract();
     }
 }
-
-
-/*
-TEST_CASE("soft-heap: make (30000 elements)") {
-    SoftHeap<int, CloserTo> h1(CloserTo(10));
-    int arr[30000];
-    int min = 30000;
-    for (int i = 0; i < 30000; ++i) {
-        int x = rand() % 30000;
-        arr[i] = x;
-        if (min > std::abs(x - 10))
-            min = std::abs(x - 10);
-    }
-    h1.make(arr, 30000);
-    CHECK_MESSAGE(h1.size() == 30000,
-                  "size heap must be equal to the array size(30000), but no " +
-                      std::to_string(h1.size()));
-    CHECK_MESSAGE(std::abs(h1.top() - 10) == min,
-                  "min heap must be equal to the array min");
-}
-
-TEST_CASE("soft-heap: make (300000 elements)") {
-    SoftHeap<int, CloserTo> h1(CloserTo(10));
-    int arr[300000];
-    int min = 300000;
-    for (int i = 0; i < 300000; ++i) {
-        int x = rand() % 300000;
-        arr[i] = x;
-        if (min > std::abs(x - 10))
-            min = std::abs(x - 10);
-    }
-    h1.make(arr, 300000);
-    CHECK_MESSAGE(h1.size() == 300000,
-                  "size heap must be equal to the array size(300000), but no " +
-                      std::to_string(h1.size()));
-    CHECK_MESSAGE(std::abs(h1.top() - 10) == min,
-                  "min heap must be equal to the array min");
-}
-*/
-
 
 
 TEST_CASE("soft-heap-with-compare: random test") {
@@ -432,30 +342,6 @@ TEST_CASE("soft-heap-with-compare: voids must be voids...") {
                   "method add() must be void! not " + str3 + " !");
 }
 
-TEST_CASE("soft-heap-with-compare: SoftHeap(other &&)") {
-    SoftHeap<int, CloserTo> h2(CloserTo(10));
-    h2.add(1);
-    h2.add(2);
-    SoftHeap<int, CloserTo> h1(std::move(h2));
-    CHECK(h1.size() == 2);
-    CHECK(h1.top() == 2);
-    h1.extract();
-    CHECK(h1.size() == 1);
-    CHECK(h1.top() == 1);
-}
-
-TEST_CASE("soft-heap-with-compare: operator=(other &&)") {
-    SoftHeap<int, CloserTo> h2(CloserTo(10));
-    h2.add(1);
-    h2.add(2);
-    SoftHeap<int, CloserTo> h1 = std::move(h2);
-    CHECK(h1.size() == 2);
-    CHECK(h1.top() == 2);
-    h1.extract();
-    CHECK(h1.size() == 1);
-    CHECK(h1.top() == 1);
-}
-
 TEST_CASE(
     "soft-heap-with-compare: constructor from comparator is explicit") {
     CHECK((std::is_constructible_v<SoftHeap<int>, std::less<int>>));
@@ -491,124 +377,124 @@ TEST_CASE("soft-heap-with-compare: with std::greater(on max)") {
 }
 
 TEST_CASE("soft-heap: delete"){
-	SoftHeap<int> h;
-	for(int i=0; i<10; ++i){
-		h.add(i);
-	}
-	h.del(0);
-	CHECK(h.top()==1);
-	h.extract();
-	CHECK(h.top()==2);
-	h.del(5);
-	CHECK(h.size()==7);
-	h.del(3);
-	h.extract();
-	h.extract();
-	CHECK(h.top()==6);
+    SoftHeap<int> h;
+    for(int i=0; i<10; ++i){
+        h.add(i);
+    }
+    h.del(0);
+    CHECK(h.top()==1);
+    h.extract();
+    CHECK(h.top()==2);
+    h.del(5);
+    CHECK(h.size()==7);
+    h.del(3);
+    h.extract();
+    h.extract();
+    CHECK(h.top()==6);
 }
 
 TEST_CASE("soft-heap: delete"){
-	SoftHeap<int, CloserTo> h(CloserTo(10));
-	for(int i=0; i<10; ++i){
-		h.add(i);
-	}
-	h.del(9);
-	CHECK(h.top()==8);
-	h.extract();
-	CHECK(h.top()==7);
-	h.del(5);
-	CHECK(h.size()==7);
-	h.del(6);
-	h.extract();
-	CHECK(h.top()==4);
+    SoftHeap<int, CloserTo> h(CloserTo(10));
+    for(int i=0; i<10; ++i){
+        h.add(i);
+    }
+    h.del(9);
+    CHECK(h.top()==8);
+    h.extract();
+    CHECK(h.top()==7);
+    h.del(5);
+    CHECK(h.size()==7);
+    h.del(6);
+    h.extract();
+    CHECK(h.top()==4);
 }
 
 TEST_CASE("soft-heap: decreaseKey"){
-	SoftHeap<int> h;
-	for(int i=0; i<10; ++i){
-		h.add(i);
-	}
-	h.decreaseKey(5,11);
-	CHECK(h.size()==10);
-	h.extract();
-	h.extract();
-	h.extract();
-	h.extract();
-	h.extract();
-	CHECK(h.top()==6);
+    SoftHeap<int> h;
+    for(int i=0; i<10; ++i){
+        h.add(i);
+    }
+    h.decreaseKey(5,11);
+    CHECK(h.size()==10);
+    h.extract();
+    h.extract();
+    h.extract();
+    h.extract();
+    h.extract();
+    CHECK(h.top()==6);
 }
 void add(std::multiset<int> &pq, SoftHeap<int> &ph){
-	int x = rand();
-	pq.insert(x);
-	ph.add(x);
+    int x = rand();
+    pq.insert(x);
+    ph.add(x);
 }
 
 void extract(std::multiset<int> &pq, SoftHeap<int> &ph, int k){
-	int x = *(pq.begin());
-	int y = ph.top();
-	pq.erase(pq.begin());
-	ph.extract();
-	REQUIRE_MESSAGE(x==y, "#"+std::to_string(k)+": minimums are not equal: "+std::to_string(x)+" != "+std::to_string(y));
+    int x = *(pq.begin());
+    int y = ph.top();
+    pq.erase(pq.begin());
+    ph.extract();
+    REQUIRE_MESSAGE(x==y, "#"+std::to_string(k)+": minimums are not equal: "+std::to_string(x)+" != "+std::to_string(y));
 }
 
 void delet(std::multiset<int> &pq, SoftHeap<int> &ph, int k){
-	std::size_t sz = pq.size();
-	std::size_t sz_2 = rand() % sz;
-	std::multiset<int>::iterator it = pq.begin();
-	advance(it, sz_2);
-	ph.del(*it);
-	pq.erase(it);
-	int x = *(pq.begin());
-	int y = ph.top();
-	REQUIRE_MESSAGE(x==y, "#"+std::to_string(k)+": minimums are not equal: "+std::to_string(x)+" != "+std::to_string(y));
+    std::size_t sz = pq.size();
+    std::size_t sz_2 = rand() % sz;
+    std::multiset<int>::iterator it = pq.begin();
+    advance(it, sz_2);
+    ph.del(*it);
+    pq.erase(it);
+    int x = *(pq.begin());
+    int y = ph.top();
+    REQUIRE_MESSAGE(x==y, "#"+std::to_string(k)+": minimums are not equal: "+std::to_string(x)+" != "+std::to_string(y));
 }
 
 TEST_CASE("stress test with multiset: 10^5 operations"){
-	std::multiset<int> pq;
-	SoftHeap<int> ph;
-	for(int i = 0; i<100'000; ++i){
-		int r = rand() % 3;
-		if(r<2 or pq.empty()){ //с большей вероятностью add
-			add(pq, ph);
-			REQUIRE(pq.size()==ph.size());
-		} else{
-			extract(pq, ph, i);
-			REQUIRE(pq.size()==ph.size());
-		}
-	}
+    std::multiset<int> pq;
+    SoftHeap<int> ph;
+    for(int i = 0; i<100'000; ++i){
+        int r = rand() % 3;
+        if(r<2 or pq.empty()){ //с большей вероятностью add
+            add(pq, ph);
+            REQUIRE(pq.size()==ph.size());
+        } else{
+            extract(pq, ph, i);
+            REQUIRE(pq.size()==ph.size());
+        }
+    }
 }
 
 TEST_CASE("stress test with multiset: 10^5 operations"){
-	std::multiset<int> pq;
-	SoftHeap<int> ph;
-	for(int i = 0; i<100'000; ++i){
-		int r = rand() % 7;
-		if(r<7 or pq.empty()){ //с большей вероятностью add
-			add(pq, ph);
-			REQUIRE(pq.size()==ph.size());
-		} else{
-			extract(pq, ph, i);
-			REQUIRE(pq.size()==ph.size());
-		}
-	}
+    std::multiset<int> pq;
+    SoftHeap<int> ph;
+    for(int i = 0; i<100'000; ++i){
+        int r = rand() % 7;
+        if(r<7 or pq.empty()){ //с большей вероятностью add
+            add(pq, ph);
+            REQUIRE(pq.size()==ph.size());
+        } else{
+            extract(pq, ph, i);
+            REQUIRE(pq.size()==ph.size());
+        }
+    }
 }
 
 TEST_CASE("stress test with multiset: 10^5 operations"){
-	std::multiset<int> pq;
-	SoftHeap<int> ph;
-	for(int i = 0; i<100'000; ++i){
-		int r = rand() % 7;
-		if(r<6 or pq.empty()){ //с большей вероятностью add
-			add(pq, ph);
-			REQUIRE(pq.size()==ph.size());
-		} else if(r==6){
-			delet(pq, ph, i);
-			REQUIRE(pq.size()==ph.size());
-		} else{
-			extract(pq, ph, i);
-			REQUIRE(pq.size()==ph.size());
-		}
-	}
+    std::multiset<int> pq;
+    SoftHeap<int> ph;
+    for(int i = 0; i<100'000; ++i){
+        int r = rand() % 7;
+        if(r<6 or pq.empty()){ //с большей вероятностью add
+            add(pq, ph);
+            REQUIRE(pq.size()==ph.size());
+        } else if(r==6){
+            delet(pq, ph, i);
+            REQUIRE(pq.size()==ph.size());
+        } else{
+            extract(pq, ph, i);
+            REQUIRE(pq.size()==ph.size());
+        }
+    }
 }
 
 }  // namespace

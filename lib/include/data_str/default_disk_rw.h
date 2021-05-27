@@ -7,10 +7,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+std::size_t I_COUNTER{};
+std::size_t O_COUNTER{};
+
+std::string NameMake(uint64_t NextWrite) {
+        std::stringstream StringStream;
+        StringStream << "lib/DISK/" << NextWrite;
+        std::string Name;
+        StringStream >> Name;
+        return Name;
+    }
+
+template<typename T>
+    void READ(uint64_t NextWrite, EMHS::Block_t<T> & Block){
+        std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "rb"), & fclose);
+        fread(& Block[0], sizeof(T), Block.capacity(), File.get());
+        I_COUNTER++;
+    }
+    
+    template<typename T>
+    void WRITE(uint64_t NextWrite, const EMHS::Block_t<T> & Block){
+        //std::cerr<<NameMake(NextWrite);
+        std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "wb"), & fclose);
+        fwrite(& Block[0], sizeof(T), Block.capacity(), File.get());
+        O_COUNTER++;
+    }
+
 
 namespace EMHS{
 // TODO: класть на стек все файлы, а в конце main удалить=
-    void WRITE_DISK(char * filename, char * data, std::size_t len){
+   /* void WRITE_DISK(char * filename, char * data, std::size_t len){
         int file_descriptor = open64(filename, O_RDWR|O_CREAT, 0777);
         if(file_descriptor == -1){
             std::cerr << "Ошибка при открытии/создании файла\n";
@@ -38,5 +64,5 @@ namespace EMHS{
         fdatasync(file_descriptor);
         close(file_descriptor);
         // unlink(filename); // он вроде как больше не нужен после чтения
-    }
+    }*/
 }
