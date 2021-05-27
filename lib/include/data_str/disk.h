@@ -2,6 +2,7 @@
 #define DISK_H
 
 #include <functional>
+#include <sstream>
 #include <memory>
 
 
@@ -9,7 +10,7 @@ std::size_t I_COUNTER{};
 std::size_t O_COUNTER{};
 
 namespace EMHS {
-    std::size_t B = 32'000;
+    std::size_t B = 32'00;
     std::size_t m = 15;
 
 template <typename T = uint64_t>
@@ -17,9 +18,9 @@ struct Block_t {
 private:
     std::size_t size_ = 0;
     std::size_t capacity_ = 0;
-    std::unique_ptr<T[]> data;
+    std::vector<T> data;
 public:
-    Block_t() : capacity_( B / sizeof(T) ), data(new T[capacity_]){
+    Block_t() : capacity_( B / sizeof(T) ), data(capacity_){
     }
 
     [[nodiscard]]  uint64_t capacity() const{
@@ -39,7 +40,7 @@ public:
     }
 
     void clear(){
-        data.reset();
+        data.clear();
         size_ = 0;
     }
 

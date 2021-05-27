@@ -21,3 +21,9 @@
 #HeapTESTs
 	# Pairing-heap
 	./all_include.sh lib/include/test/HEAP-test/PH_test.cpp PH
+
+	# Tower-heap
+	./all_include.sh lib/include/test/HEAP-test/TH_test.cpp TH
+
+	# Flower-heap
+	./all_include.sh lib/include/test/HEAP-test/FH_test.cpp FH

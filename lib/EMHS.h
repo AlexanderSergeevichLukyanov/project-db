@@ -4,8 +4,8 @@
 
 //#include "DISK.h"
 #include "disk.h"
-//#include "towerheap.h"
-//#include "flowerheap.h"
+#include "towerheap.h"
+#include "flowerheap.h"
 #include "PairingHeap.h"
 //#include "SoftHeap.h"
 

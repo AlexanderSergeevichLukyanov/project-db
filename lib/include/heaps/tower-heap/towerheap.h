@@ -10,7 +10,7 @@ namespace EMHS {
             uint64_t MaxHeight{};
             uint64_t Size{};
             uint64_t HeadSize{};
-            Block_t Head;
+            Block_t<> Head;
 
         public:
             Tower_t() = delete;
@@ -59,7 +59,7 @@ namespace EMHS {
                 }
                 if (HeadSize == 0) {
                     HeadSize = BlockCapacity();
-                    (* READ)(Head[0], Head);
+                    READ(Head[0], Head);
                     return;
                 }
                 for (std::size_t Index = sizeof(Element_t) / 8; Index < B / 8 - sizeof(Element_t) / 8; Index++) {
@@ -71,7 +71,7 @@ namespace EMHS {
                 return Size == BlockCapacity();
             }
 
-            void ReHead(const Block_t & NewHead, uint64_t NewSize, uint64_t NewHeadSize) {
+            void ReHead(const Block_t<> & NewHead, uint64_t NewSize, uint64_t NewHeadSize) {
                 Head = NewHead;
                 Size = NewSize;
                 HeadSize = NewHeadSize;
@@ -79,7 +79,7 @@ namespace EMHS {
 
             void add(Element_t Value) {
                 HeadSize++;
-                Block_t NewHead;
+                Block_t<> NewHead;
                 std::size_t Current = sizeof(Element_t) / 8;
                 while (!empty() && top() < Value) {
                     for (std::size_t Index = Current; Index < Current + sizeof(Element_t) / 8; Index++) {
@@ -156,7 +156,7 @@ namespace EMHS {
 
         void Merge(TowerHeap_t<Element_t> Tmp, std::size_t Number) {
             uint64_t TmpSize = Tmp.Size;
-            Block_t NewHead;
+            Block_t<> NewHead;
             if (TmpSize == 0) {
                 Data[Number].ReHead(NewHead, 0, 0);
                 return;
@@ -181,7 +181,7 @@ namespace EMHS {
             uint64_t NewTowerDiskHeight = (TmpSize - TmpHeadSize) / Tower_t::BlockCapacity();
             while (NewTowerDiskHeight > 0) {
                 NewTowerDiskHeight--;
-                Block_t ToDisk;
+                Block_t<> ToDisk;
                 for (std::size_t Index = 1; Index <= Tower_t::BlockCapacity(); Index++) {
                     std::vector<uint64_t> Parsed = Parse(Tmp.top());
                     Tmp.extract();
@@ -191,11 +191,11 @@ namespace EMHS {
                 }
                 if (NewTowerDiskHeight > 0) {
                     ToDisk[0] = NextWrite;
-                    (* WRITE)(Hole, ToDisk);
+                    WRITE(Hole, ToDisk);
                     Hole = NextWrite;
                     NextWrite++;
                 } else {
-                    (* WRITE)(Hole, ToDisk);
+                    WRITE(Hole, ToDisk);
                 }
             }
             Data[Number].ReHead(NewHead, TmpSize, TmpHeadSize);
@@ -205,9 +205,14 @@ namespace EMHS {
         TowerHeap_t() = delete;
 
         explicit TowerHeap_t(uint64_t DirectoryName) : NextWrite(DirectoryName) {};
+        TowerHeap_t& operator=(const TowerHeap_t& ) = default;
 
         [[nodiscard]] bool empty() const {
             return Size == 0;
+        }
+
+        [[nodiscard]] uint64_t size() const {
+            return Size;
         }
 
         [[nodiscard]] Element_t top() const {

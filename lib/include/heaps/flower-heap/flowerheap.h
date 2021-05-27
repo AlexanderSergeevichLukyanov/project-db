@@ -10,7 +10,7 @@ namespace EMHS {
         template<typename HelminthElement_t>
         class Helminth_t {
         private:
-            Block_t Head;
+            Block_t<> Head;
 
             [[nodiscard]] static uint64_t BlockCapacity() {
                 return B / sizeof(HelminthElement_t) - 1;
@@ -20,7 +20,7 @@ namespace EMHS {
             Helminth_t() = default;
 
             explicit Helminth_t(uint64_t Address) {
-                (* READ)(Address, Head);
+                READ(Address, Head);
             }
 
             [[nodiscard]] uint64_t size() const {
@@ -34,7 +34,7 @@ namespace EMHS {
             [[nodiscard]] HelminthElement_t upchuck() {
                 if (size() % BlockCapacity() == 0) {
                     uint64_t OldSize = size();
-                    (* READ)(Head[0], Head);
+                    READ(Head[0], Head);
                     HelminthElement_t Result{};
                     HelminthElement_t * Pointer = & Result;
                     auto MovablePointer = reinterpret_cast<uint64_t *>(Pointer);
@@ -70,7 +70,7 @@ namespace EMHS {
                     for (std::size_t Index = sizeof(HelminthElement_t) / 8; Index < 2 * sizeof(HelminthElement_t) / 8; Index++) {
                         Head[Index] = Result[Index - sizeof(HelminthElement_t) / 8];
                     }
-                    (* WRITE)(NextWriteLocale, Head);
+                    WRITE(NextWriteLocale, Head);
                     Head[0] = NextWriteLocale;
                     Head[sizeof(HelminthElement_t) / 8] = OldSize;
                     return 1;
@@ -82,7 +82,7 @@ namespace EMHS {
             }
 
             void egg(uint64_t Address) const {
-                (* WRITE)(Address, Head);
+                WRITE(Address, Head);
             }
         };
 
@@ -100,8 +100,8 @@ namespace EMHS {
             Flower_t(Element_t Border, uint64_t Level, uint64_t Children, std::size_t DataElementsCount) : Border(Border), Level(Level), Children(Children), DataElementsCount(DataElementsCount) {};
 
             Flower_t(uint64_t Address, std::size_t DataElementsCount) : DataElementsCount(DataElementsCount) {
-                Block_t Block;
-                (* READ)(Address, Block);
+                Block_t<> Block;
+                READ(Address, Block);
                 Level = Block[0];
                 Children = Block[1];
                 Helminth = Helminth_t<Element_t>{Block[2]};
@@ -139,7 +139,7 @@ namespace EMHS {
 
             void seed(uint64_t Address) {
                 Helminth.egg(Address + 1);
-                Block_t Block;
+                Block_t<> Block;
                 Block[0] = Level;
                 Block[1] = Children;
                 Block[2] = Address + 1;
@@ -150,7 +150,7 @@ namespace EMHS {
                     Block[Index] = * MovablePointer;
                     MovablePointer++;
                 }
-                (* WRITE)(Address, Block);
+                WRITE(Address, Block);
             }
         };
 
@@ -257,6 +257,10 @@ namespace EMHS {
 
         [[nodiscard]] bool empty() const {
             return Size == 0;
+        }
+
+        [[nodiscard]] uint64_t size() const {
+            return Size;
         }
 
         [[nodiscard]] Element_t top() const {
