@@ -118,7 +118,7 @@ int main() {
         std::vector<uint64_t> OutCoreResult(Chip.size());
         for (std::size_t Index = 0; Index < Chip.size(); Index++) {
             EMHS::Block_t TmpBlock;
-            READ(Output[Index + 1], TmpBlck);
+            READ(Output[Index + 1], TmpBlock);
             OutCoreResult[Index] = TmpBlock[k - 1];
         }
         if (Chip.size() == Output[0] && InCoreResult == OutCoreResult) {
