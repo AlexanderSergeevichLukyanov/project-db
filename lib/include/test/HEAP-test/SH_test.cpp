@@ -1,9 +1,9 @@
 #include <algorithm>
+#include <set>
 #include <type_traits>
 #include <vector>
-#include <set>
-#include "mytest.h"
 #include "EMHS.h"
+#include "mytest.h"
 
 using namespace EMHS;
 
@@ -25,14 +25,11 @@ public:
     }
 };
 
-
 TEST_CASE("soft-heap: constructors without Compare") {
     SoftHeap<int> h1;
     SoftHeap<double> h2;
     // only compile
 }
-
-
 
 TEST_CASE("soft-heap: 30000 add") {
     SoftHeap<int> h1;
@@ -49,8 +46,6 @@ TEST_CASE("soft-heap: 300000 add") {
     }
     CHECK(h1.size() == 300000);
 }
-
-
 
 TEST_CASE("soft-heap: top()") {
     SoftHeap<int> h1;
@@ -72,7 +67,10 @@ TEST_CASE("soft-heap: 300000 top()") {
         if (x < min)
             min = x;
         h1.add(x);
-        CHECK_MESSAGE(h1.top() == min, "#"+std::to_string(i)+": generate min is other: "+std::to_string(h1.top())+" != "+std::to_string(min));
+        CHECK_MESSAGE(h1.top() == min, "#" + std::to_string(i) +
+                                           ": generate min is other: " +
+                                           std::to_string(h1.top()) +
+                                           " != " + std::to_string(min));
         if (h1.top() != min)
             break;
     }
@@ -92,10 +90,12 @@ TEST_CASE("soft-heap: 3000 add and 3000 extract_min") {
         "extract_min");
     for (int i = 0; i < 3000; ++i) {
         CHECK(h1.top() == res[i]);
-        if(h1.top() != res[i]){
-            std::cerr << "#" << i << ": " <<std::to_string(h1.top()) << " != " << std::to_string(res[i]) << "\n";
+        if (h1.top() != res[i]) {
+            std::cerr << "#" << i << ": " << std::to_string(h1.top())
+                      << " != " << std::to_string(res[i]) << "\n";
 
-            if(rand()%47==23) break;
+            if (rand() % 47 == 23)
+                break;
         }
         h1.extract();
     }
@@ -115,8 +115,9 @@ TEST_CASE("soft-heap: 10000 add and 10000 extract_min") {
         "extract_min");
     for (int i = 0; i < 10000; ++i) {
         CHECK(h1.top() == res[i]);
-        if(h1.top() != res[i]){
-            std::cerr << std::to_string(h1.top()) << " != " << std::to_string(res[i]) << "\n";
+        if (h1.top() != res[i]) {
+            std::cerr << std::to_string(h1.top())
+                      << " != " << std::to_string(res[i]) << "\n";
             break;
         }
         h1.extract();
@@ -167,9 +168,8 @@ TEST_CASE("soft-heap: check const, reference methods") {
     h1.add(1);
     CHECK_MESSAGE(std::is_reference<decltype(h1.top())>::value,
                   "method top() must be &top()");
-    CHECK_MESSAGE(
-        std::is_const_v<std::remove_reference_t<decltype(h1.top())>>,
-        "method top() must be const");
+    CHECK_MESSAGE(std::is_const_v<std::remove_reference_t<decltype(h1.top())>>,
+                  "method top() must be const");
 }
 
 TEST_CASE("soft-heap: voids must be voids...") {
@@ -186,21 +186,15 @@ TEST_CASE("soft-heap: voids must be voids...") {
                   "method add() must be void! not " + str3 + " !");
 }
 
-
 TEST_CASE("soft-heap: default contructor must be implicit") {
     [[maybe_unused]] SoftHeap<int> h1 = {};
     // only compile
 }
 
-
-
-
 TEST_CASE("soft-heap: constructors with Compare") {
     SoftHeap<int, CloserTo> heap(CloserTo(10));
     // only compile
 }
-
-
 
 TEST_CASE("soft-heap-with-compare: 30000 add") {
     SoftHeap<int, CloserTo> h1(CloserTo(10));
@@ -217,7 +211,6 @@ TEST_CASE("soft-heap-with-compare: 300000 add") {
     }
     CHECK(h1.size() == 300000);
 }
-
 
 TEST_CASE("soft-heap-with-compare: 3000 add and 3000 extract_min") {
     SoftHeap<int, CloserTo> h1(CloserTo(10));
@@ -250,11 +243,12 @@ TEST_CASE("soft-heap-with-compare: 10000 add and 10000 extract_min") {
         "After 10000 add random  and sort random x, then start checking "
         "extract_min");
     for (int i = 0; i < 10000; ++i) {
-        CHECK_MESSAGE(std::abs(h1.top() - 10) == res[i], std::to_string(std::abs(h1.top() - 10))+" != "+std::to_string(res[i]));
+        CHECK_MESSAGE(std::abs(h1.top() - 10) == res[i],
+                      std::to_string(std::abs(h1.top() - 10)) +
+                          " != " + std::to_string(res[i]));
         h1.extract();
     }
 }
-
 
 TEST_CASE("soft-heap-with-compare: random test") {
     SoftHeap<int, CloserTo> h1(CloserTo(10));
@@ -281,9 +275,8 @@ TEST_CASE("soft-heap-with-compare: check const, reference methods") {
     h1.add(1);
     CHECK_MESSAGE(std::is_reference<decltype(h1.top())>::value,
                   "method top() must be &top()");
-    CHECK_MESSAGE(
-        std::is_const_v<std::remove_reference_t<decltype(h1.top())>>,
-        "method top() must be const");
+    CHECK_MESSAGE(std::is_const_v<std::remove_reference_t<decltype(h1.top())>>,
+                  "method top() must be const");
 }
 
 TEST_CASE("soft-heap-with-compare: voids must be voids...") {
@@ -300,8 +293,7 @@ TEST_CASE("soft-heap-with-compare: voids must be voids...") {
                   "method add() must be void! not " + str3 + " !");
 }
 
-TEST_CASE(
-    "soft-heap-with-compare: constructor from comparator is explicit") {
+TEST_CASE("soft-heap-with-compare: constructor from comparator is explicit") {
     CHECK((std::is_constructible_v<SoftHeap<int>, std::less<int>>));
     CHECK((!std::is_convertible_v<std::less<int>, SoftHeap<int>>));
 }
@@ -334,68 +326,70 @@ TEST_CASE("soft-heap-with-compare: with std::greater(on max)") {
     CHECK(ch.empty());
 }
 
-TEST_CASE("soft-heap: delete"){
+TEST_CASE("soft-heap: delete") {
     SoftHeap<int> h;
-    for(int i=0; i<10; ++i){
+    for (int i = 0; i < 10; ++i) {
         h.add(i);
     }
     h.del(0);
-    CHECK(h.top()==1);
+    CHECK(h.top() == 1);
     h.extract();
-    CHECK(h.top()==2);
+    CHECK(h.top() == 2);
     h.del(5);
-    CHECK(h.size()==7);
+    CHECK(h.size() == 7);
     h.del(3);
     h.extract();
     h.extract();
-    CHECK(h.top()==6);
+    CHECK(h.top() == 6);
 }
 
-TEST_CASE("soft-heap: delete"){
+TEST_CASE("soft-heap: delete") {
     SoftHeap<int, CloserTo> h(CloserTo(10));
-    for(int i=0; i<10; ++i){
+    for (int i = 0; i < 10; ++i) {
         h.add(i);
     }
     h.del(9);
-    CHECK(h.top()==8);
+    CHECK(h.top() == 8);
     h.extract();
-    CHECK(h.top()==7);
+    CHECK(h.top() == 7);
     h.del(5);
-    CHECK(h.size()==7);
+    CHECK(h.size() == 7);
     h.del(6);
     h.extract();
-    CHECK(h.top()==4);
+    CHECK(h.top() == 4);
 }
 
-TEST_CASE("soft-heap: decreaseKey"){
+TEST_CASE("soft-heap: decreaseKey") {
     SoftHeap<int> h;
-    for(int i=0; i<10; ++i){
+    for (int i = 0; i < 10; ++i) {
         h.add(i);
     }
-    h.decreaseKey(5,11);
-    CHECK(h.size()==10);
+    h.decreaseKey(5, 11);
+    CHECK(h.size() == 10);
     h.extract();
     h.extract();
     h.extract();
     h.extract();
     h.extract();
-    CHECK(h.top()==6);
+    CHECK(h.top() == 6);
 }
-void add(std::multiset<int> &pq, SoftHeap<int> &ph){
+void add(std::multiset<int> &pq, SoftHeap<int> &ph) {
     int x = rand();
     pq.insert(x);
     ph.add(x);
 }
 
-void extract(std::multiset<int> &pq, SoftHeap<int> &ph, int k){
+void extract(std::multiset<int> &pq, SoftHeap<int> &ph, int k) {
     int x = *(pq.begin());
     int y = ph.top();
     pq.erase(pq.begin());
     ph.extract();
-    REQUIRE_MESSAGE(x==y, "#"+std::to_string(k)+": minimums are not equal: "+std::to_string(x)+" != "+std::to_string(y));
+    REQUIRE_MESSAGE(x == y, "#" + std::to_string(k) +
+                                ": minimums are not equal: " +
+                                std::to_string(x) + " != " + std::to_string(y));
 }
 
-void delet(std::multiset<int> &pq, SoftHeap<int> &ph, int k){
+void delet(std::multiset<int> &pq, SoftHeap<int> &ph, int k) {
     std::size_t sz = pq.size();
     std::size_t sz_2 = rand() % sz;
     std::multiset<int>::iterator it = pq.begin();
@@ -404,53 +398,55 @@ void delet(std::multiset<int> &pq, SoftHeap<int> &ph, int k){
     pq.erase(it);
     int x = *(pq.begin());
     int y = ph.top();
-    REQUIRE_MESSAGE(x==y, "#"+std::to_string(k)+": minimums are not equal: "+std::to_string(x)+" != "+std::to_string(y));
+    REQUIRE_MESSAGE(x == y, "#" + std::to_string(k) +
+                                ": minimums are not equal: " +
+                                std::to_string(x) + " != " + std::to_string(y));
 }
 
-TEST_CASE("stress test with multiset: 10^5 operations"){
+TEST_CASE("stress test with multiset: 10^5 operations") {
     std::multiset<int> pq;
     SoftHeap<int> ph;
-    for(int i = 0; i<100'000; ++i){
+    for (int i = 0; i < 100'000; ++i) {
         int r = rand() % 3;
-        if(r<2 or pq.empty()){ //с большей вероятностью add
+        if (r < 2 or pq.empty()) {  //с большей вероятностью add
             add(pq, ph);
-            REQUIRE(pq.size()==ph.size());
-        } else{
+            REQUIRE(pq.size() == ph.size());
+        } else {
             extract(pq, ph, i);
-            REQUIRE(pq.size()==ph.size());
+            REQUIRE(pq.size() == ph.size());
         }
     }
 }
 
-TEST_CASE("stress test with multiset: 10^5 operations"){
+TEST_CASE("stress test with multiset: 10^5 operations") {
     std::multiset<int> pq;
     SoftHeap<int> ph;
-    for(int i = 0; i<100'000; ++i){
+    for (int i = 0; i < 100'000; ++i) {
         int r = rand() % 7;
-        if(r<7 or pq.empty()){ //с большей вероятностью add
+        if (r < 7 or pq.empty()) {  //с большей вероятностью add
             add(pq, ph);
-            REQUIRE(pq.size()==ph.size());
-        } else{
+            REQUIRE(pq.size() == ph.size());
+        } else {
             extract(pq, ph, i);
-            REQUIRE(pq.size()==ph.size());
+            REQUIRE(pq.size() == ph.size());
         }
     }
 }
 
-TEST_CASE("stress test with multiset: 10^5 operations"){
+TEST_CASE("stress test with multiset: 10^5 operations") {
     std::multiset<int> pq;
     SoftHeap<int> ph;
-    for(int i = 0; i<100'000; ++i){
+    for (int i = 0; i < 100'000; ++i) {
         int r = rand() % 7;
-        if(r<6 or pq.empty()){ //с большей вероятностью add
+        if (r < 6 or pq.empty()) {  //с большей вероятностью add
             add(pq, ph);
-            REQUIRE(pq.size()==ph.size());
-        } else if(r==6){
+            REQUIRE(pq.size() == ph.size());
+        } else if (r == 6) {
             delet(pq, ph, i);
-            REQUIRE(pq.size()==ph.size());
-        } else{
+            REQUIRE(pq.size() == ph.size());
+        } else {
             extract(pq, ph, i);
-            REQUIRE(pq.size()==ph.size());
+            REQUIRE(pq.size() == ph.size());
         }
     }
 }

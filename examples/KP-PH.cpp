@@ -151,10 +151,10 @@ int main() {
         if (Chip.size() == Output[0] && InCoreResult == OutCoreResult) {
             std::cout << "Ok." << std::endl;
             std::cout << Chip.size() << std::endl;
-            for (auto Index : InCoreResult) {
+           /* for (auto Index : InCoreResult) {
                 std::cout << Index << " ";
             }
-            std::cout << std::endl;
+            std::cout << std::endl;*/
         } else {
             std::cout << "Pizdec. O_o" << std::endl;
             exit(1);

@@ -214,36 +214,6 @@ TEST_CASE("soft-heap: voids must be voids...") {
     CHECK_MESSAGE(std::is_void_v<decltype(h1.insert(10))>,
                   "method insert() must be void! not " + str3 + " !");
 }
-/*
-TEST_CASE("soft-heap: soft_heap(other &&)") {
-    soft_heap<int> h2(0.0001);
-    h2.insert(1);
-    h2.insert(2);
-    soft_heap<int> h1(std::move(h2));
-    CHECK(h1.size() == 2);
-    // CHECK(h2size() == 0);
-    CHECK(h1.getMin() == 1);
-    h1.extractMin();
-    CHECK(h1.size() == 1);
-    // CHECK(h2size() == 0);
-    // CHECK(h2.empty());
-    CHECK(h1.getMin() == 2);
-}
-
-TEST_CASE("soft-heap: operator=(other &&)") {
-    soft_heap<int> h2(0.0001);
-    h2.insert(1);
-    h2.insert(2);
-    soft_heap<int> h1 = std::move(h2);
-    CHECK(h1.size() == 2);
-    // CHECK(h2size() == 0);
-    CHECK(h1.getMin() == 1);
-    h1.extractMin();
-    CHECK(h1.size() == 1);
-    // CHECK(h2size() == 0);
-    // CHECK(h2.empty());
-    CHECK(h1.getMin() == 2);
-}*/
 
 TEST_CASE("soft-heap: default contructor must be implicit") {
     [[maybe_unused]] soft_heap<int> h1 = {};
@@ -411,18 +381,7 @@ TEST_CASE("soft-heap-with-compare: random test") {
     CHECK(h1.size() == 4999);
     CHECK_MESSAGE(h1.getMin() == 9 or h1.getMin() == 11, "but get "+std::to_string(h1.getMin()));
 }
-/*
-TEST_CASE("soft-heap-with-compare: check const, reference methods") {
-    soft_heap<int, CloserTo> h1(CloserTo(10));
-    h1.insert(7);
-    h1.insert(1);
-    CHECK_MESSAGE(std::is_reference<decltype(h1.getMin())>::value,
-                  "method getMin() must be &getMin()");
-    CHECK_MESSAGE(
-        std::is_const_v<std::remove_reference_t<decltype(h1.getMin())>>,
-        "method getMin() must be const");
-}
-*/
+
 TEST_CASE("soft-heap-with-compare: voids must be voids...") {
     soft_heap<int, CloserTo> h1(CloserTo(10));
     h1.insert(7);
@@ -440,36 +399,6 @@ TEST_CASE("soft-heap-with-compare: voids must be voids...") {
     CHECK_MESSAGE(std::is_void_v<decltype(h1.insert(10))>,
                   "method insert() must be void! not " + str3 + " !");
 }
-/*
-TEST_CASE("soft-heap-with-compare: soft_heap(other &&)") {
-    soft_heap<int, CloserTo> h2(CloserTo(10));
-    h2.insert(1);
-    h2.insert(2);
-    soft_heap<int, CloserTo> h1(std::move(h2));
-    CHECK(h1.size() == 2);
-    // CHECK(h2size() == 0);
-    CHECK(h1.getMin() == 2);
-    h1.extractMin();
-    CHECK(h1.size() == 1);
-    // CHECK(h2size() == 0);
-    // CHECK(h2.empty());
-    CHECK(h1.getMin() == 1);
-}
-
-TEST_CASE("soft-heap-with-compare: operator=(other &&)") {
-    soft_heap<int, CloserTo> h2(CloserTo(10));
-    h2.insert(1);
-    h2.insert(2);
-    soft_heap<int, CloserTo> h1 = std::move(h2);
-    CHECK(h1.size() == 2);
-    // CHECK(h2size() == 0);
-    CHECK(h1.getMin() == 2);
-    h1.extractMin();
-    CHECK(h1.size() == 1);
-    // CHECK(h2size() == 0);
-    // CHECK(h2.empty());
-    CHECK(h1.getMin() == 1);
-}*/
 
 TEST_CASE("soft-heap-with-compare: constructor from comparator is explicit") {
     CHECK((std::is_constructible_v<soft_heap<int>, std::less<int>>));
