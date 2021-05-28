@@ -14,19 +14,11 @@
 	# Pairing-heap
 	./all_include.sh lib/include/test/RAM-test/tests_pairing_heap.cpp ph-RAM-test
 
-	# Soft-heap
-	./all_include.sh lib/include/test/RAM-test/tests_soft_heap.cpp sh-RAM-test
-
 #soft-and-pairing-with-buffer-test
-	# Pairing-heap
+	# Pairting-heap
 	./all_include.sh lib/include/test/soft-and-pairing-with-buffer-test/PH_buf_test.cpp ph-buf-test
 
 #HeapTESTs
 	# Pairing-heap
 	./all_include.sh lib/include/test/HEAP-test/PH_test.cpp PH
-
-	# Tower-heap
 	./all_include.sh lib/include/test/HEAP-test/TH_test.cpp TH
-
-	# Flower-heap
-	./all_include.sh lib/include/test/HEAP-test/FH_test.cpp FH
