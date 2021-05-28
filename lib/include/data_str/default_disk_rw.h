@@ -9,39 +9,6 @@
 #include <iostream>
 
 namespace EMHS{
-    class DISK;
-    DISK d;
-}
-std::size_t I_COUNTER{};
-std::size_t O_COUNTER{};
-
-std::string NameMake(uint64_t NextWrite) {
-        std::stringstream StringStream;
-        StringStream << "lib/DISK/" << NextWrite;
-        std::string Name;
-        StringStream >> Name;
-        return Name;
-    }
-
-template<typename T>
-    void READ(uint64_t NextWrite, EMHS::Block_t<T> & Block){
-       // std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "rb"), & fclose);
-       // fread(& Block[0], sizeof(T), Block.capacity(), File.get());
-        EMHS::d.READ_DISK(NameMake(NextWrite).c_str(), & Block[0], sizeof(T)*Block.capacity());
-        I_COUNTER++;
-    }
-    
-    template<typename T>
-    void WRITE(uint64_t NextWrite, const EMHS::Block_t<T> & Block){
-        //std::cerr<<NameMake(NextWrite);
-        //std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "wb"), & fclose);
-        //fwrite(& Block[0], sizeof(T), Block.capacity(), File.get());
-        EMHS::d.WRITE_DISK(NameMake(NextWrite).c_str(), & Block[0], sizeof(T)*Block.capacity());
-        O_COUNTER++;
-    }
-
-
-namespace EMHS{
     class DISK{
     private:
         std::unordered_map<std::string, int> open_descriptors; // по NextWrite пользователя
@@ -89,6 +56,38 @@ namespace EMHS{
             }*/
         }
     };
+    DISK d;
+}
+std::size_t I_COUNTER{};
+std::size_t O_COUNTER{};
+
+std::string NameMake(uint64_t NextWrite) {
+        std::stringstream StringStream;
+        StringStream << "lib/DISK/" << NextWrite;
+        std::string Name;
+        StringStream >> Name;
+        return Name;
+    }
+
+template<typename T>
+    void READ(uint64_t NextWrite, EMHS::Block_t<T> & Block){
+       // std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "rb"), & fclose);
+       // fread(& Block[0], sizeof(T), Block.capacity(), File.get());
+        EMHS::d.READ_DISK(NameMake(NextWrite).c_str(), & Block[0], sizeof(T)*Block.capacity());
+        I_COUNTER++;
+    }
+    
+    template<typename T>
+    void WRITE(uint64_t NextWrite, const EMHS::Block_t<T> & Block){
+        //std::cerr<<NameMake(NextWrite);
+        //std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "wb"), & fclose);
+        //fwrite(& Block[0], sizeof(T), Block.capacity(), File.get());
+        EMHS::d.WRITE_DISK(NameMake(NextWrite).c_str(), & Block[0], sizeof(T)*Block.capacity());
+        O_COUNTER++;
+    }
+
+
+namespace EMHS{
     /*
     // TODO класс, запоминающий файловый дескриптор
     конструктор --
