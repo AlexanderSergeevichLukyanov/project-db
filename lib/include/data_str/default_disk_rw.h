@@ -104,7 +104,7 @@ public:
         }
 
         for (auto it : utilized) {
-            fclose(*it);
+            fclose(it);
         }
     }
 } d;
