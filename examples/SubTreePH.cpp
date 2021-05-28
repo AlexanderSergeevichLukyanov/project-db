@@ -80,7 +80,7 @@ int main() {
                 fwrite(& Input[Index * (EMHS::B / 8) + IndexFile], 8, 1, File.get());
             }
         }
-        EMHS::dp(1000000000, 2000000000, EMHS::PairingHeap<std::pair<uint64_t, uint64_t>>{}(MaxSize), Calculator{}); //{0, 1024}
+        EMHS::dp(1000000000, 2000000000, EMHS::PairingHeap<std::pair<uint64_t, uint64_t>>{MaxSize}, Calculator{}); //{0, 1024}
         std::cout << "Process finished." << std::endl;
         std::cout << "Total input operations: " << I_COUNTER << "." << std::endl;
         std::cout << "Total output operations: " << O_COUNTER << "." << std::endl;
@@ -112,7 +112,7 @@ int main() {
             std::cout << std::endl;
         } else {
             std::cout << "Pizdec. O_o" << std::endl;
-            return 0;
+            exit(1);
         }
     }
     return 0;

@@ -112,6 +112,7 @@ int main() {
             std::cout << std::endl;
         } else {
             std::cout << "Pizdec. O_o" << std::endl;
+            exit(1);
             return 0;
         }
     }
