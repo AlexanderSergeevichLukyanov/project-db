@@ -105,7 +105,6 @@ public:
         }
 
         std::unordered_set<int> :: iterator itr;
-]
         for (itr = utilized.begin(); itr != utilized.end(); itr++){
             close(*itr);
         }
@@ -129,7 +128,7 @@ void READ(uint64_t NextWrite, EMHS::Block_t<T> &Block) {
         fopen(NameMake(NextWrite).c_str(), "rb"), &fclose);
     fread(&Block[0], sizeof(T), Block.capacity(), File.get());
     // EMHS::d.SMART_READ(NextWrite, (char*)&Block[0],
-    // sizeof(T)*Block.capacity());
+    // sizeof(T)*Block.capacity()); -- это более быстрое чтение
     // EMHS::d.READ_DISK(NameMake(NextWrite).c_str(), (char*)&Block[0],
     // sizeof(T)*Block.capacity());
     I_COUNTER++;
