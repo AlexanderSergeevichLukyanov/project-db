@@ -43,7 +43,7 @@ namespace EMHS{
 
     void WRITE_DISK(char * filename, char * data, std::size_t len){
         int file_descriptor = open64(filename, O_RDWR|O_CREAT, 0777);
-        open_descriptors[*filename] = file_descriptor;
+        open_descriptors[std::string(filename)] = file_descriptor;
         if(file_descriptor == -1){
             std::cerr << "Ошибка при открытии/создании файла\n";
             exit(1);
@@ -57,7 +57,7 @@ namespace EMHS{
         
     }
     void READ_DISK(char * filename, char * data, std::size_t len){
-        int file_descriptor = open_descriptors[*filename];
+        int file_descriptor = open_descriptors[std::string(filename)];
         if(file_descriptor == -1){
             std::cerr << "Ошибка при открытии/создании файла\n";
             exit(1);
@@ -81,7 +81,7 @@ namespace EMHS{
                 fclose(*it);
             }*/
         }
-    }
+    };
     /*
     // TODO класс, запоминающий файловый дескриптор
     конструктор --
