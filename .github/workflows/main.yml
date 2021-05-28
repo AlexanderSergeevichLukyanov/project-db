@@ -146,7 +146,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Add permissions for script
-        run: chmod u+x all_include.sh
+        run: chmod u+x run-examples.sh
       - name: compile
         run: ./run-examples.sh examples/SubTreeTH.cpp TH-ST
       - name: Run tests!
@@ -163,7 +163,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Add permissions for script
-        run: chmod u+x all_include.sh
+        run: chmod u+x run-examples.sh
       - name: compile
         run: ./run-examples.sh examples/SubTreePH.cpp PH-ST
       - name: Run tests!
