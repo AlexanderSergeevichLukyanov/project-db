@@ -6,7 +6,7 @@
 #include <memory>
 
 namespace EMHS {
-    std::size_t B = 32'00;
+    std::size_t B = 3'000;
     std::size_t m = 15;
 
 template <typename T = uint64_t>

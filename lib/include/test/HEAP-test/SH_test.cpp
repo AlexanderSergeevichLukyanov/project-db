@@ -94,7 +94,8 @@ TEST_CASE("soft-heap: 3000 add and 3000 extract_min") {
         CHECK(h1.top() == res[i]);
         if(h1.top() != res[i]){
             std::cerr << "#" << i << ": " <<std::to_string(h1.top()) << " != " << std::to_string(res[i]) << "\n";
-            break;
+
+            if(rand()%47==23) break;
         }
         h1.extract();
     }
@@ -218,49 +219,6 @@ TEST_CASE("soft-heap-with-compare: 300000 add") {
 }
 
 
-
-TEST_CASE("soft-heap-with-compare: 3000 add and 3000 extract_min") {
-    SoftHeap<int, CloserTo> h1(CloserTo(10));
-    std::vector<int> res;
-    for (int i = 0; i < 3000; ++i) {
-        int x = rand() % 3000;
-        h1.add(x);
-        res.push_back(std::abs(x - 10));
-    }
-    std::sort(res.begin(), res.end());
-    CHECK_TIME(
-        "After 3000 add random  and sort random x, then start checking "
-        "extract_min");
-    for (int i = 0; i < 3000; ++i) {
-        CHECK(std::abs(h1.top() - 10) == res[i]);
-        if(std::abs(h1.top() - 10) != res[i]){
-            std::cerr << std::to_string(h1.top()) << " != " << std::to_string(res[i]) << "\n";
-            break;
-        }
-        h1.extract();
-    }
-}
-
-TEST_CASE("soft-heap-with-compare: 10000 add and 10000 extract_min") {
-    SoftHeap<int, CloserTo> h1(CloserTo(10));
-    std::vector<int> res;
-    for (int i = 0; i < 10000; ++i) {
-        int x = rand() % 10000;
-        h1.add(x);
-        res.push_back(std::abs(x - 10));
-    }
-    std::sort(res.begin(), res.end());
-    CHECK_TIME(
-        "After 10000 add random  and sort random x, then start checking "
-        "extract_min");
-    for (int i = 0; i < 10000; ++i) {
-        REQUIRE_MESSAGE(std::abs(h1.top() - 10) == res[i], "#"+std::to_string(i)+": "+std::to_string(std::abs(h1.top() - 10))+" != "+std::to_string(res[i]));
-        h1.extract();
-    }
-}
-
-
-
 TEST_CASE("soft-heap-with-compare: 3000 add and 3000 extract_min") {
     SoftHeap<int, CloserTo> h1(CloserTo(10));
     std::vector<int> res;
@@ -292,7 +250,7 @@ TEST_CASE("soft-heap-with-compare: 10000 add and 10000 extract_min") {
         "After 10000 add random  and sort random x, then start checking "
         "extract_min");
     for (int i = 0; i < 10000; ++i) {
-        REQUIRE_MESSAGE(std::abs(h1.top() - 10) == res[i], std::to_string(std::abs(h1.top() - 10))+" != "+std::to_string(res[i]));
+        CHECK_MESSAGE(std::abs(h1.top() - 10) == res[i], std::to_string(std::abs(h1.top() - 10))+" != "+std::to_string(res[i]));
         h1.extract();
     }
 }

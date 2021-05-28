@@ -51,7 +51,7 @@ private:
 
 public:
 
-    soft_heap_with_buffer(): buf( 2 * B / sizeof(T) + 4 * max_head_size, comp) {
+    soft_heap_with_buffer(): buf( 3 * B / sizeof(T) + 4 * max_head_size, comp) {
     }
 
     soft_heap_with_buffer(std::size_t max_size_) :
