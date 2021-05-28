@@ -28,8 +28,8 @@ struct buffer {  //ничто иное как обычный minmax
 private:
     Comp comp;
     std::size_t size_ = 0;
-    std::size_t capacity_ = 0; //Максимальный размер
-    T *buf;//[size_buffer];  // Min-Max
+    std::size_t capacity_ = 0;  //Максимальный размер
+    T *buf;                     //[size_buffer];  // Min-Max
 
     std::size_t gr_pa(size_t x) {  //дед
         if (x < 3) {               //слишком высоко
@@ -46,9 +46,12 @@ private:
             return (x - 1) / 2;
         }
     }
-	
-	[[nodiscard]] bool is_min_level(std::size_t ind) const{  // мы на уровне минимумов?
-        return ((static_cast<int>(log2(1 + ind)) & 1) == 0);  // идейный остаток по модулю 2, зато быстрый) TODO: fast log2
+
+    [[nodiscard]] bool is_min_level(
+        std::size_t ind) const {  // мы на уровне минимумов?
+        return (
+            (static_cast<int>(log2(1 + ind)) & 1) ==
+            0);  // идейный остаток по модулю 2, зато быстрый) TODO: fast log2
     }
 
     void sift_up_max(size_t x) {  //поднимаем максимум
@@ -65,15 +68,18 @@ private:
         }
     }
 
-    [[nodiscard]] bool is_grchild(std::size_t par, std::size_t ch) const { // является ли ch внуком par ?
+    [[nodiscard]] bool is_grchild(std::size_t par, std::size_t ch)
+        const {  // является ли ch внуком par ?
         return ((((par + 1) * 4 - 2) < ch) && (((par + 1) * 4 + 3) > ch));
     }
 
-    [[nodiscard]] bool has_child(std::size_t par) const { // есть ли у par дети?
+    [[nodiscard]] bool has_child(
+        std::size_t par) const {  // есть ли у par дети?
         return (par * 2 + 1 < size_);
     }
 
-    [[nodiscard]] std::size_t min_child( // возвращает минимальный элемент из передеанного массива индексов
+    [[nodiscard]] std::size_t min_child(  // возвращает минимальный элемент из
+                                          // передеанного массива индексов
         std::size_t *child,
         int count = 6) {  //возвращает индекс минимального ребетёнка (внучка)
         std::size_t res = child[0];
@@ -87,7 +93,7 @@ private:
         return res;
     }
 
-    void sift_down_min(std::size_t x) { // толкаем вниз по минимумам
+    void sift_down_min(std::size_t x) {  // толкаем вниз по минимумам
         size_t y = x + 1;
         size_t child[6] = {2 * x + 1, 2 * x + 2, 4 * y - 1,
                            4 * y,     4 * y + 1, 4 * y + 2};
@@ -108,7 +114,8 @@ private:
         }
     }
 
-    [[nodiscard]] std::size_t max_child( // возвращает минимальный элемент из передеанного массива индексов
+    [[nodiscard]] std::size_t max_child(  // возвращает минимальный элемент из
+                                          // передеанного массива индексов
         size_t *child,
         int count = 6) {  //возвращает индекс максимального ребёнка
         size_t res = child[0];
@@ -122,10 +129,10 @@ private:
         return res;
     }
 
-    void sift_down_max(std::size_t x) { // толкаем вниз по максимумам
+    void sift_down_max(std::size_t x) {  // толкаем вниз по максимумам
         std::size_t y = x + 1;
         std::size_t child[6] = {2 * x + 1, 2 * x + 2, 4 * y - 1,
-                           4 * y,     4 * y + 1, 4 * y + 2};
+                                4 * y,     4 * y + 1, 4 * y + 2};
 
         if (has_child(x)) {
             std::size_t m = max_child(child);
@@ -143,7 +150,7 @@ private:
         }
     }
 
-    void sift_up(std::size_t x) { // толкаем вверх
+    void sift_up(std::size_t x) {  // толкаем вверх
         if (x != 0) {
             if (is_min_level(x)) {
                 if (comp(buf[father(x)], buf[x])) {
@@ -163,7 +170,7 @@ private:
         }
     }
 
-    void sift_down(std::size_t x) { // толкаем вниз
+    void sift_down(std::size_t x) {  // толкаем вниз
         if (is_min_level(x)) {
             sift_down_min(x);
         } else {
@@ -173,14 +180,15 @@ private:
 
 public:
     buffer() = delete;
-    buffer(std::size_t max_size_): capacity_(max_size_){
+    buffer(std::size_t max_size_) : capacity_(max_size_) {
         buf = new T[capacity_];
     }
-    explicit buffer(std::size_t max_size_, const Comp &comp_): capacity_(max_size_), comp(comp_) {
+    explicit buffer(std::size_t max_size_, const Comp &comp_)
+        : capacity_(max_size_), comp(comp_) {
         buf = new T[capacity_];
     }
 
-    void extractMin() { 
+    void extractMin() {
         if (size_ == 1) {
             size_--;
             return;
@@ -217,8 +225,8 @@ public:
     const T &getMax() const {
         if (size_ == 1) {
             return buf[0];
-        } else if (size_ == 2) { 
-			return buf[1];
+        } else if (size_ == 2) {
+            return buf[1];
         } else {
             if (comp(buf[1], buf[2])) {
                 return buf[2];
@@ -245,18 +253,7 @@ public:
         sift_up(size_ - 1);
     }
 
-    //дальше ничего содержательного
-
-    void make(T *values, size_t s) {  //например, сбросить в буфер блок
-        for (int i = 0; i < s; ++i) {
-            buf[i] = std::move(values[i]);
-        }
-    }
-
-    void save() {  // TODO!
-    }
-
-    ~buffer(){
+    ~buffer() {
         delete buf;
     }
 };

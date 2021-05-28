@@ -1,12 +1,12 @@
+#include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <cstddef>
 #include <functional>
-#include <type_traits>
-#include <utility>
-#include <algorithm>
 #include <iterator>
 #include <list>
+#include <type_traits>
+#include <utility>
 #include "buffer.h"
 template <typename T, typename Compare>
 struct Head;
@@ -30,17 +30,18 @@ public:
 template <typename T, typename Compare = std::less<T>>
 struct Head {
     int capacity = 0;
-    std::list<T> data;// данные в голове
+    std::list<T> data;    // данные в голове
     std::size_t id_tail;  // ссылка на хвост в памяти
     Compare comp;         //компаратор
 
     Head() = delete;
     Head(int size_head) : capacity(size_head) {
     }
-    Head(int size_head, const Compare &comp_) : capacity(size_head), comp(comp_) {
+    Head(int size_head, const Compare &comp_)
+        : capacity(size_head), comp(comp_) {
     }
 
-    void add(const T &x) { //TODO
+    void add(const T &x) {  // TODO
         data.push_back(x);
         data.sort(comp);
     }
@@ -51,8 +52,8 @@ struct Head {
             data.push_front(buf.getMax());
             buf.extractMax();
         }
-        //data.sort(comp);
-    } 
+        // data.sort(comp);
+    }
 
     void extract() {
         data.pop_front();
