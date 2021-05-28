@@ -3,7 +3,7 @@
 #include <memory>
 #include <sstream>
 #include <sys/stat.h>
-
+/*
 std::size_t I_COUNTER{};
 std::size_t O_COUNTER{};
 
@@ -31,7 +31,7 @@ void WRITE(uint64_t NextWrite, const EMHS::Block_t & Block) {
     }
     O_COUNTER++;
 }
-
+*/
 struct Calculator {
     [[nodiscard]] uint64_t operator()(EMHS::Package_t & Package) {
         uint64_t Result = 1;
