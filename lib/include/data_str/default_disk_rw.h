@@ -14,7 +14,7 @@ namespace EMHS{
     private:
         std::unordered_map<std::string, int> open_descriptors; // по NextWrite пользователя
         //std::unordered_set<int> used_descr;
-        std::unordered_map_smart<uint64_t, int> open_smart_descriptors;
+        std::unordered_map<uint64_t, int> open_smart_descriptors;
         std::unordered_set<int> utilized;
 
     std::string NameMake(uint64_t NextWrite) {
@@ -32,7 +32,7 @@ namespace EMHS{
         int file_descriptor = -1;
         if(!utilized.empty()){
             file_descriptor = *(utilized.begin());
-            utilized.erase(utilized.begin());
+            utilized.erase(file_descriptor);
         } else{
             file_descriptor = open64(NameMake(NextWrite).c_str(), O_RDWR|O_CREAT, 0777);
         }
