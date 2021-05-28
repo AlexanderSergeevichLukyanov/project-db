@@ -27,15 +27,15 @@ public:
 
 
 TEST_CASE("flower-heap: constructors without Compare") {
-    FlowerHeap_t<int> h1(0, 10*EMHS::B);
-    //FlowerHeap_t<double> h2(0);
+    FlowerHeap_t<int> h1(1, 10*EMHS::B);
+    //FlowerHeap_t<double> h2(1);
     // only compile
 }
 
 
 
 TEST_CASE("flower-heap: 30000 add") {
-    FlowerHeap_t<uint64_t> h1(0, 10*EMHS::B);
+    FlowerHeap_t<uint64_t> h1(1, 10*EMHS::B);
     for (int i = 0; i < 3000; ++i) {
         h1.add(rand());
     }
@@ -43,7 +43,7 @@ TEST_CASE("flower-heap: 30000 add") {
 }
 
 TEST_CASE("flower-heap: 300000 add") {
-    FlowerHeap_t<uint64_t> h1(0, 10*EMHS::B);
+    FlowerHeap_t<uint64_t> h1(1, 10*EMHS::B);
     for (int i = 0; i < 3000; ++i) {
         h1.add(rand());
     }
@@ -53,7 +53,7 @@ TEST_CASE("flower-heap: 300000 add") {
 
 
 TEST_CASE("flower-heap: top()") {
-    FlowerHeap_t<uint64_t> h1(0, 10*EMHS::B);
+    FlowerHeap_t<uint64_t> h1(1, 10*EMHS::B);
     int min = 300000;
     for (int i = 0; i < 300000; ++i) {
         int x = rand() % 300000;
@@ -65,7 +65,7 @@ TEST_CASE("flower-heap: top()") {
 }
 
 TEST_CASE("flower-heap: 300000 top()") {
-    FlowerHeap_t<uint64_t> h1(0, 10*EMHS::B);
+    FlowerHeap_t<uint64_t> h1(1, 10*EMHS::B);
     int min = 300000;
     for (int i = 0; i < 300000; ++i) {
         int x = rand() % 300000;
@@ -79,7 +79,7 @@ TEST_CASE("flower-heap: 300000 top()") {
 }
 
 TEST_CASE("flower-heap: 3000 add and 3000 extract_min") {
-    FlowerHeap_t<uint64_t> h1(0, 10*EMHS::B);
+    FlowerHeap_t<uint64_t> h1(1, 10*EMHS::B);
     std::vector<int> res;
     for (int i = 0; i < 3000; ++i) {
         int x = rand() % 3000;
@@ -98,7 +98,7 @@ TEST_CASE("flower-heap: 3000 add and 3000 extract_min") {
 }
 
 TEST_CASE("flower-heap: 10000 add and 10000 extract_min") {
-    FlowerHeap_t<uint64_t> h1(0, 10*EMHS::B);
+    FlowerHeap_t<uint64_t> h1(1, 10*EMHS::B);
     std::vector<int> res;
     for (int i = 0; i < 10000; ++i) {
         int x = rand() % 10000;
@@ -117,7 +117,7 @@ TEST_CASE("flower-heap: 10000 add and 10000 extract_min") {
 }
 
 TEST_CASE("flower-heap: random test#1") {
-    FlowerHeap_t<uint64_t> h1(0, 10*EMHS::B);
+    FlowerHeap_t<uint64_t> h1(1, 10*EMHS::B);
     CHECK(h1.empty());
     CHECK(h1.size() == 0);
     h1.add(1);
@@ -136,7 +136,7 @@ TEST_CASE("flower-heap: random test#1") {
 }
 
 TEST_CASE("flower-heap: random test#2") {
-    FlowerHeap_t<uint64_t> h1(0, 10*EMHS::B);
+    FlowerHeap_t<uint64_t> h1(1, 10*EMHS::B);
     CHECK(h1.empty());
     CHECK(h1.size() == 0);
     h1.add(1.0);
@@ -155,7 +155,7 @@ TEST_CASE("flower-heap: random test#2") {
 }
 /*
 TEST_CASE("flower-heap: check const, reference methods") {
-    FlowerHeap_t<uint64_t> h1(0, 10*EMHS::B);
+    FlowerHeap_t<uint64_t> h1(1, 10*EMHS::B);
     h1.add(6);
     h1.add(1);
     CHECK_MESSAGE(std::is_reference<decltype(h1.top())>::value,
@@ -166,7 +166,7 @@ TEST_CASE("flower-heap: check const, reference methods") {
 }*/
 
 TEST_CASE("flower-heap: voids must be voids...") {
-    FlowerHeap_t<uint64_t> h1(0, 10*EMHS::B);
+    FlowerHeap_t<uint64_t> h1(1, 10*EMHS::B);
     h1.add(6);
     h1.add(1);
     int p[10]{};
@@ -197,7 +197,7 @@ void extract(std::multiset<int> &pq, FlowerHeap_t<uint64_t> &ph, int k){
 
 TEST_CASE("stress test with multiset: 10^5 operations"){
 	std::multiset<int> pq;
-	FlowerHeap_t<uint64_t> ph(0, 10*EMHS::B);
+	FlowerHeap_t<uint64_t> ph(1, 10*EMHS::B);
 	for(int i = 0; i<100'000; ++i){
 		int r = rand() % 3;
 		if(r<2 or pq.empty()){ //с большей вероятностью add
@@ -212,7 +212,7 @@ TEST_CASE("stress test with multiset: 10^5 operations"){
 
 TEST_CASE("stress test with multiset: 10^5 operations"){
 	std::multiset<int> pq;
-	FlowerHeap_t<uint64_t> ph(0, 10*EMHS::B);
+	FlowerHeap_t<uint64_t> ph(1, 10*EMHS::B);
 	for(int i = 0; i<100'000; ++i){
 		int r = rand() % 7;
 		if(r<7 or pq.empty()){ //с большей вероятностью add
@@ -227,7 +227,7 @@ TEST_CASE("stress test with multiset: 10^5 operations"){
 
 TEST_CASE("stress test with multiset: 10^5 operations"){
 	std::multiset<int> pq;
-	FlowerHeap_t<uint64_t> ph(0, 10*EMHS::B);
+	FlowerHeap_t<uint64_t> ph(1, 10*EMHS::B);
 	for(int i = 0; i<100'000; ++i){
 		int r = rand() % 7;
 		if(r<6 or pq.empty()){ //с большей вероятностью add
