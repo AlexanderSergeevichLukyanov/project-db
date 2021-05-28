@@ -35,18 +35,15 @@ template<typename T>
 
 
 namespace EMHS{
-/*    class DISK{
+    class DISK{
     private:
-        std::unordered_map<int, int> open_descriptors; // по NextWrite пользователя
-        std::unordered_set<int> utilized;
+        std::unordered_map<std::string, int> open_descriptors; // по NextWrite пользователя
     public:
         DISK() = default;
 
     void WRITE_DISK(char * filename, char * data, std::size_t len){
-        if(!utilized.empty()){
-
-        }
         int file_descriptor = open64(filename, O_RDWR|O_CREAT, 0777);
+        open_descriptors[*filename] = file_descriptor;
         if(file_descriptor == -1){
             std::cerr << "Ошибка при открытии/создании файла\n";
             exit(1);
@@ -60,8 +57,7 @@ namespace EMHS{
         
     }
     void READ_DISK(char * filename, char * data, std::size_t len){
-
-        int file_descriptor = open64(filename, O_RDWR|O_CREAT, 0777);
+        int file_descriptor = open_descriptors[*filename];
         if(file_descriptor == -1){
             std::cerr << "Ошибка при открытии/создании файла\n";
             exit(1);
@@ -81,9 +77,9 @@ namespace EMHS{
                 fclose(it.second);
             }
 
-            for (auto it : utilized){
+            /*for (auto it : utilized){
                 fclose(*it);
-            }
+            }*/
         }
     }
     /*
