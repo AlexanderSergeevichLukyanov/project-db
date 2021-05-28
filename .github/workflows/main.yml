@@ -101,6 +101,23 @@ jobs:
       - name: Run tests!
         run: ./PH
 
+  Soft-Heap:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+      - name: Add permissions for script
+        run: chmod u+x all_include.sh
+      - name: compile
+        run: ./all_include.sh lib/include/test/HEAP-test/SH_test.cpp SH
+      - name: Run tests!
+        run: ./SH
+
   Flower-Heap:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
