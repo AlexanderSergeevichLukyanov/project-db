@@ -3,6 +3,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <cassert>
 #include <cstring>
 #include <stdio.h>
 #include <stdlib.h>
@@ -50,6 +51,7 @@ namespace EMHS{
     }
 
     void SMART_READ(uint64_t NextWrite, char * data, std::size_t len){
+        assert(open_smart_descriptors.count(NextWrite));
         int file_descriptor = open_smart_descriptors[NextWrite];
         if(file_descriptor == -1){
             std::cerr << "Ошибка при открытии/создании файла\n";
