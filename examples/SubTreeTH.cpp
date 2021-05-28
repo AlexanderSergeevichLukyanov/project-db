@@ -32,36 +32,6 @@ void WRITE(uint64_t NextWrite, const EMHS::Block_t & Block) {
     O_COUNTER++;
 }
 
-/*
-std::size_t I_COUNTER{};
-std::size_t O_COUNTER{};
-
-std::string NameMake(uint64_t NextWrite) {
-    std::stringstream StringStream;
-    StringStream << "DISK/" << NextWrite;
-    std::string Name;
-    StringStream >> Name;
-    return Name;
-}
-
-void READ(uint64_t NextWrite, EMHS::Block_t & Block) {
-   // READ_DISK(NameMake(NextWrite).c_str, &Block[0], Block.size()*8);
-    std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "rb"), & fclose);
-    for (std::size_t Index = 0; Index < EMHS::Block_t::capacity(); Index++) {
-        fread(& Block[Index], 8, 1, File.get());
-    }
-    I_COUNTER++;
-}
-
-void WRITE(uint64_t NextWrite, const EMHS::Block_t & Block) {
-    std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "wb"), & fclose);
-    for (std::size_t Index = 0; Index < EMHS::Block_t::capacity(); Index++) {
-        fwrite(& Block[Index], 8, 1, File.get());
-    }
-    O_COUNTER++;
-}
-*/
-
 struct Calculator {
     [[nodiscard]] uint64_t operator()(EMHS::Package_t & Package) {
         uint64_t Result = 1;
