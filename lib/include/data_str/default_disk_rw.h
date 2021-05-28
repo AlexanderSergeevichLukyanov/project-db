@@ -9,6 +9,7 @@
 #include <cstring>
 #include <iostream>
 #include <unordered_set>
+#include <iterator>
 
 namespace EMHS {
 class DISK {
@@ -103,8 +104,8 @@ public:
             close(it.second);
         }
 
-        unordered_set<int> :: iterator itr;
-
+        std::unordered_set<int> :: iterator itr;
+]
         for (itr = utilized.begin(); itr != utilized.end(); itr++){
             close(*itr);
         }

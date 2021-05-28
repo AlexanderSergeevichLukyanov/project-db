@@ -3,7 +3,7 @@
 #include "soft_heap.h"
 //#include "disk.h"
 inline std::size_t block_counter = 0;
-namespace EMHS{
+namespace EMHS {
 template <typename T, typename Compare = std::less<T>>
 struct soft_heap_with_buffer {
 private:
@@ -20,8 +20,9 @@ private:
 
     void flush_buf() {  //по факту новый блок
 
-        if (buf.size()>2 * B/sizeof(T) +max_head_size+5) {  // TODO: к норм виду
-            Block_t<T>/*<T, B/8>*/ new_bl;
+        if (buf.size() >
+            2 * B / sizeof(T) + max_head_size + 5) {  // TODO: к норм виду
+            Block_t<T> /*<T, B/8>*/ new_bl;
             Head<T, Compare> new_h(max_head_size, comp);
 
             // наполняем блок
@@ -40,38 +41,37 @@ private:
         }
     }
 
-
     void block_to_buf(const Block_t<T> &from) {  // скинуть блок в буфер
 
-        for (std::size_t i = 0; i < B/sizeof(T); ++i) {
+        for (std::size_t i = 0; i < B / sizeof(T); ++i) {
             buf.insert(from[i]);
         }
         flush_buf();  //если переполнен окажется
     }
 
 public:
-
-    soft_heap_with_buffer(): buf( 3 * B / sizeof(T) + 4 * max_head_size, comp) {
+    soft_heap_with_buffer() : buf(3 * B / sizeof(T) + 4 * max_head_size, comp) {
     }
 
-    soft_heap_with_buffer(std::size_t max_size_) :
-    max_size(max_size_),
-    max_head_size( std::min(static_cast<std::size_t>(100), ( max_size*sizeof(T) ) / (B * (m - 3)) ) ),
-    buf(3 * B / sizeof(T) + 3 * max_head_size, comp) {
-    };
+    soft_heap_with_buffer(std::size_t max_size_)
+        : max_size(max_size_),
+          max_head_size(std::min(static_cast<std::size_t>(100),
+                                 (max_size * sizeof(T)) / (B * (m - 3)))),
+          buf(3 * B / sizeof(T) + 3 * max_head_size, comp){};
 
     explicit soft_heap_with_buffer(const Compare &comp_)
-        : comp(comp_), 
-        heads_of_blocks(HeadCompare<Compare>(comp)), 
-        buf(3 * B / sizeof(T) + 3 * max_head_size, comp){
+        : comp(comp_),
+          heads_of_blocks(HeadCompare<Compare>(comp)),
+          buf(3 * B / sizeof(T) + 3 * max_head_size, comp) {
     }
 
     explicit soft_heap_with_buffer(std::size_t max_size_, const Compare &comp_)
-        : comp(comp_), 
-        heads_of_blocks(HeadCompare<Compare>(comp)), 
-        max_size(max_size_), 
-        max_head_size( std::min(static_cast<std::size_t>(100), ( max_size*sizeof(T) ) / (B * (m - 3)) ) ),
-        buf(3 * B / sizeof(T) + 3 * max_head_size, comp) {
+        : comp(comp_),
+          heads_of_blocks(HeadCompare<Compare>(comp)),
+          max_size(max_size_),
+          max_head_size(std::min(static_cast<std::size_t>(100),
+                                 (max_size * sizeof(T)) / (B * (m - 3)))),
+          buf(3 * B / sizeof(T) + 3 * max_head_size, comp) {
     }
 
     [[nodiscard]] bool empty() const {
@@ -120,7 +120,7 @@ public:
             h.extract();
             if (h.empty()) {
                 Block_t<T> new_bl;
-                //new_bl.READ(folder_name, h.id_tail);
+                // new_bl.READ(folder_name, h.id_tail);
                 READ(h.id_tail, new_bl);
                 block_to_buf(new_bl);
             } else {
@@ -130,29 +130,27 @@ public:
             return;
         }
 
-        if (comp(buf.getMin(), *(heads_of_blocks.getMin().data.begin()) )) {
+        if (comp(buf.getMin(), *(heads_of_blocks.getMin().data.begin()))) {
             buf.extractMin();
         } else {
-
             Head<T, Compare> h = heads_of_blocks.getMin();
             heads_of_blocks.extractMin();
             h.extract();
-            
-            if (h.empty()) {
 
+            if (h.empty()) {
                 Block_t<T> new_bl;
-                //new_bl.READ(folder_name, h.id_tail);
+                // new_bl.READ(folder_name, h.id_tail);
                 READ(h.id_tail, new_bl);
                 block_to_buf(new_bl);
 
             } else {
-                
                 if (!buf.empty() && comp(buf.getMin(), h[h.size() - 1])) {
                     h.add(buf.getMin());
                     buf.extractMin();
                 }
-                
-                if (!buf.empty() && h.size()<max_head_size && comp(buf.getMin(), h[h.size() - 1])) {
+
+                if (!buf.empty() && h.size() < max_head_size &&
+                    comp(buf.getMin(), h[h.size() - 1])) {
                     h.add(buf.getMin());
                     buf.extractMin();
                 }
@@ -162,16 +160,13 @@ public:
     }
 };
 
-
 template <typename T, typename Compare = std::less<T>>
 struct SoftHeap {
 private:
     Compare comp;
 
-    soft_heap_with_buffer<T, Compare>
-        heap_of_elements;  //обычные
-    soft_heap_with_buffer<T, Compare>
-        heap_of_del_elements;  //удалённые
+    soft_heap_with_buffer<T, Compare> heap_of_elements;      //обычные
+    soft_heap_with_buffer<T, Compare> heap_of_del_elements;  //удалённые
 
     void flush_dels() {  //убираем удаленные, пока он сравнимы с top
         while (!heap_of_del_elements.empty() && !heap_of_elements.empty() &&
@@ -182,23 +177,19 @@ private:
     }
 
 public:
-
     SoftHeap() = default;
     explicit SoftHeap(const Compare &comp_)
         : comp(comp_), heap_of_elements(comp), heap_of_del_elements(comp) {
     }
 
-    explicit SoftHeap(uint64_t max_size, const Compare &comp_):
-        comp(comp_), heap_of_elements(max_size, comp), heap_of_del_elements(comp) 
-    {
-
+    explicit SoftHeap(uint64_t max_size, const Compare &comp_)
+        : comp(comp_),
+          heap_of_elements(max_size, comp),
+          heap_of_del_elements(comp) {
     }
 
-    SoftHeap(uint64_t max_size):
-        heap_of_elements(max_size, comp),
-        heap_of_del_elements(comp) 
-    {
-
+    SoftHeap(uint64_t max_size)
+        : heap_of_elements(max_size, comp), heap_of_del_elements(comp) {
     }
 
     [[nodiscard]] bool empty() const {
@@ -226,7 +217,8 @@ public:
         heap_of_elements.extractMin();
     }
 
-    const T &top() { // Внимание! Метод не константый! Мб произойдёт удаление минимумов
+    const T &
+    top() {  // Внимание! Метод не константый! Мб произойдёт удаление минимумов
         flush_dels();
         return heap_of_elements.getMin();
     }
@@ -235,6 +227,5 @@ public:
         heap_of_del_elements.insert(x);
         heap_of_elements.insert(new_x);
     }
-    
 };
-}
+}  // namespace EMHS

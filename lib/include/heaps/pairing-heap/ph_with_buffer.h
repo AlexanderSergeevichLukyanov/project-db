@@ -1,6 +1,3 @@
 
 
-namespace EMHS{
-
-
-}
+namespace EMHS {}

@@ -5,7 +5,7 @@
 #include <utility>
 
 static const int DELETED = 2;
-static const long double default_epsilon =0.00000000000000001;
+static const long double default_epsilon = 0.00000000000000001;
 
 //#define soft_wrong_test //не стоит расскоментировать:)
 #define soft_construct  // default constructor
@@ -26,7 +26,6 @@ static const long double default_epsilon =0.00000000000000001;
 
 template <typename E, typename Compare = std::less<E>>
 struct soft_heap {
-
     struct ListCell {
         E *elem = nullptr;
         int del;
@@ -69,12 +68,21 @@ struct soft_heap {
 
     soft_heap();
 
-    explicit soft_heap(const Compare &comp_, long double epsilon_ = default_epsilon)
-        : comp(comp_), epsilon(epsilon_), rank(0), max_node_rank(std::ceil(log2(1. / epsilon)) + 5)  {
+    explicit soft_heap(const Compare &comp_,
+                       long double epsilon_ = default_epsilon)
+        : comp(comp_),
+          epsilon(epsilon_),
+          rank(0),
+          max_node_rank(std::ceil(log2(1. / epsilon)) + 5) {
     }
 
-    soft_heap(const Compare &comp_, E *e, long double epsilon_ = default_epsilon)
-        : comp(comp_), epsilon(epsilon_), rank(0), max_node_rank(std::ceil(log2(1. / epsilon)) + 5) {
+    soft_heap(const Compare &comp_,
+              E *e,
+              long double epsilon_ = default_epsilon)
+        : comp(comp_),
+          epsilon(epsilon_),
+          rank(0),
+          max_node_rank(std::ceil(log2(1. / epsilon)) + 5) {
         this->first = new Tree(e);
     }
 
@@ -96,7 +104,8 @@ struct soft_heap {
         if (first == nullptr) {
             first = new Tree(e_copy);
         } else {
-            soft_heap<E, Compare> *q = new soft_heap<E, Compare>(comp, e_copy, epsilon);
+            soft_heap<E, Compare> *q =
+                new soft_heap<E, Compare>(comp, e_copy, epsilon);
             q->max_node_rank = max_node_rank;
             q->epsilon = epsilon;
             meld(q);
@@ -110,8 +119,7 @@ struct soft_heap {
         extr();
     }
 
-
-    const E& getMin() {
+    const E &getMin() {
         const E *e_ = &extr();
         insert(*e_);
         return *e_;
@@ -120,7 +128,7 @@ struct soft_heap {
 private:
     const E &extr() {
         --size_;
-        //int *deleted = new int(2);
+        // int *deleted = new int(2);
         int deleted = 2;
         E *e = nullptr;
         while (deleted == DELETED) {
@@ -156,7 +164,7 @@ private:
                 }
             }
         }
-        //delete deleted;
+        // delete deleted;
         return *e;
     }
 
@@ -209,12 +217,13 @@ soft_heap<E, Compare>::Tree::Tree(E *e) : rank(0) {
 }
 
 template <typename E, typename Compare>
-soft_heap<E, Compare>::soft_heap() : epsilon(default_epsilon), rank(0)  {
+soft_heap<E, Compare>::soft_heap() : epsilon(default_epsilon), rank(0) {
     this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
 }
 
 template <typename E, typename Compare>
-soft_heap<E, Compare>::soft_heap(long double epsilon_) : epsilon(epsilon_), rank(0) {
+soft_heap<E, Compare>::soft_heap(long double epsilon_)
+    : epsilon(epsilon_), rank(0) {
     this->max_node_rank = std::ceil(log2(1. / this->epsilon)) + 5;
 }
 

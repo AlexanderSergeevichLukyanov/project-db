@@ -69,7 +69,6 @@ private:
     }
 
 public:
-
     soft_heap_with_buffer() = default;
     explicit soft_heap_with_buffer(const Compare &comp_)
         : comp(comp_), heads_of_blocks(HeadCompare<Compare>(comp)), buf(comp) {
@@ -141,17 +140,17 @@ public:
                 new_bl.READ(folder_name, h.id_tail);
                 block_to_buf(new_bl);
             } else {
-				
                 if (!buf.empty() && comp(buf.getMin(), h[h.size - 1])) {
                     h.add(buf.getMin());
                     buf.extractMin();
                 }
-				
-				if (!buf.empty() && h.size<3 && comp(buf.getMin(), h[h.size - 1])) {
+
+                if (!buf.empty() && h.size < 3 &&
+                    comp(buf.getMin(), h[h.size - 1])) {
                     h.add(buf.getMin());
                     buf.extractMin();
                 }
-				
+
                 heads_of_blocks.insert(h);
             }
         }

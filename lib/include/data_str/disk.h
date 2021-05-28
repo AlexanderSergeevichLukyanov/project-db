@@ -54,8 +54,6 @@ public:
     }
 };
 
-//    void (* READ)(uint64_t NextWrite, Block_t &);
-
 }  // namespace EMHS
 
 template <typename T>
