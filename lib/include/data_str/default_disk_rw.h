@@ -12,7 +12,7 @@ namespace EMHS{
     class DISK{
     private:
         std::unordered_map<std::string, int> open_descriptors; // по NextWrite пользователя
-        std::unordered_set<int> used_descr;
+        //std::unordered_set<int> used_descr;
     public:
         DISK() = default;
 
