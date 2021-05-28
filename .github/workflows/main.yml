@@ -148,7 +148,7 @@ jobs:
       - name: Add permissions for script
         run: chmod u+x all_include.sh
       - name: compile
-        run: ./all_include.sh examples/SubTreeTH.cpp TH-ST
+        run: ./run-examples.sh examples/SubTreeTH.cpp TH-ST
       - name: Run tests!
         run: ./TH-ST
 
@@ -165,6 +165,6 @@ jobs:
       - name: Add permissions for script
         run: chmod u+x all_include.sh
       - name: compile
-        run: ./all_include.sh examples/SubTreePH.cpp PH-ST
+        run: ./run-examples.sh examples/SubTreePH.cpp PH-ST
       - name: Run tests!
         run: ./PH-ST
