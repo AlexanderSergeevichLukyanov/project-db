@@ -486,4 +486,9 @@ TEST_CASE("stress test with multiset: 10^5 operations"){
 	}
 }
 
+TEST_CASE("all"){
+    std::cerr << "Input: " << I_COUNTER << "\n";
+    std::cerr << "Output: " << O_COUNTER << "\n";
+}
+
 }  // namespace
