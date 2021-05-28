@@ -34,7 +34,7 @@ TEST_CASE("flower-heap: constructors without Compare") {
 
 
 
-TEST_CASE("flower-heap: 30000 add") {
+TEST_CASE("flower-heap: 1000 add") {
     FlowerHeap_t<uint64_t> h1(0, 10*EMHS::B);
     for (int i = 0; i < 3000; ++i) {
         h1.add(rand());
@@ -42,7 +42,7 @@ TEST_CASE("flower-heap: 30000 add") {
     CHECK(h1.size() == 3000);
 }
 
-TEST_CASE("flower-heap: 300000 add") {
+TEST_CASE("flower-heap: 10000 add") {
     FlowerHeap_t<uint64_t> h1(0, 10*EMHS::B);
     for (int i = 0; i < 3000; ++i) {
         h1.add(rand());
@@ -54,9 +54,9 @@ TEST_CASE("flower-heap: 300000 add") {
 
 TEST_CASE("flower-heap: top()") {
     FlowerHeap_t<uint64_t> h1(0, 10*EMHS::B);
-    int min = 300000;
-    for (int i = 0; i < 300000; ++i) {
-        int x = rand() % 300000;
+    int min = 10000;
+    for (int i = 0; i < 10000; ++i) {
+        int x = rand() % 10000;
         if (x < min)
             min = x;
         h1.add(x);
@@ -64,11 +64,11 @@ TEST_CASE("flower-heap: top()") {
     CHECK_MESSAGE(h1.top() == min, "generate min is other");
 }
 
-TEST_CASE("flower-heap: 300000 top()") {
+TEST_CASE("flower-heap: 10000 top()") {
     FlowerHeap_t<uint64_t> h1(0, 10*EMHS::B);
-    int min = 300000;
-    for (int i = 0; i < 300000; ++i) {
-        int x = rand() % 300000;
+    int min = 10000;
+    for (int i = 0; i < 10000; ++i) {
+        int x = rand() % 10000;
         if (x < min)
             min = x;
         h1.add(x);
