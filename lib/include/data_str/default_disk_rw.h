@@ -74,7 +74,7 @@ namespace EMHS{
 
         ~DISK(){
             for (auto it : open_descriptors){
-                fclose(it.second);
+                close(it.second);
             }
 
             /*for (auto it : utilized){
