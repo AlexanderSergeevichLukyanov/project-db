@@ -34,6 +34,17 @@ void CHECK_F(bool ex, int line, const std::string &file,
   }
 }
 
+void REQUIRE_F(bool ex, int line, const std::string &file,
+             const std::string &my_expression) {
+  if (!ex) {
+//    SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | 4));
+    std::cerr << "\x1b[31m    REQUIRE(" << my_expression << ") at "
+              << file /*std::string(__FILE__)*/ << ":" << line << " failed! End...\n\x1b[0m";
+    erase();
+	std::abort();
+  }
+}
+
 void CHECK_MESSAGE_F(bool ex, int line, const std::string &file,
                      const std::string &my_expression,
                      const std::string &my_message) {
@@ -44,6 +55,20 @@ void CHECK_MESSAGE_F(bool ex, int line, const std::string &file,
    // SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | 14));
     std::cerr << "\x1b[33m        message: " << my_message << "\n\x1b[0m";
     erase();
+  }
+}
+
+void REQUIRE_MESSAGE_F(bool ex, int line, const std::string &file,
+                     const std::string &my_expression,
+                     const std::string &my_message) {
+  if (!ex) {
+  //  SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | 4));
+    std::cerr << "\x1b[31m    REQUIRE(" << my_expression << ") at "
+              << file /*std::string(__FILE__)*/ << ":" << line << " failed! End...\n";
+   // SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | 14));
+    std::cerr << "\x1b[33m        message: " << my_message << "\n\x1b[0m";
+    erase();
+	std::abort();
   }
 }
 

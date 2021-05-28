@@ -27,9 +27,10 @@ struct HeapNode {
     T key;
     HeapNode *leftChild = nullptr;
     HeapNode *nextSibling = nullptr;
-	
+
     HeapNode() = default;
-	HeapNode(T &key_) : key(key_){}
+    HeapNode(T &key_) : key(key_) {
+    }
     HeapNode(T &key_, HeapNode *leftChild_, HeapNode *nextSibling_)
         : key(key_), leftChild(leftChild_), nextSibling(nextSibling_) {
     }
@@ -46,21 +47,20 @@ struct HeapNode {
 
 template <typename T, typename Compare = std::less<T>>
 HeapNode<T> *Merge(HeapNode<T> *A, HeapNode<T> *B, Compare &comp) {
-    if (!A){
+    if (!A) {
         return B;
-	}
-    if (!B){
+    }
+    if (!B) {
         return A;
-	}
+    }
 
-    if ( comp(A->key, B->key) ) {
+    if (comp(A->key, B->key)) {
         A->addChild(B);
         return A;
     } else {
         B->addChild(A);
         return B;
     }
-
 }
 
 template <typename T, typename Compare = std::less<T>>
@@ -70,7 +70,7 @@ HeapNode<T> *Insert(HeapNode<T> *node, T &key, Compare &comp) {
 
 template <typename T, typename Compare = std::less<T>>
 HeapNode<T> *TwoPassMerge(HeapNode<T> *node, Compare &comp) {
-    if ( !node ||  !(node->nextSibling) )
+    if (!node || !(node->nextSibling))
         return node;
     else {
         HeapNode<T> *A, *B, *newNode;
@@ -100,14 +100,14 @@ private:
 
 public:
     pairing_heap() = default;
-    explicit pairing_heap(const Compare &comp_) : comp(comp_){
+    explicit pairing_heap(const Compare &comp_) : comp(comp_) {
     }
     pairing_heap(const pairing_heap &) = delete;
     pairing_heap &operator=(const pairing_heap &) = delete;
     pairing_heap(pairing_heap &&other) = default;
     pairing_heap &operator=(pairing_heap &&other) = default;
-	~pairing_heap() = default;
-	
+    ~pairing_heap() = default;
+
     [[nodiscard]] int size() const {
         return size_;
     }
