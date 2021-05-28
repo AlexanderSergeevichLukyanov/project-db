@@ -1,22 +1,14 @@
 # This is a basic workflow to help you get started with Actions
 
-<<<<<<< HEAD:.github/workflows/main_RAM.yml
-name: master-RAM-test
-=======
 name: Tests
->>>>>>> dev-Alexander-soft-heap:.github/workflows/main.yml
 
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: 
-<<<<<<< HEAD:.github/workflows/main_RAM.yml
-      - master-RAM
-=======
       - master
       - dev-*
->>>>>>> dev-Alexander-soft-heap:.github/workflows/main.yml
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -100,15 +92,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-<<<<<<< HEAD:.github/workflows/main_RAM.yml
-      - name: permissision!
-        run: chmod u+x make/compile_main_RAM.sh 
-      - name: compile!
-        run: make/compile_main_RAM.sh
-      - name: Run tests!
-        run: ./dbms_RAM
-  stress-test:
-=======
 
       # Runs a single command using the runners shell
       - name: Add permissions for script
@@ -135,25 +118,24 @@ jobs:
       - name: Run tests!
         run: ./SH
 
-  Flower-Heap:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: Add permissions for script
-        run: chmod u+x all_include.sh
-      - name: compile
-        run: ./all_include.sh lib/include/test/HEAP-test/FH_test.cpp FH
-      - name: Run tests!
-        run: ./FH
+#  Flower-Heap:
+#    # The type of runner that the job will run on
+#    runs-on: ubuntu-latest
+#
+#    # Steps represent a sequence of tasks that will be executed as part of the job
+#    steps:
+#      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+#      - uses: actions/checkout@v2
+#
+#      # Runs a single command using the runners shell
+#      - name: Add permissions for script
+#        run: chmod u+x all_include.sh
+#      - name: compile
+#        run: ./all_include.sh lib/include/test/HEAP-test/FH_test.cpp FH
+#      - name: Run tests!
+#        run: ./FH
 
   Tower-Heap:
->>>>>>> dev-Alexander-soft-heap:.github/workflows/main.yml
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -161,12 +143,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-<<<<<<< HEAD:.github/workflows/main_RAM.yml
-      - name: compile!
-        run: g++ src/time-test-RAM/stress_test.cpp -I include -o dbms_stress_RAM -std=c++17
-      - name: Run stress-test!
-        run: ./dbms_stress_RAM
-=======
 
       # Runs a single command using the runners shell
       - name: Add permissions for script
@@ -259,4 +235,3 @@ jobs:
         run: ./run-examples.sh examples/KP-TH.cpp KP-TH
       - name: Run tests!
         run: ./KP-TH
->>>>>>> dev-Alexander-soft-heap:.github/workflows/main.yml
