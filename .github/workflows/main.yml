@@ -185,3 +185,20 @@ jobs:
         run: ./run-examples.sh examples/SubTreePH.cpp PH-ST
       - name: Run tests!
         run: ./PH-ST
+
+  example-SubTree-Pairing-Heap-opt:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+      - name: Add permissions for script
+        run: chmod u+x run-examples.sh
+      - name: compile
+        run: ./run-examples.sh examples/SubTreePH-opt.cpp PH-opt-ST
+      - name: Run tests!
+        run: ./PH-opt-ST
