@@ -4,32 +4,6 @@
 #include <sstream>
 #include <sys/stat.h>
 
-std::size_t I_COUNTER{};
-std::size_t O_COUNTER{};
-
-std::string NameMake(uint64_t NextWrite) {
-        std::stringstream StringStream;
-        StringStream << "lib/DISK/" << NextWrite;
-        std::string Name;
-        StringStream >> Name;
-        return Name;
-    }
-
-template<typename T>
-    void READ(uint64_t NextWrite, EMHS::Block_t<T> & Block){
-        std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "rb"), & fclose);
-        fread(& Block[0], sizeof(T), Block.capacity(), File.get());
-        I_COUNTER++;
-    }
-    
-    template<typename T>
-    void WRITE(uint64_t NextWrite, const EMHS::Block_t<T> & Block){
-        //std::cerr<<NameMake(NextWrite);
-        std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "wb"), & fclose);
-        fwrite(& Block[0], sizeof(T), Block.capacity(), File.get());
-        O_COUNTER++;
-    }
-
 uint64_t NextWrite = 3000000000;
 
 struct Calculator {
@@ -122,7 +96,7 @@ int main() {
                 fwrite(& Input[Index * (EMHS::B / 8) + IndexFile], 8, 1, File.get());
             }
         }
-        EMHS::dp(1000000000, 2000000000, EMHS::TowerHeap<std::pair<uint64_t, uint64_t>>{0}, Calculator{k});
+        EMHS::dp(1000000000, 2000000000, EMHS::TowerHeap_t<std::pair<uint64_t, uint64_t>>{0}, Calculator{k});
         std::cout << "Process finished." << std::endl;
         std::cout << "Total input operations: " << I_COUNTER << "." << std::endl;
         std::cout << "Total output operations: " << O_COUNTER << "." << std::endl;
@@ -150,13 +124,13 @@ int main() {
         if (Chip.size() == Output[0] && InCoreResult == OutCoreResult) {
             std::cout << "Ok." << std::endl;
             std::cout << Chip.size() << std::endl;
-            for (auto Index : InCoreResult) {
+            /*for (auto Index : InCoreResult) {
                 std::cout << Index << " ";
             }
-            std::cout << std::endl;
+            std::cout << std::endl;*/
         } else {
             std::cout << "Pizdec. O_o" << std::endl;
-            return 0;
+            exit(1);
         }
     }
     return 0;
