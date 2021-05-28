@@ -71,7 +71,7 @@ std::string NameMake(uint64_t NextWrite) {
 
 template<typename T>
     void READ(uint64_t NextWrite, EMHS::Block_t<T> & Block){
-       // std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "rb"), & fclose);
+        std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "rb"), & fclose);
         fread(& Block[0], sizeof(T), Block.capacity(), File.get());
         EMHS::d.READ_DISK(NameMake(NextWrite).c_str(), (char*)&Block[0], sizeof(T)*Block.capacity());
         I_COUNTER++;
