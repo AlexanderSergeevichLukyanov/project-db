@@ -103,8 +103,10 @@ public:
             close(it.second);
         }
 
-        for (auto it : utilized) {
-            fclose(it);
+        unordered_set<int> :: iterator itr;
+
+        for (itr = utilized.begin(); itr != utilized.end(); itr++){
+            close(*itr);
         }
     }
 } d;
