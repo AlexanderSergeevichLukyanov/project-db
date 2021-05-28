@@ -1,7 +1,5 @@
 #include <cassert>
-//#include "head.h"
 #include "pairing_heap.h"
-//#include "disk.h"
 
 namespace EMHS {
 template <typename T, typename Compare = std::less<T>>
@@ -21,7 +19,7 @@ private:
     void flush_buf() {  //по факту новый блок
 
         if (buf.size() >
-            2 * B / sizeof(T) + max_head_size + 5) {  // TODO: к норм виду
+            2 * B / sizeof(T) + max_head_size + 5) {  
             Block_t<T> /*<T, B/8>*/ new_bl;
             Head<T, Compare> new_h(max_head_size, comp);
 
@@ -92,7 +90,7 @@ public:
     }
 
     const T &getMin() const {
-        // TODO: бросить исключение на пустые
+
         if (buf.empty()) {
             return *(heads_of_blocks.getMin().data.begin());
         }
@@ -122,7 +120,6 @@ public:
             h.extract();
             if (h.empty()) {
                 Block_t<T> new_bl;
-                // new_bl.READ(folder_name, h.id_tail);
                 READ(h.id_tail, new_bl);
                 block_to_buf(new_bl);
             } else {
@@ -133,19 +130,18 @@ public:
         }
 
         if (comp(buf.getMin(), *(heads_of_blocks.getMin().data.begin()))) {
-            buf.extractMin();
-        } else {
+            buf.extractMin(); // если в буфере, то удаляем из него
+        } else { //иначе извлекаем голову, удаляем из нее элемент, вставляем
             Head<T, Compare> h = heads_of_blocks.getMin();
             heads_of_blocks.extractMin();
             h.extract();
 
-            if (h.empty()) {
+            if (h.empty()) { // если пусто, считываем
                 Block_t<T> new_bl;
-                // new_bl.READ(folder_name, h.id_tail);
                 READ(h.id_tail, new_bl);
                 block_to_buf(new_bl);
 
-            } else {
+            } else { // если можно пополнить голову, то пополняем
                 if (!buf.empty() && comp(buf.getMin(), h[h.size() - 1])) {
                     h.add(buf.getMin());
                     buf.extractMin();

@@ -1,7 +1,9 @@
+/*
+    Рекомендуется сначала почитать код pairing-heap, там подробнее расписано по комментариям
+*/
 #include <cassert>
 #include "head.h"
 #include "soft_heap.h"
-//#include "disk.h"
 inline std::size_t block_counter = 0;
 namespace EMHS {
 template <typename T, typename Compare = std::less<T>>
@@ -21,7 +23,7 @@ private:
     void flush_buf() {  //по факту новый блок
 
         if (buf.size() >
-            2 * B / sizeof(T) + max_head_size + 5) {  // TODO: к норм виду
+            2 * B / sizeof(T) + max_head_size + 5) { 
             Block_t<T> /*<T, B/8>*/ new_bl;
             Head<T, Compare> new_h(max_head_size, comp);
 
@@ -90,7 +92,6 @@ public:
     }
 
     const T &getMin() {
-        // TODO: бросить исключение на пустые
         if (buf.empty()) {
             return *(heads_of_blocks.getMin().data.begin());
         }
