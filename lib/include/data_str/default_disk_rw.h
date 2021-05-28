@@ -123,20 +123,19 @@ std::string NameMake(uint64_t NextWrite) {
 
 template<typename T>
     void READ(uint64_t NextWrite, EMHS::Block_t<T> & Block){
-        //std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "rb"), & fclose);
-        //fread(& Block[0], sizeof(T), Block.capacity(), File.get());
-        EMHS::d.SMART_READ(NextWrite, (char*)&Block[0], sizeof(T)*Block.capacity());
+        std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "rb"), & fclose);
+        fread(& Block[0], sizeof(T), Block.capacity(), File.get());
+        //EMHS::d.SMART_READ(NextWrite, (char*)&Block[0], sizeof(T)*Block.capacity());
         //EMHS::d.READ_DISK(NameMake(NextWrite).c_str(), (char*)&Block[0], sizeof(T)*Block.capacity());
         I_COUNTER++;
     }
     
     template<typename T>
     void WRITE(uint64_t NextWrite, const EMHS::Block_t<T> & Block){
-        //std::cerr<<NameMake(NextWrite);
-        //std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "wb"), & fclose);
-        //fwrite(& Block[0], sizeof(T), Block.capacity(), File.get());
+        std::unique_ptr<FILE, decltype(& fclose)> File(fopen(NameMake(NextWrite).c_str(), "wb"), & fclose);
+        fwrite(& Block[0], sizeof(T), Block.capacity(), File.get());
         //EMHS::d.WRITE_DISK(NameMake(NextWrite).c_str(), (char*)&Block[0], sizeof(T)*Block.capacity());
-        EMHS::d.SMART_WRITE(NextWrite, (char*)&Block[0], sizeof(T)*Block.capacity());
+        //EMHS::d.SMART_WRITE(NextWrite, (char*)&Block[0], sizeof(T)*Block.capacity());
         O_COUNTER++;
     }
 
